@@ -7,11 +7,14 @@ import { string } from 'prop-types';
 type TrackerState = 'empty' | 'superficial' | 'aggravated';
 
 interface Point {
+    index: number;
     state: TrackerState;
 }
 
+type TrackableName = 'humanity' | 'hunger' | 'health' | 'willpower';
+
 interface Trackable {
-    name: 'humanity' | 'hunger' | 'health' | 'willpower';
+    name: TrackableName;
     total: number;
     superficial: number;
     aggravated: number;
@@ -34,46 +37,79 @@ const dummyData: Kindred[] = [
     }
 ];
 
-const arrayFromTrackable = (trackable: Trackable): Point[] =>
-    Array.from({ length: trackable.total }, (_, i) => ({
-        state: i < trackable.aggravated ? 'aggravated' : 'empty'
-    }));
-
-function PointC(props: { state: TrackerState }) {
-    return (
-        <div
-            style={{
-                backgroundColor: props.state === 'aggravated' ? 'black' : 'white',
-                margin: '1px',
-                border: '1px solid black',
-                width: '20px',
-                height: '20px'
-            }}></div>
+const arrayFromTrackable = (trackable: Trackable): Point[] => {
+    console.log(trackable);
+    const from = Array.from(
+        { length: trackable.total },
+        (_, i) =>
+            ({
+                index: i,
+                state: i < trackable.aggravated ? 'aggravated' : 'empty'
+            } as Point)
     );
-}
+    console.log(from);
+    return from;
+};
 
-function Tracker(props: Trackable) {
-    const [points, setPoints] = useState(arrayFromTrackable(props));
+function Tracker({ trackable, changeKindred }) {
+    const points = arrayFromTrackable(trackable);
 
     return (
         <div style={{ display: 'flex' }}>
-            <h3>{props.name}</h3>
-            {points.map((point, index) => (
-                <PointC key={index} {...point} />
-            ))}
+            <h3>{trackable.name}</h3>
+            {points.map((point) => {
+                const backgroundColor = point.state === 'aggravated' ? 'pink' : 'white';
+                return (
+                    <div
+                        key={point.index}
+                        style={{
+                            backgroundColor: backgroundColor,
+                            margin: '1px',
+                            border: '1px solid black',
+                            width: '20px',
+                            height: '20px'
+                        }}
+                        onClick={() => {
+                            changeKindred(
+                                trackable.name,
+                                point.state === 'empty' ? trackable.aggravated + 1 : trackable - 1
+                            );
+                        }}></div>
+                );
+            })}
         </div>
     );
 }
 
 const IndexPage = () => {
-    const [kindred, _] = useState(dummyData);
+    const [kindred, setKindred] = useState(dummyData);
+
+    const changeKindred = (kindredName: string, trackable: Trackable[]) => {
+        const newKindred = kindred.map((kin) =>
+            kin.name == kindredName ? ({ name: kindredName, trackable } as Kindred) : kin
+        );
+        setKindred(newKindred);
+        console.log(kindred);
+    };
+
     return (
         <Layout title="Conclave">
             {kindred.map(({ name, trackable }) => (
                 <div key={name}>
                     <h2>{name}</h2>
                     {trackable.map((t, i) => (
-                        <Tracker key={i} {...t} />
+                        <Tracker
+                            key={t.name}
+                            trackable={t}
+                            changeKindred={(trackableName: TrackableName, aggravated: number) =>
+                                changeKindred(
+                                    name,
+                                    trackable.map((t2) =>
+                                        t2.name === trackableName ? { ...t2, aggravated } : t2
+                                    )
+                                )
+                            }
+                        />
                     ))}
                 </div>
             ))}
