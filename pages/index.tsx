@@ -1,22 +1,15 @@
 import Layout from '../components/Layout';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Kindred, Trackable } from '../interfaces';
 import Tracker from '../components/Tracker';
-
-const dummyData: Kindred[] = [
-    {
-        name: 'Boris',
-        trackable: [
-            { name: 'humanity', track: ['empty', 'empty', 'empty', 'empty', 'empty'] },
-            { name: 'hunger', track: ['empty', 'empty', 'empty', 'empty', 'empty'] },
-            { name: 'health', track: ['empty', 'empty', 'empty', 'empty', 'empty'] },
-            { name: 'willpower', track: ['empty', 'empty', 'empty', 'empty', 'empty'] }
-        ]
-    }
-];
+import { fetchKindred } from './api/KindredApi';
 
 const IndexPage = () => {
-    const [kindred, setKindred] = useState(dummyData);
+    const [kindred, setKindred] = useState([]);
+
+    useEffect(() => {
+        fetchKindred().then((data) => setKindred(data));
+    }, []);
 
     const changeKindredTrackable = (kindredName: string, changedTrackable: Trackable) => {
         const newKindred = kindred.map((kin) =>
