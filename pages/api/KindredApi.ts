@@ -1,13 +1,15 @@
-import { Kindred } from '../../interfaces';
+import { Kindred, TrackerState } from '../../interfaces';
+
+const arrayOfEmptyStates = (size): TrackerState[] => Array.from({ length: size }, () => 'empty');
 
 const dummyData: Kindred[] = [
     {
         name: 'Boris',
         trackable: [
-            { name: 'humanity', track: ['empty', 'empty', 'empty', 'empty', 'empty'] },
-            { name: 'hunger', track: ['empty', 'empty', 'empty', 'empty', 'empty'] },
-            { name: 'health', track: ['empty', 'empty', 'empty', 'empty', 'empty'] },
-            { name: 'willpower', track: ['empty', 'empty', 'empty', 'empty', 'empty'] }
+            { name: 'humanity', track: arrayOfEmptyStates(6) },
+            { name: 'hunger', track: arrayOfEmptyStates(5) },
+            { name: 'health', track: arrayOfEmptyStates(5) },
+            { name: 'willpower', track: arrayOfEmptyStates(5) }
         ]
     }
 ];
