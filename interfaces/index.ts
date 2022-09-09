@@ -5,6 +5,9 @@
 // import { User } from 'path/to/interfaces';
 
 export type User = {
-  id: number
-  name: string
-}
+    id: number;
+    name: string;
+};
+export type { Kindred } from './Kindred';
+export type { Trackable } from './Trackable';
+export type { TrackerState } from './TrackerState';
