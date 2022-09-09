@@ -1,5 +1,4 @@
-import Layout from '../components/Layout';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Kindred, Trackable } from '../interfaces';
 import Tracker from '../components/Tracker';
 import { fetchKindred } from './api/KindredApi';
@@ -15,10 +14,10 @@ const IndexPage = () => {
         const newKindred = kindred.map((kin) =>
             kin.name == kindredName
                 ? ({
-                    name: kindredName,
-                    trackable: kin.trackable.map((trackable) =>
-                        trackable.name === changedTrackable.name ? changedTrackable : trackable
-                    )
+                      name: kindredName,
+                      trackable: kin.trackable.map((trackable) =>
+                          trackable.name === changedTrackable.name ? changedTrackable : trackable
+                      )
                   } as Kindred)
                 : kin
         );
