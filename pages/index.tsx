@@ -1,8 +1,5 @@
-import Link from 'next/link';
 import Layout from '../components/Layout';
-import { useEffect, useState } from 'react';
-import { GetStaticProps } from 'next';
-import { string } from 'prop-types';
+import { useState } from 'react';
 
 type TrackerState = 'empty' | 'superficial' | 'aggravated';
 
