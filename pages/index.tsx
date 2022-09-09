@@ -1,5 +1,5 @@
 import Layout from '../components/Layout';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Kindred, Trackable } from '../interfaces';
 import Tracker from '../components/Tracker';
 import { fetchKindred } from './api/KindredApi';
@@ -27,10 +27,11 @@ const IndexPage = () => {
     };
 
     return (
-        <Layout title="Conclave">
+        <section className={'flex justify-center mt-2'}>
             {kindred.map(({ name, trackable }) => (
-                <div key={name}>
-                    <h2>{name}</h2>
+                <div key={name} className={'bg-gray-800 shadow-md p-6 max-w-sm rounded-lg'}>
+                    <h2 className={'mb-2 text-4xl font-bold capitalized text-center'}>{name}</h2>
+                    <div className="w-full border-b border-gray-300 mb-2"></div>
                     {trackable.map((t) => (
                         <Tracker
                             key={t.name}
@@ -42,7 +43,7 @@ const IndexPage = () => {
                     ))}
                 </div>
             ))}
-        </Layout>
+        </section>
     );
 };
 

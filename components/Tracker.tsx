@@ -14,18 +14,20 @@ export default function Tracker({ trackable, changeTrackable }: Props) {
         });
 
     return (
-        <div style={{ display: 'flex' }}>
-            <h3>{trackable.name}</h3>
-            {trackable.track.map((track, index) => {
-                return (
-                    <TrackerCell
-                        key={index}
-                        i={index}
-                        state={track}
-                        changeKindred={changeTracker}
-                    />
-                );
-            })}
+        <div className={'flex justify-around '}>
+            <h3 className={'capitalize text-xl '}>{trackable.name}</h3>
+            <div className={'flex'}>
+                {trackable.track.map((track, index) => {
+                    return (
+                        <TrackerCell
+                            key={index}
+                            i={index}
+                            state={track}
+                            changeKindred={changeTracker}
+                        />
+                    );
+                })}
+            </div>
         </div>
     );
 }

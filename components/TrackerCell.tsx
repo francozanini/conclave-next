@@ -11,14 +11,7 @@ export default function TrackerCell({ state, changeKindred, i }: Props) {
 
     return (
         <div
-            style={{
-                margin: '1px',
-                border: '1px solid black',
-                width: '20px',
-                height: '20px',
-                fontSize: '18px',
-                textAlign: 'center'
-            }}
+            className={'m-1 border-2 border-solid border-white h-8 w-8 text-center'}
             onClick={() => changeKindred(nextTrackerState(state), i)}>
             {symbol}
         </div>
