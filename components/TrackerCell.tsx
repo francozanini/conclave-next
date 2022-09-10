@@ -1,29 +1,33 @@
-import { TrackerState } from '../interfaces';
+import {TrackerState} from "../interfaces";
 
 interface Props {
-    state: TrackerState;
-    changeKindred: (newState: TrackerState, i: number) => void;
-    i: number;
+  state: TrackerState;
+  changeKindred: (previousState: TrackerState, nextState: TrackerState) => void;
+  i: number;
 }
 
-export default function TrackerCell({ state, changeKindred, i }: Props) {
-    const symbol = state === 'aggravated' ? 'X' : state === 'superficial' ? '/' : '';
+export default function TrackerCell({state, changeKindred, i}: Props) {
+  const symbol = state === "aggravated" ? "X" : state === "superficial" ? "/" : "";
 
-    return (
-        <div
-            className={'m-1 border-2 border-solid border-white h-8 w-8 text-center'}
-            onClick={() => changeKindred(nextTrackerState(state), i)}>
-            {symbol}
-        </div>
-    );
+  return (
+    <div
+      className={"m-1 border-2 border-solid border-white h-8 w-8 text-center"}
+      onClick={() => changeKindred(state, nextTrackerState(state))}>
+      {symbol}
+    </div>
+  );
 }
 
 const nextTrackerState = (state: TrackerState) => {
-    const stateMappings = new Map<TrackerState, TrackerState>([
-        ['empty', 'superficial'],
-        ['superficial', 'aggravated'],
-        ['aggravated', 'empty']
-    ]);
+  const stateMappings = new Map<TrackerState, TrackerState>([
+    ["empty", "superficial"],
+    ["superficial", "aggravated"],
+    ["aggravated", "empty"],
+  ]);
 
-    return stateMappings.get(state);
+  const nextState = stateMappings.get(state);
+
+  if (!nextState) throw Error("we made a huge mistake");
+
+  return nextState;
 };
