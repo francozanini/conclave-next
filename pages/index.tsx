@@ -2,8 +2,13 @@ import { useEffect, useState } from 'react';
 import { Kindred, Trackable } from '../interfaces';
 import Tracker from '../components/Tracker';
 import { fetchKindred } from './api/KindredApi';
+import { trpc } from '../utils/trpc';
 
 const IndexPage = () => {
+    const retrieved = trpc.useQuery(['find-kindred']);
+
+    console.log(retrieved);
+
     const [kindred, setKindred] = useState([]);
 
     useEffect(() => {
