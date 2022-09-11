@@ -1,3 +1,5 @@
+import {UseQueryResult} from "react-query";
+
 import Tracker, {TrackableFromServer} from "../components/Tracker";
 import {trpc} from "../utils/trpc";
 
@@ -6,11 +8,12 @@ import {inferQueryResponse} from "./api/trpc/[trpc]";
 type KindredFromServer = inferQueryResponse<"find-kindred">[0];
 
 const IndexPage = () => {
-  const {data: kindred, isLoading, refetch} = trpc.useQuery(["find-kindred"]); // usar retrieved.data y retrieved.isLoading en vez de useState.
+  const {
+    data: kindred,
+    isLoading,
+    refetch,
+  }: UseQueryResult<KindredFromServer[]> = trpc.useQuery(["find-kindred"]);
   const saveMutation = trpc.useMutation(["save-kindred"]);
-
-  // usar trpc.useMutation en vez de setKindred
-  // ver como mierda usar los tipos de prisma
 
   const changeKindredTrackable = (kindredName: string, changedTrackable: TrackableFromServer) => {
     saveMutation.mutate(changedTrackable, {onSuccess: () => refetch()});
