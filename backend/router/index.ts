@@ -3,38 +3,39 @@ import {z} from "zod";
 
 import {prisma} from "../utils/prisma";
 
-const trackable = z.object({
-  id: z.number().positive(),
-  name: z.enum(["hunger", "willpower", "health", "humanity"]),
-  max: z.number().min(0),
-  aggravatedDamage: z.number().min(0),
-  superficialDamage: z.number().min(0),
-});
-
-const kindred = z.object({
-  id: z.number().positive(),
-  name: z.string().min(1),
-  trackables: trackable.array().min(4),
-});
-
 export const appRouter = trpc
   .router()
-  .query("find-kindred", {
-    async resolve() {
-      return await prisma.kindred.findMany({
-        select: {name: true, id: true, trackables: {orderBy: [{id: "desc"}]}},
-      });
-    },
-  })
-  .mutation("save-kindred", {
-    input: trackable,
+  .query("find-chronicle", {
+    input: z.object({
+      chronicleId: z.number().positive(),
+    }),
     async resolve({input}) {
-      const updatedTrackable = await prisma.trackable.update({
-        data: input,
-        where: {id: input.id},
+      const chronicle = prisma.chronicle.findUnique({
+        where: {id: input.chronicleId},
+        include: {kindred: {orderBy: {id: "desc"}}},
       });
 
-      return {success: true, kindred: updatedTrackable};
+      if (!chronicle) {
+        throw Error(`Chronicle ${input.chronicleId} not found`);
+      }
+
+      return await chronicle;
+    },
+  })
+  .query("find-kindred", {
+    input: z.object({
+      kindredId: z.number().positive(),
+    }),
+    async resolve({input}) {
+      const retrievedKindred = await prisma.kindred.findUnique({
+        where: {id: input.kindredId},
+      });
+
+      if (!retrievedKindred) {
+        throw Error(`kindred ${input.kindredId} not found`);
+      }
+
+      return retrievedKindred;
     },
   });
 

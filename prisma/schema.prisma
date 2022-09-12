@@ -8,17 +8,85 @@ datasource db {
 }
 
 model Kindred {
-  id            Int    @id @default(autoincrement())
-  name          String
-  trackables    Trackable[]
+  id                Int    @id @default(autoincrement())
+  name              String
+  experience        Int @default(0)
+
+  strength          Int @default(0)
+  dexterity         Int @default(0)
+  stamina           Int @default(0)
+  charisma          Int @default(0)
+  manipulation      Int @default(0)
+  composure         Int @default(0)
+  intelligence      Int @default(0)
+  wits              Int @default(0)
+  resolution        Int @default(0)
+
+  aggravatedHealth      Int @default(0)
+  superficialHealth    Int @default(0)
+
+  aggravatedWillpower   Int @default(0)
+  superficialWillpower Int @default(0)
+
+  humanity              Int @default(0)
+  damagedHumanity       Int @default(0)
+
+  hunger                Int @default(0)
+
+  skills                Skill[]
+
+  chronicles            Chronicle[]
 }
 
-model Trackable {
-  id                 Int @id @default(autoincrement())
-  name               String
-  max                Int @default(0)
-  aggravatedDamage   Int @default(0)
-  superficialDamage  Int @default(0)
-  kindred            Kindred @relation(fields: [kindredId], references: [id])
-  kindredId          Int
+model Skill {
+    id      Int    @id @default(autoincrement())
+    name    SkillName
+    points  Int
+    type    SkillType
+    Kindred       Kindred   @relation(fields: [kindredId], references: [id])
+    kindredId     Int
+}
+
+enum SkillType {
+    PHYSICAL
+    SOCIAL
+    MENTAL
+}
+
+enum SkillName {
+    ATHLETICS
+    BRAWL
+    CRAFT
+    DRIVE
+    FIREARMS
+    MELEE
+    LARCENY
+    STEALTH
+    SURVIVAL
+    ANIMAL_KEN
+    //SOCIAL
+    ETIQUETTE
+    INSIGHT
+    INTIMIDATION
+    LEADERSHIP
+    PERFORMANCE
+    PERSUASION
+    STREETWISE
+    SUBTERFUGE
+    ACADEMICS
+    // MENTAL
+    AWARENESS
+    FINANCE
+    INVESTIGATION
+    MEDICINE
+    OCCULT
+    POLITICS
+    SCIENCE
+    TECHNOLOGY
+}
+
+model Chronicle {
+    id      Int    @id @default(autoincrement())
+    name    String @default("")
+    kindred Kindred[]
 }
