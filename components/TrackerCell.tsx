@@ -2,17 +2,15 @@ import {TrackerState} from "../interfaces";
 
 interface Props {
   state: TrackerState;
-  changeKindred: (previousState: TrackerState, nextState: TrackerState) => void;
+  //changeKindred: (previousState: TrackerState, nextState: TrackerState) => void;
   i: number;
 }
 
-export default function TrackerCell({state, changeKindred, i}: Props) {
+export default function TrackerCell({state, i}: Props) {
   const symbol = state === "aggravated" ? "X" : state === "superficial" ? "/" : "";
 
   return (
-    <div
-      className={"m-1 border-2 border-solid border-white h-8 w-8 text-center"}
-      onClick={() => changeKindred(state, nextTrackerState(state))}>
+    <div className={"m-1 border-2 border-solid border-white h-8 w-8 text-center"}>
       {symbol}
     </div>
   );

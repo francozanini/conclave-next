@@ -8,18 +8,16 @@ interface Props {
   changeTrackable: (trackable: TrackableFromServer) => void;
 }
 
-export type TrackableFromServer = inferQueryResponse<"find-kindred">[0]["trackables"][0];
-
-const withTrackerSymbols = (trackable: TrackableFromServer): TrackerState[] => {
+export const withTrackerSymbols = (trackable: {aggravated: number, superficial: number, max: number}): TrackerState[] => {
   const trackableCopy = {...trackable};
   const symbols: TrackerState[] = [];
 
   for (let i = 0; i < trackable.max; i++) {
-    if (trackableCopy.aggravatedDamage > 0) {
-      trackableCopy.aggravatedDamage--;
+    if (trackableCopy.aggravated > 0) {
+      trackableCopy.aggravated--;
       symbols.push("aggravated");
-    } else if (trackableCopy.superficialDamage > 0) {
-      trackableCopy.superficialDamage--;
+    } else if (trackableCopy.superficial > 0) {
+      trackableCopy.superficial--;
       symbols.push("superficial");
     } else {
       symbols.push("empty");
@@ -50,9 +48,9 @@ export default function Tracker({trackable, changeTrackable}: Props) {
     <div className={"flex justify-around "}>
       <h3 className={"capitalize text-xl "}>{trackable.name}</h3>
       <div className={"flex"}>
-        {withTrackerSymbols(trackable).map((track, index) => {
-          return <TrackerCell key={index} changeKindred={changeTracker} i={index} state={track} />;
-        })}
+        {withTrackerSymbols(trackable).map((track, index) =>
+            <TrackerCell key={index} changeKindred={changeTracker} i={index} state={track} />
+        )}
       </div>
     </div>
   );
