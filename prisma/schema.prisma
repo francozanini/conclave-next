@@ -7,86 +7,122 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ClanName {
+  BANU_HAQIM
+  BRUJAH
+  CAITIFF
+  GANGREL
+  HECATA
+  LASOMBRA
+  MALKAVIAN
+  NOSFERATU
+  RAVNOS
+  SALUBRI
+  THE_MINISTRY
+  TOREADOR
+  TREMERE
+  TZIMISCE
+  VENTRUE
+}
+
+model Clan {
+  id          Int          @id @default(autoincrement())
+  name        ClanName
+  disciplines Discipline[]
+  Kindred     Kindred[]
+}
+
+model Discipline {
+  id    Int    @id @default(autoincrement())
+  name  String
+  clans Clan[]
+}
+
 model Kindred {
-  id                Int    @id @default(autoincrement())
-  name              String
-  experience        Int @default(0)
+  id         Int    @id @default(autoincrement())
+  name       String
+  experience Int    @default(0)
+  ambition   String
+  desire     String
 
-  strength          Int @default(0)
-  dexterity         Int @default(0)
-  stamina           Int @default(0)
-  charisma          Int @default(0)
-  manipulation      Int @default(0)
-  composure         Int @default(0)
-  intelligence      Int @default(0)
-  wits              Int @default(0)
-  resolution        Int @default(0)
+  clan   Clan @relation(fields: [clanId], references: [id])
+  clanId Int
 
-  aggravatedHealth      Int @default(0)
-  superficialHealth    Int @default(0)
+  strength     Int @default(0)
+  dexterity    Int @default(0)
+  stamina      Int @default(0)
+  charisma     Int @default(0)
+  manipulation Int @default(0)
+  composure    Int @default(0)
+  intelligence Int @default(0)
+  wits         Int @default(0)
+  resolve      Int @default(0)
 
-  aggravatedWillpower   Int @default(0)
+  aggravatedHealth  Int @default(0)
+  superficialHealth Int @default(0)
+
+  aggravatedWillpower  Int @default(0)
   superficialWillpower Int @default(0)
 
-  humanity              Int @default(0)
-  damagedHumanity       Int @default(0)
+  humanity        Int @default(0)
+  damagedHumanity Int @default(0)
 
-  hunger                Int @default(0)
+  hunger Int @default(0)
 
-  skills                Skill[]
+  skills Skill[]
 
-  chronicles            Chronicle[]
+  chronicles Chronicle[]
 }
 
 model Skill {
-    id      Int    @id @default(autoincrement())
-    name    SkillName
-    points  Int
-    type    SkillType
-    Kindred       Kindred   @relation(fields: [kindredId], references: [id])
-    kindredId     Int
+  id        Int       @id @default(autoincrement())
+  name      SkillName
+  points    Int
+  type      SkillType
+  Kindred   Kindred   @relation(fields: [kindredId], references: [id])
+  kindredId Int
 }
 
 enum SkillType {
-    PHYSICAL
-    SOCIAL
-    MENTAL
+  PHYSICAL
+  SOCIAL
+  MENTAL
 }
 
 enum SkillName {
-    ATHLETICS
-    BRAWL
-    CRAFT
-    DRIVE
-    FIREARMS
-    MELEE
-    LARCENY
-    STEALTH
-    SURVIVAL
-    ANIMAL_KEN
-    //SOCIAL
-    ETIQUETTE
-    INSIGHT
-    INTIMIDATION
-    LEADERSHIP
-    PERFORMANCE
-    PERSUASION
-    STREETWISE
-    SUBTERFUGE
-    ACADEMICS
-    // MENTAL
-    AWARENESS
-    FINANCE
-    INVESTIGATION
-    MEDICINE
-    OCCULT
-    POLITICS
-    SCIENCE
-    TECHNOLOGY
+  ATHLETICS
+  BRAWL
+  CRAFT
+  DRIVE
+  FIREARMS
+  MELEE
+  LARCENY
+  STEALTH
+  SURVIVAL
+  ANIMAL_KEN
+  //SOCIAL
+  ETIQUETTE
+  INSIGHT
+  INTIMIDATION
+  LEADERSHIP
+  PERFORMANCE
+  PERSUASION
+  STREETWISE
+  SUBTERFUGE
+  ACADEMICS
+  // MENTAL
+  AWARENESS
+  FINANCE
+  INVESTIGATION
+  MEDICINE
+  OCCULT
+  POLITICS
+  SCIENCE
+  TECHNOLOGY
 }
 
 model Chronicle {
-    id      Int    @id @default(autoincrement())
-    name    String @default("")
-    kindred Kindred[]
+  id      Int       @id @default(autoincrement())
+  name    String    @default("")
+  kindred Kindred[]
 }
