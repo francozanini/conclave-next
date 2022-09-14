@@ -44,6 +44,7 @@ model Kindred {
   experience Int    @default(0)
   ambition   String
   desire     String
+  sire       String @default("")
 
   clan   Clan @relation(fields: [clanId], references: [id])
   clanId Int
