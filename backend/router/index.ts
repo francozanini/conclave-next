@@ -9,7 +9,7 @@ export const appRouter = trpc
     input: z.object({
       chronicleId: z.number().positive(),
     }),
-    async resolve({input}) {
+    resolve: async ({input}) => {
       const chronicle = prisma.chronicle.findUnique({
         where: {id: input.chronicleId},
         include: {kindred: {orderBy: {id: "desc"}}},
@@ -26,7 +26,7 @@ export const appRouter = trpc
     input: z.object({
       kindredId: z.number().positive(),
     }),
-    async resolve({input}) {
+    resolve: async ({input}) => {
       const retrievedKindred = await prisma.kindred.findUnique({
         where: {id: input.kindredId},
       });
