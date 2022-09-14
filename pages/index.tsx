@@ -45,7 +45,7 @@ const IndexPage = () => {
                 <div className="flex flex-col">
                   <div>{experience} points of experience</div>
                   <div>{hunger} hunger</div>
-                  <Incrementable
+                  {/* <Incrementable
                     currentAmount={hunger}
                     decrease={() => console.log(hunger)}
                     increase={() => console.log(hunger)}
@@ -62,7 +62,7 @@ const IndexPage = () => {
                     max={composure + resolution}
                     name="willpower"
                     superficial={superficialWillpower}
-                  />
+                  /> */}
                 </div>
               </div>
             ),
