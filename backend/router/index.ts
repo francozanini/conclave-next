@@ -46,7 +46,7 @@ export const appRouter = trpc
       desire: z.string().optional(),
     }),
     resolve: async ({input}) => {
-      prisma.kindred.update({
+      const result = await prisma.kindred.update({
         where: {id: input.kindredId},
         data: {
           name: input.name || undefined,
@@ -54,6 +54,8 @@ export const appRouter = trpc
           desire: input.desire || undefined,
         },
       });
+
+      return result;
     },
   });
 
