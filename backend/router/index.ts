@@ -37,6 +37,24 @@ export const appRouter = trpc
 
       return retrievedKindred;
     },
+  })
+  .mutation("update-kindred-details", {
+    input: z.object({
+      kindredId: z.number().positive(),
+      ambition: z.string().optional(),
+      name: z.string().optional(),
+      desire: z.string().optional(),
+    }),
+    resolve: async ({input}) => {
+      prisma.kindred.update({
+        where: {id: input.kindredId},
+        data: {
+          name: input.name || undefined,
+          ambition: input.ambition || undefined,
+          desire: input.desire || undefined,
+        },
+      });
+    },
   });
 
 export type AppRouter = typeof appRouter;
