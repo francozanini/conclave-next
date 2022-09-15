@@ -34,6 +34,7 @@ export const appRouter = trpc
     resolve: async ({input}) => {
       const retrievedKindred = await prisma.kindred.findUnique({
         where: {id: input.kindredId},
+        include: {clan: true},
       });
 
       if (!retrievedKindred) {
@@ -69,7 +70,7 @@ export const appRouter = trpc
       chosenClan: z.nativeEnum(ClanName),
     }),
     resolve: async ({input}) => {
-      prisma.kindred.update({
+      await prisma.kindred.update({
         where: {id: input.kindredId},
         data: {
           clan: {connect: {name: input.chosenClan}},
