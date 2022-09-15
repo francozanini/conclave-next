@@ -1,27 +1,10 @@
-import {useRouter} from "next/router";
-import {useEffect, useRef, useState} from "react";
-import {Kindred} from ".prisma/client";
-import {useForm} from "react-hook-form";
-
-import {trpc} from "../../utils/trpc";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
 import Card from "../../components/Card";
 import TextInput from "../../components/TextInput";
+import { debounce } from "../../utils/debounce";
+import { trpc } from "../../utils/trpc";
 
-function debounce(func, wait) {
-  let timeout;
-
-  return function () {
-    const context = this;
-    const args = arguments;
-    const later = function () {
-      timeout = null;
-      func.apply(context, args);
-    };
-
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
 
 const KindredSheetPage = () => {
   const {id: kindredId} = useRouter().query;
