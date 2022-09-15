@@ -1,7 +1,12 @@
+import { ClanName } from "@prisma/client";
 import * as trpc from "@trpc/server";
-import {z} from "zod";
+import { z } from "zod";
+import { prisma } from "../utils/prisma";
 
-import {prisma} from "../utils/prisma";
+
+const clanNames = Object.values(ClanName);
+
+type clanNamesType = typeof clanNames;
 
 export const appRouter = trpc
   .router()
@@ -56,6 +61,20 @@ export const appRouter = trpc
       });
 
       return result;
+    },
+  })
+  .mutation("pick-clan", {
+    input: z.object({
+      kindredId: z.number().positive(),
+      chosenClan: z.nativeEnum(ClanName),
+    }),
+    resolve: async ({input}) => {
+      prisma.kindred.update({
+        where: {id: input.kindredId},
+        data: {
+          clan: {connect: {name: input.chosenClan}},
+        },
+      });
     },
   });
 
