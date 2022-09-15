@@ -4,10 +4,6 @@ import { z } from "zod";
 import { prisma } from "../utils/prisma";
 
 
-const clanNames = Object.values(ClanName);
-
-type clanNamesType = typeof clanNames;
-
 export const appRouter = trpc
   .router()
   .query("find-chronicle", {
