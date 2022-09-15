@@ -27,7 +27,7 @@ enum ClanName {
 
 model Clan {
   id          Int          @id @default(autoincrement())
-  name        ClanName
+  name        ClanName     @unique
   disciplines Discipline[]
   Kindred     Kindred[]
 }
