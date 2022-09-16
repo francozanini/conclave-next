@@ -1,6 +1,7 @@
 import { ClanName } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { Kindred } from "../pages/kindred/[id]";
+import capitalize from "../utils/capitalize";
 import { debounce } from "../utils/debounce";
 import { trpc } from "../utils/trpc";
 import Card from "./Card";
@@ -40,7 +41,10 @@ const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred) => {
         }>
         {clans.map((clan) => (
           <option key={clan} value={clan}>
-            {clan}
+            {clan
+              .split("_")
+              .map((name) => capitalize(name))
+              .join(" ")}
           </option>
         ))}
       </select>
