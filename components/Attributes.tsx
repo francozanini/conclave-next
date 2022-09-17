@@ -55,13 +55,13 @@ const Attributes = ({
   ];
 
   return (
-    <Card>
+    <Card className={"min-w-md lg:max-w-fit"}>
       <h1 className="text-center text-4xl">Attributes</h1>
-      <>
+      <div className={"flex flex-col lg:flex-row"}>
         {attributes.map((attrs, i) => (
           <div
             key={attrs[i].type}
-            className="border-b p-4 border-solid border-opacity-5 2xl:border-b-0 2xl:border-r last:border-b-0 last:border-r-0">
+            className="border-b p-4 border-solid border-opacity-5 lg:border-b-0 lg:border-r last:border-b-0 last:border-r-0">
             <h2 className="capitalize text-2xl text-center mb-2">{attrs[i].type}</h2>
             {attrs.map((attr) => (
               <Attribute
@@ -80,7 +80,7 @@ const Attributes = ({
             ))}
           </div>
         ))}
-      </>
+      </div>
     </Card>
   );
 };
