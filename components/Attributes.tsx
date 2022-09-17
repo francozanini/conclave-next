@@ -1,10 +1,10 @@
-import { Kindred } from "../pages/kindred/[id]";
-import { AttributeName } from "../types/AttributeName";
+import {Kindred} from "../pages/kindred/[id]";
+import {AttributeName} from "../types/AttributeName";
 import capitalize from "../utils/capitalize";
-import { trpc } from "../utils/trpc";
+import {trpc} from "../utils/trpc";
+
 import Card from "./Card";
 import Trackable from "./Trackable";
-
 
 interface AttributeProps {
   name: AttributeName;
@@ -33,8 +33,9 @@ const Attributes = ({
   intelligence,
   wits,
   id,
-}: Kindred) => {
-  const changeAttribute = trpc.useMutation("change-atribute");
+  refetch,
+}: Kindred & {refetch: any}) => {
+  const changeAttribute = trpc.useMutation("change-atribute", {onSuccess: () => refetch()});
   const attributes = [
     [
       {amount: strength, name: AttributeName.strength, type: "physical"},

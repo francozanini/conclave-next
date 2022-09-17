@@ -13,8 +13,13 @@ const KindredSheetPage = () => {
   const {
     isLoading,
     isError,
+    refetch,
     data: kindred,
-  } = trpc.useQuery(["find-kindred", {kindredId: +kindredId}]);
+  } = trpc.useQuery(["find-kindred", {kindredId: +kindredId}], {
+    refetchInterval: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  });
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -27,8 +32,8 @@ const KindredSheetPage = () => {
   return (
     <section className="mx-4 mt-2 flex flex-col gap-2">
       <KindredDetails {...kindred} />
-      <Attributes {...kindred} />
-      <Skills {...kindred} />
+      <Attributes {...kindred} refetch={refetch} />
+      <Skills {...kindred} refetch={refetch} />
     </section>
   );
 };
