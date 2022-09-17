@@ -30,7 +30,7 @@ const KindredSheetPage = () => {
   }
 
   return (
-    <section className="mx-4 mt-2 flex flex-col gap-2">
+    <section className="justify-items-center mt-2 grid grid-cols-1 gap-4 ">
       <KindredDetails {...kindred} />
       <Attributes {...kindred} refetch={refetch} />
       <Skills {...kindred} refetch={refetch} />

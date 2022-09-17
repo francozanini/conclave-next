@@ -19,7 +19,7 @@ const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred) => {
   }, 300);
 
   return (
-    <Card>
+    <Card maxWidth={"md"}>
       <TextInput defaultValue={name} input={{...register("name")}} label="name" />
       <TextInput defaultValue={ambition} input={{...register("ambition")}} label="ambition" />
       <TextInput
