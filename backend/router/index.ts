@@ -1,6 +1,7 @@
 import { ClanName } from "@prisma/client";
 import * as trpc from "@trpc/server";
 import { z } from "zod";
+import { AttributeName } from "../../types/AttributeName";
 import { prisma } from "../utils/prisma";
 
 
@@ -72,6 +73,21 @@ export const appRouter = trpc
           clan: {connect: {name: input.chosenClan}},
         },
       });
+    },
+  })
+  .mutation("change-atribute", {
+    input: z.object({
+      kindredId: z.number().positive(),
+      attributeToChange: z.nativeEnum(AttributeName),
+      newAmountOfPoints: z.number().min(0),
+    }),
+    resolve: async ({input}) => {
+      const updtedKindred = await prisma.kindred.update({
+        where: {id: input.kindredId},
+        data: {[input.attributeToChange]: input.newAmountOfPoints},
+      });
+
+      return updtedKindred[input.attributeToChange];
     },
   });
 
