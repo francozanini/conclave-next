@@ -1,9 +1,9 @@
-import { ClanName } from "@prisma/client";
+import {ClanName, SkillName} from "@prisma/client";
 import * as trpc from "@trpc/server";
-import { z } from "zod";
-import { AttributeName } from "../../types/AttributeName";
-import { prisma } from "../utils/prisma";
+import {z} from "zod";
 
+import {AttributeName} from "../../types/AttributeName";
+import {prisma} from "../utils/prisma";
 
 export const appRouter = trpc
   .router()
@@ -31,7 +31,7 @@ export const appRouter = trpc
     resolve: async ({input}) => {
       const retrievedKindred = await prisma.kindred.findUnique({
         where: {id: input.kindredId},
-        include: {clan: true},
+        include: {clan: true, skills: true},
       });
 
       if (!retrievedKindred) {
@@ -88,6 +88,33 @@ export const appRouter = trpc
       });
 
       return updtedKindred[input.attributeToChange];
+    },
+  })
+  .mutation("change-skill", {
+    input: z.object({
+      kindredId: z.number().positive(),
+      skillToChange: z.nativeEnum(SkillName),
+      newAmountOfPoints: z.number().min(0).max(5),
+    }),
+    resolve: async ({input}) => {
+      const {newAmountOfPoints, kindredId, skillToChange} = input;
+
+      await prisma.kindred.update({
+        where: {id: kindredId},
+        data: {
+          skills: {
+            update: {
+              where: {
+                name_kindredId: {
+                  name: skillToChange,
+                  kindredId: kindredId,
+                },
+              },
+              data: {points: newAmountOfPoints},
+            },
+          },
+        },
+      });
     },
   });
 

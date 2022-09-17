@@ -82,6 +82,8 @@ model Skill {
   type      SkillType
   Kindred   Kindred   @relation(fields: [kindredId], references: [id])
   kindredId Int
+
+  @@unique([name, kindredId])
 }
 
 enum SkillType {

@@ -1,6 +1,7 @@
-import {ClanName} from "@prisma/client";
+import {ClanName, Skill} from "@prisma/client";
 
 import {prisma} from "../backend/utils/prisma";
+import {defaultSkills} from "../utils/Skills";
 
 const initialData = [
   {
@@ -44,6 +45,9 @@ const seedKindred = async () => {
           ...kin,
           clan: {
             create: kin.clan,
+          },
+          skills: {
+            createMany: {data: [...defaultSkills] as Skill[]},
           },
         })),
       },
