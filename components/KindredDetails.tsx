@@ -1,13 +1,13 @@
-import { ClanName } from "@prisma/client";
-import { useForm } from "react-hook-form";
-import { Kindred } from "../pages/kindred/[id]";
-import capitalize from "../utils/capitalize";
-import { debounce } from "../utils/debounce";
-import { trpc } from "../utils/trpc";
+import {ClanName} from "@prisma/client";
+import {useForm} from "react-hook-form";
+
+import {Kindred} from "../pages/kindred/[id]";
+import {debounce} from "../utils/debounce";
+import {trpc} from "../utils/trpc";
+import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapitalize";
+
 import Card from "./Card";
 import TextInput from "./TextInput";
-
-
 
 const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred) => {
   const {register, getValues} = useForm();
@@ -37,14 +37,14 @@ const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred) => {
         defaultValue={clan.name}
         name="clans"
         onChange={(e) =>
-          clanMutation.mutate({chosenClan: e.target.value as ClanName, kindredId: id})
+          clanMutation.mutate({
+            chosenClan: e.target.value as ClanName,
+            kindredId: id,
+          })
         }>
         {clans.map((clan) => (
           <option key={clan} value={clan}>
-            {clan
-              .split("_")
-              .map((name) => capitalize(name))
-              .join(" ")}
+            {removeUnderscoreAndCapitalize(clan)}
           </option>
         ))}
       </select>

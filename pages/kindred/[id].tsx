@@ -8,6 +8,7 @@ import {inferQueryResponse} from "../api/trpc/[trpc]";
 import Card from "../../components/Card";
 import capitalize from "../../utils/capitalize";
 import Trackable from "../../components/Trackable";
+import {removeUnderscoreAndCapitalize} from "../../utils/RemoveUnderscoreAndCapitalize";
 
 export type Kindred = inferQueryResponse<"find-kindred">;
 
@@ -24,7 +25,7 @@ function Skill({
 }) {
   return (
     <div className={`flex flex-row justify-between ${className}`}>
-      <span className="text-xl">{capitalize(name)}</span>
+      <span className="text-xl">{removeUnderscoreAndCapitalize(name)}</span>
       <Trackable amount={amount} onChange={(newAmount) => onChange(newAmount)} />
     </div>
   );
