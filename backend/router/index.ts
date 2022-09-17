@@ -79,7 +79,7 @@ export const appRouter = trpc
     input: z.object({
       kindredId: z.number().positive(),
       attributeToChange: z.nativeEnum(AttributeName),
-      newAmountOfPoints: z.number().min(0),
+      newAmountOfPoints: z.number().min(0).max(5),
     }),
     resolve: async ({input}) => {
       const updtedKindred = await prisma.kindred.update({
