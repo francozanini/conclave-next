@@ -1,14 +1,12 @@
-import {UseQueryResult} from "react-query";
-
-import Incrementable from "../components/Incremental";
-import {withTrackerSymbols} from "../components/Tracker";
+import { UseQueryResult } from "react-query";
+import { withTrackerSymbols } from "../components/Tracker";
 import TrackerCell from "../components/TrackerCell";
-import {trpc} from "../utils/trpc";
+import { trpc } from "../utils/trpc";
+import { inferQueryResponse } from "./api/trpc/[trpc]";
 
-import {inferQueryResponse} from "./api/trpc/[trpc]";
+
 
 type Chronicle = inferQueryResponse<"find-chronicle">;
-type Kindred = inferQueryResponse<"find-kindred">;
 
 const IndexPage = () => {
   const {
