@@ -34,7 +34,7 @@ const Attributes = ({
   wits,
   id,
   refetch,
-}: Kindred & {refetch: any}) => {
+}: Kindred & {refetch: Function}) => {
   const changeAttribute = trpc.useMutation("change-atribute", {onSuccess: () => refetch()});
   const attributes = [
     [
