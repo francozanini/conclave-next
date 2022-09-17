@@ -15,7 +15,7 @@ const Trackable = ({amount, max = 5, onChange}: Props) => {
           className={`rounded-2xl w-8 h-8 border-2 border-gray-500 mr-1 hover:border-blue-500 ${
             i < amount ? "bg-gray-900" : ""
           }`}
-          onClick={() => onChange && onChange(i)}
+          onClick={() => onChange && onChange(amount === i + 1 ? i : i + 1)}
         />
       ))}
     </div>
