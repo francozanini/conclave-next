@@ -5,6 +5,7 @@ import KindredDetails from "../../components/KindredDetails";
 import {trpc} from "../../utils/trpc";
 import {inferQueryResponse} from "../api/trpc/[trpc]";
 import {Skills} from "../../components/Skills";
+import {Disciplines} from "../../components/Disciplines";
 
 export type Kindred = inferQueryResponse<"find-kindred">;
 
@@ -30,10 +31,11 @@ const KindredSheetPage = () => {
   }
 
   return (
-    <section className="justify-items-center mt-2 grid grid-cols-1 gap-4 ">
+    <section className="justify-items-center mt-2 m-4 grid grid-cols-1 gap-4 ">
       <KindredDetails {...kindred} />
       <Attributes {...kindred} refetch={refetch} />
       <Skills {...kindred} refetch={refetch} />
+      <Disciplines disciplines={kindred.disciplines} kindredId={kindred.id} refetch={refetch} />
     </section>
   );
 };

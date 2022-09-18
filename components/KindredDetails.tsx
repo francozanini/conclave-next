@@ -1,4 +1,4 @@
-import {ClanName} from "@prisma/client";
+import {Clan, ClanName} from "@prisma/client";
 import {useForm} from "react-hook-form";
 
 import {Kindred} from "../pages/kindred/[id]";
@@ -9,7 +9,7 @@ import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapital
 import Card from "./Card";
 import TextInput from "./TextInput";
 
-const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred) => {
+const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred & {clan: Clan}) => {
   const {register, getValues} = useForm();
   const detailsMutation = trpc.useMutation(["update-kindred-details"]);
   const clanMutation = trpc.useMutation(["pick-clan"]);
@@ -19,7 +19,7 @@ const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred) => {
   }, 300);
 
   return (
-    <Card maxWidth={"md"}>
+    <Card className={"min-w-md max-w-md"}>
       <TextInput defaultValue={name} input={{...register("name")}} label="name" />
       <TextInput defaultValue={ambition} input={{...register("ambition")}} label="ambition" />
       <TextInput
@@ -38,7 +38,7 @@ const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred) => {
         name="clans"
         onChange={(e) =>
           clanMutation.mutate({
-            chosenClan: e.target.value as ClanName,
+            chosenClanName: e.target.value as ClanName,
             kindredId: id,
           })
         }>

@@ -1,4 +1,4 @@
-import {ClanName, SkillName} from "@prisma/client";
+import {Clan, ClanName, Discipline, KnownDiscipline, SkillName} from "@prisma/client";
 import * as trpc from "@trpc/server";
 import {z} from "zod";
 
@@ -31,7 +31,11 @@ export const appRouter = trpc
     resolve: async ({input}) => {
       const retrievedKindred = await prisma.kindred.findUnique({
         where: {id: input.kindredId},
-        include: {clan: true, skills: true},
+        include: {
+          clan: true,
+          skills: true,
+          disciplines: {include: {baseDiscipline: true}},
+        },
       });
 
       if (!retrievedKindred) {
@@ -49,7 +53,7 @@ export const appRouter = trpc
       desire: z.string().optional(),
     }),
     resolve: async ({input}) => {
-      const result = await prisma.kindred.update({
+      return await prisma.kindred.update({
         where: {id: input.kindredId},
         data: {
           name: input.name || undefined,
@@ -57,20 +61,34 @@ export const appRouter = trpc
           desire: input.desire || undefined,
         },
       });
-
-      return result;
     },
   })
   .mutation("pick-clan", {
     input: z.object({
       kindredId: z.number().positive(),
-      chosenClan: z.nativeEnum(ClanName),
+      chosenClanName: z.nativeEnum(ClanName),
     }),
     resolve: async ({input}) => {
-      await prisma.kindred.update({
-        where: {id: input.kindredId},
+      const {chosenClanName, kindredId} = input;
+      const chosenClan: Clan & {disciplines: Discipline[]} = await prisma.clan.findUniqueOrThrow({
+        where: {name: chosenClanName},
+        include: {disciplines: true},
+      });
+
+      const learntDisciplines: KnownDiscipline[] = chosenClan.disciplines.map(
+        (discipline) =>
+          ({
+            learntFromClan: true,
+            baseDisciplineId: discipline.id,
+            points: 0,
+          } as KnownDiscipline),
+      );
+
+      return await prisma.kindred.update({
+        where: {id: kindredId},
         data: {
-          clan: {connect: {name: input.chosenClan}},
+          clan: {connect: {name: chosenClanName}},
+          disciplines: {create: learntDisciplines},
         },
       });
     },
@@ -111,6 +129,28 @@ export const appRouter = trpc
                 },
               },
               data: {points: newAmountOfPoints},
+            },
+          },
+        },
+      });
+    },
+  })
+  .mutation("discipline.changePoints", {
+    input: z.object({
+      kindredId: z.number().positive(),
+      knownDisciplineId: z.number().positive(),
+      newAmountOfPoints: z.number().min(0),
+    }),
+    resolve: async ({input}) => {
+      const {newAmountOfPoints, kindredId, knownDisciplineId} = input;
+
+      await prisma.kindred.update({
+        where: {id: kindredId},
+        data: {
+          disciplines: {
+            update: {
+              data: {points: newAmountOfPoints},
+              where: {id: knownDisciplineId},
             },
           },
         },

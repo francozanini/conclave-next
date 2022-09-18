@@ -1,4 +1,4 @@
-import {SkillName, SkillType} from "@prisma/client";
+import {Skill, SkillName, SkillType} from "@prisma/client";
 
 import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapitalize";
 import {trpc} from "../utils/trpc";
@@ -22,7 +22,7 @@ const Skill = ({className, onChange, name, amount}: SkillProps) => (
   </div>
 );
 
-export const Skills = ({id, skills, refetch}: Kindred & {refetch: Function}) => {
+export const Skills = ({id, skills, refetch}: Kindred & {skills: Skill[]; refetch: Function}) => {
   const changeSkill = trpc.useMutation("change-skill", {onSuccess: () => refetch()});
 
   const skillsByType = [

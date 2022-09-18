@@ -33,23 +33,38 @@ model Clan {
 }
 
 model Discipline {
-  id    Int    @id @default(autoincrement())
-  name  DisciplineName
-  clans Clan[]
+  id              Int               @id @default(autoincrement())
+  name            DisciplineName
+  clans           Clan[]
+  KnownDiscipline KnownDiscipline[]
+}
+
+model KnownDiscipline {
+  id     Int @id @default(autoincrement())
+  points Int    @default(0)
+  learntFromClan Boolean @default(false)
+
+  baseDiscipline   Discipline @relation(fields: [baseDisciplineId], references: [id])
+  baseDisciplineId     Int
+
+  Kindred   Kindred @relation(fields: [kindredId], references: [id])
+  kindredId Int
+
+  @@unique([baseDisciplineId, kindredId])
 }
 
 enum DisciplineName {
-    ANIMALISM
-    AUSPEX
-    BLOOD_SORCERY
-    CELERITY
-    DOMINATE
-    FORTITUDE
-    OBFUSCATE
-    OBLIVION
-    POTENCE
-    PRESENCE
-    PROTEAN
+  ANIMALISM
+  AUSPEX
+  BLOOD_SORCERY
+  CELERITY
+  DOMINATE
+  FORTITUDE
+  OBFUSCATE
+  OBLIVION
+  POTENCE
+  PRESENCE
+  PROTEAN
 }
 
 model Kindred {
@@ -84,7 +99,8 @@ model Kindred {
 
   hunger Int @default(0)
 
-  skills Skill[]
+  skills      Skill[]
+  disciplines KnownDiscipline[]
 
   chronicles Chronicle[]
 }
