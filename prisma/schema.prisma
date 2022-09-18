@@ -34,8 +34,22 @@ model Clan {
 
 model Discipline {
   id    Int    @id @default(autoincrement())
-  name  String
+  name  DisciplineName
   clans Clan[]
+}
+
+enum DisciplineName {
+    ANIMALISM
+    AUSPEX
+    BLOOD_SORCERY
+    CELERITY
+    DOMINATE
+    FORTITUDE
+    OBFUSCATE
+    OBLIVION
+    POTENCE
+    PRESENCE
+    PROTEAN
 }
 
 model Kindred {
