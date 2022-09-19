@@ -11,8 +11,8 @@ import TextInput from "./TextInput";
 
 const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred & {clan: Clan}) => {
   const {register, getValues} = useForm();
-  const detailsMutation = trpc.useMutation(["update-kindred-details"]);
-  const clanMutation = trpc.useMutation(["pick-clan"]);
+  const detailsMutation = trpc.useMutation(["kindred.update-details"]);
+  const clanMutation = trpc.useMutation(["kindred.pick-clan"]);
   const clans = Object.values(ClanName);
   const handleChange = debounce(() => {
     detailsMutation.mutate({...getValues(), kindredId: id} as any);

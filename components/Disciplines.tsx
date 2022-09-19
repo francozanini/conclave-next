@@ -13,7 +13,7 @@ interface DisciplinesProps {
 }
 
 export const Disciplines = ({disciplines, refetch, kindredId}: DisciplinesProps) => {
-  const changePoints = trpc.useMutation("discipline.changePoints", {onSuccess: () => refetch()});
+  const changePoints = trpc.useMutation("kindred.changeDisciplines", {onSuccess: () => refetch()});
 
   return (
     <Card className={"min-w-md lg:max-w-fit"}>

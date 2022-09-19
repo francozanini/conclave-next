@@ -1,6 +1,6 @@
 import {ClanName, DisciplineName, Skill} from "@prisma/client";
 
-import {prisma} from "../backend/utils/prisma";
+import {prisma} from "../backend/db/prisma";
 import {defaultSkills} from "../utils/Skills";
 
 const initialData = [

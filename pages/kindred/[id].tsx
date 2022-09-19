@@ -7,7 +7,7 @@ import {inferQueryResponse} from "../api/trpc/[trpc]";
 import {Skills} from "../../components/Skills";
 import {Disciplines} from "../../components/Disciplines";
 
-export type Kindred = inferQueryResponse<"find-kindred">;
+export type Kindred = inferQueryResponse<"kindred.find-by-id">;
 
 const KindredSheetPage = () => {
   const {id: kindredId} = useRouter().query;
@@ -16,7 +16,7 @@ const KindredSheetPage = () => {
     isError,
     refetch,
     data: kindred,
-  } = trpc.useQuery(["find-kindred", {kindredId: +kindredId}], {
+  } = trpc.useQuery(["kindred.find-by-id", {kindredId: +kindredId}], {
     refetchInterval: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
