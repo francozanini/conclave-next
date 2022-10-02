@@ -35,7 +35,9 @@ const Attributes = ({
   id,
   refetch,
 }: Kindred & {refetch: Function}) => {
-  const changeAttribute = trpc.useMutation("change-attribute", {onSuccess: () => refetch()});
+  const changeAttribute = trpc.useMutation("kindred.change-attribute", {
+    onSuccess: () => refetch(),
+  });
   const attributes = [
     [
       {amount: strength, name: AttributeName.strength, type: "physical"},
