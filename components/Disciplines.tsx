@@ -21,7 +21,7 @@ export const Disciplines = ({disciplines, refetch, kindredId}: DisciplinesProps)
       <>
         {disciplines.map((discipline) => (
           <div key={discipline.id} className={`flex flex-row justify-between mb-2`}>
-            <span className="text-xl">
+            <span className="text-xl mr-2">
               {removeUnderscoreAndCapitalize(discipline.baseDiscipline.name)}
             </span>
             <Trackable

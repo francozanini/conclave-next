@@ -17,7 +17,7 @@ interface SkillProps {
 
 const Skill = ({className, onChange, name, amount}: SkillProps) => (
   <div className={`flex flex-row justify-between ${className}`}>
-    <span className="text-xl">{removeUnderscoreAndCapitalize(name)}</span>
+    <span className="text-xl mr-2">{removeUnderscoreAndCapitalize(name)}</span>
     <Trackable amount={amount} onChange={(newAmount) => onChange(newAmount)} />
   </div>
 );
