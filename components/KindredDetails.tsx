@@ -9,7 +9,15 @@ import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapital
 import Card from "./Card";
 import TextInput from "./TextInput";
 
-const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred & {clan: Clan}) => {
+const KindredDetails = ({
+  id,
+  name,
+  ambition,
+  desire,
+  sire,
+  clan,
+  updateKindred,
+}: Kindred & {clan: Clan; updateKindred: Function}) => {
   const {register, getValues} = useForm();
   const detailsMutation = trpc.useMutation(["kindred.update-details"]);
   const clanMutation = trpc.useMutation(["kindred.pick-clan"]);
@@ -37,10 +45,13 @@ const KindredDetails = ({id, name, ambition, desire, sire, clan}: Kindred & {cla
         defaultValue={clan.name}
         name="clans"
         onChange={(e) =>
-          clanMutation.mutate({
-            chosenClanName: e.target.value as ClanName,
-            kindredId: id,
-          })
+          clanMutation.mutate(
+            {
+              chosenClanName: e.target.value as ClanName,
+              kindredId: id,
+            },
+            {onSuccess: (updatedData) => updateKindred(updatedData)},
+          )
         }>
         {clans.map((clan) => (
           <option key={clan} value={clan}>
