@@ -70,7 +70,12 @@ export const kindredRouter = createRouter()
         where: {id: kindredId},
         data: {
           clan: {connect: {name: chosenClanName}},
-          disciplines: {create: learntDisciplines},
+          disciplines: {deleteMany: {}, create: learntDisciplines},
+        },
+        include: {
+          disciplines: {include: {baseDiscipline: true}},
+          clan: true,
+          powers: true,
         },
       });
     },
