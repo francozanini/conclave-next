@@ -1,19 +1,17 @@
-import { UseQueryResult } from "react-query";
-import { withTrackerSymbols } from "../components/Tracker";
-import TrackerCell from "../components/TrackerCell";
-import { trpc } from "../utils/trpc";
-import { inferQueryResponse } from "./api/trpc/[trpc]";
+import {UseQueryResult} from "react-query";
 
+import {trpc} from "../utils/trpc";
 
+import {inferQueryResponse} from "./api/trpc/[trpc]";
 
-type Chronicle = inferQueryResponse<"find-chronicle">;
+type Chronicle = inferQueryResponse<"chronicle.find-chronicle">;
 
 const IndexPage = () => {
   const {
     data: chronicle,
     isLoading,
     refetch,
-  }: UseQueryResult<Chronicle> = trpc.useQuery(["find-chronicle", {chronicleId: 1}]);
+  }: UseQueryResult<Chronicle> = trpc.useQuery(["chronicle.find-chronicle", {chronicleId: 1}]);
 
   return (
     chronicle && (
@@ -71,27 +69,27 @@ const IndexPage = () => {
   );
 };
 
-const Tracker = ({
-  name,
-  aggravated,
-  superficial,
-  max,
-}: {
-  name: string;
-  aggravated: number;
-  superficial: number;
-  max: number;
-}) => {
-  return (
-    <div className={"flex justify-around "}>
-      <h3 className={"capitalize text-xl"}>{name}</h3>
-      <div className={"flex"}>
-        {withTrackerSymbols({aggravated, superficial, max}).map((track, index) => {
-          return <TrackerCell key={index} i={index} state={track} />;
-        })}
-      </div>
-    </div>
-  );
-};
+// const Tracker = ({
+//   name,
+//   aggravated,
+//   superficial,
+//   max,
+// }: {
+//   name: string;
+//   aggravated: number;
+//   superficial: number;
+//   max: number;
+// }) => {
+//   return (
+//     <div className={"flex justify-around "}>
+//       <h3 className={"capitalize text-xl"}>{name}</h3>
+//       <div className={"flex"}>
+//         {withTrackerSymbols({aggravated, superficial, max}).map((track, index) => {
+//           return <TrackerCell key={index} i={index} state={track} />;
+//         })}
+//       </div>
+//     </div>
+//   );
+// };
 
 export default IndexPage;
