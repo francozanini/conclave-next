@@ -23,7 +23,7 @@ const Skill = ({className, onChange, name, amount}: SkillProps) => (
 );
 
 export const Skills = ({id, skills, refetch}: Kindred & {skills: Skill[]; refetch: Function}) => {
-  const changeSkill = trpc.useMutation("change-skill", {onSuccess: () => refetch()});
+  const changeSkill = trpc.useMutation("kindred.change-skill", {onSuccess: () => refetch()});
 
   const skillsByType = [
     skills.filter((skill) => skill.type === SkillType.PHYSICAL),

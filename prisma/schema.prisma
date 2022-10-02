@@ -32,20 +32,58 @@ model Clan {
   Kindred     Kindred[]
 }
 
+model Power {
+  id           Int        @id @default(autoincrement())
+  discipline   Discipline @relation(fields: [disciplineId], references: [id])
+  disciplineId Int
+
+  level         Int
+  name          PowerName @unique
+  duration      Duration
+  learnedPowers LearnedPower[]
+}
+
+model LearnedPower {
+  id Int @id @default(autoincrement())
+
+  basePower   Power   @relation(fields: [basePowerId], references: [id])
+  basePowerId Int
+  kindred     Kindred @relation(fields: [kindredId], references: [id])
+  kindredId   Int
+
+  @@unique([basePowerId, kindredId])
+}
+
+enum DicePoolOption {
+  CHARISMA
+  DOMINATION
+}
+
+enum Duration {
+  SCENE
+  PASSIVE
+}
+
+enum PowerName {
+  COMPELL
+  LETHAL_BODY
+}
+
 model Discipline {
   id              Int               @id @default(autoincrement())
   name            DisciplineName
   clans           Clan[]
   KnownDiscipline KnownDiscipline[]
+  powers          Power[]
 }
 
 model KnownDiscipline {
-  id     Int @id @default(autoincrement())
-  points Int    @default(0)
+  id             Int     @id @default(autoincrement())
+  points         Int     @default(0)
   learntFromClan Boolean @default(false)
 
   baseDiscipline   Discipline @relation(fields: [baseDisciplineId], references: [id])
-  baseDisciplineId     Int
+  baseDisciplineId Int
 
   Kindred   Kindred @relation(fields: [kindredId], references: [id])
   kindredId Int
@@ -101,6 +139,7 @@ model Kindred {
 
   skills      Skill[]
   disciplines KnownDiscipline[]
+  powers      LearnedPower[]
 
   chronicles Chronicle[]
 }
