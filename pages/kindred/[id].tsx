@@ -45,7 +45,12 @@ const KindredSheetPage = () => {
       />
       <Attributes {...kindred} refetch={refetch} />
       <Skills {...kindred} refetch={refetch} />
-      <Disciplines disciplines={kindred.disciplines} kindredId={kindred.id} refetch={refetch} />
+      <Disciplines
+        disciplines={kindred.disciplines}
+        kindredId={kindred.id}
+        powers={kindred.powers.map((learnedPower) => learnedPower.basePower)}
+        refetch={refetch}
+      />
     </section>
   );
 };

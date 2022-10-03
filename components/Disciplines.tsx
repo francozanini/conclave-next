@@ -1,18 +1,20 @@
-import {Discipline, KnownDiscipline} from "@prisma/client";
+import {Discipline, KnownDiscipline, Power} from "@prisma/client";
 
 import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapitalize";
 import {trpc} from "../utils/trpc";
 
 import Card from "./Card";
 import Trackable from "./Trackable";
+import {Powers} from "./Powers";
 
 interface DisciplinesProps {
   disciplines: (KnownDiscipline & {baseDiscipline: Discipline})[];
+  powers: Power[];
   kindredId: number;
   refetch: Function;
 }
 
-export const Disciplines = ({disciplines, refetch, kindredId}: DisciplinesProps) => {
+export const Disciplines = ({disciplines, refetch, kindredId, powers}: DisciplinesProps) => {
   const changePoints = trpc.useMutation("kindred.changeDisciplines", {onSuccess: () => refetch()});
 
   return (
@@ -37,6 +39,7 @@ export const Disciplines = ({disciplines, refetch, kindredId}: DisciplinesProps)
           </div>
         ))}
       </>
+      <Powers powers={powers} />
     </Card>
   );
 };
