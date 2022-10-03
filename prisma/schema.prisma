@@ -40,7 +40,18 @@ model Power {
   level         Int
   name          PowerName @unique
   duration      Duration
+  cost          Int       @default(0)
   learnedPowers LearnedPower[]
+
+  firstPoolResource     PoolResource @default(NONE)
+  secondPoolResource    PoolResource @default(NONE)
+  vsFirstPoolResource   PoolResource @default(NONE)
+  vsSecondPoolResource  PoolResource @default(NONE)
+}
+
+enum PoolResource {
+    NONE
+    STRENGTH
 }
 
 model LearnedPower {
