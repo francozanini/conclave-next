@@ -2,6 +2,7 @@ import {Discipline, Power} from "@prisma/client";
 
 import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapitalize";
 import capitalize from "../utils/capitalize";
+import {formatPoolResources} from "../utils/FormatPoolResources";
 
 type PowerWithDiscipline = Power & {discipline: Discipline};
 
@@ -16,7 +17,6 @@ interface PowersTableRowProps {
 
 const PowersTableRow = ({power, index}: PowersTableRowProps) => {
   const styles = index % 2 === 0 ? "dark:bg-gray-900 bg-white" : "bg-gray-50 dark:bg-gray-800";
-  const none = "NONE";
 
   return (
     <>
@@ -30,10 +30,10 @@ const PowersTableRow = ({power, index}: PowersTableRowProps) => {
         <td className="py-4 px-6">{removeUnderscoreAndCapitalize(power.name)}</td>
         <td className="py-4 px-6">{power.cost}</td>
         <td className="py-4 px-6">
-          {power.firstPoolResource !== none ? power.firstPoolResource : ""}
+          {formatPoolResources(power.firstPoolResource, power.secondPoolResource)}
         </td>
         <td className="py-4 px-6">
-          {power.vsFirstPoolResource !== none ? power.vsFirstPoolResource : ""}
+          {formatPoolResources(power.vsFirstPoolResource, power.vsSecondPoolResource)}
         </td>
         <td className="py-4 px-6">{capitalize(power.duration)}</td>
       </tr>
