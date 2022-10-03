@@ -1,10 +1,7 @@
-import {Discipline, Power} from "@prisma/client";
-
 import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapitalize";
 import capitalize from "../utils/capitalize";
 import {formatPoolResources} from "../utils/FormatPoolResources";
-
-type PowerWithDiscipline = Power & {discipline: Discipline};
+import {PowerWithDiscipline} from "../types/PowerWithDiscipline";
 
 interface PowersProps {
   powers: PowerWithDiscipline[];
