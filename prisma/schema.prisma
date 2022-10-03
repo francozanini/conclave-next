@@ -40,7 +40,7 @@ model Power {
   level         Int
   name          PowerName @unique
   duration      Duration
-  cost          Int       @default(0)
+  cost          PowerCost @default(FREE)
   learnedPowers LearnedPower[]
 
   firstPoolResource     PoolResource @default(NONE)
@@ -51,7 +51,31 @@ model Power {
 
 enum PoolResource {
     NONE
+    //SKILLS
+    ATHLETICS
+
+    ANIMAL_KIN
+
+    SUBTERFUGE
+    SURVIVAL
+
+    //ATTRIBUTES
     STRENGTH
+    DEXTERITY
+
+    CHARISMA
+    MANIPULATION
+    COMPOSURE
+
+    INTELLIGENCE
+    WITS
+    RESOLVE
+    //DISCIPLINES
+    ANIMALISM
+    AUSPEX
+    DOMINATE
+    PRESENCE
+
 }
 
 model LearnedPower {
@@ -73,11 +97,72 @@ enum DicePoolOption {
 enum Duration {
   SCENE
   PASSIVE
+  TURN
+  PERMANENT
+  INDEFINITELY
+  DEACTIVATE
+  DESIRED
+  RESISTED
+}
+
+enum PowerCost {
+    FREE
+    ROUSE_CHECK
+    FREE_RC
 }
 
 enum PowerName {
-  COMPELL
-  LETHAL_BODY
+ //ANIMALISM
+ BOND_FAMULUS
+ SENSE_THE_BEAST
+ FERAL_WHISPERS
+ ANIMAL_SUCCULENCE
+
+ //AUSPEX
+ HEIGHTENED_SENSES
+ SENSE_THE_UNSEEN
+ PREMONITION
+ SCRY_THE_SOUL
+ SHARE_THE_SENSES
+
+ //BLOODSORCERY
+
+ //CELERITY
+ CATS_GRACE
+ RAPID_REFLEXES
+ FLEETNESS
+ BLINK
+ TRAVERSAL
+
+ //DOMINATE
+ CLOUD_MEMORY
+ COMPEL
+ MESMERIZE
+ THE_FORGETFUL_MIND
+
+ //FORTITUDE
+ RESILIENCE
+ UNSWAYABLE_MIND
+ COMPELL
+
+ //OBFUSCATE
+
+ //OBLIVION
+
+ //POTENCE
+ LETHAL_BODY
+ SOARING_LEAP
+ PROWESS
+
+ //PRESENCE
+ AWE
+ DAUNT
+ LINGERING_KISS
+
+ //PROTEAN
+ EYES_OF_THE_BEAST
+ WEIGHT_OF_THE_FEATHER
+ FERAL_WEAPONS
 }
 
 model Discipline {
