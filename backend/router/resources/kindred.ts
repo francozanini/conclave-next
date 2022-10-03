@@ -17,6 +17,7 @@ export const kindredRouter = createRouter()
           clan: true,
           skills: true,
           disciplines: {include: {baseDiscipline: true}},
+          powers: {include: {basePower: {include: {discipline: true}}}},
         },
       });
 
