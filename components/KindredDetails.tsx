@@ -22,9 +22,10 @@ const KindredDetails = ({
   const detailsMutation = trpc.useMutation(["kindred.update-details"]);
   const clanMutation = trpc.useMutation(["kindred.pick-clan"]);
   const clans = Object.values(ClanName);
-  const handleChange = debounce(() => {
-    detailsMutation.mutate({...getValues(), kindredId: id} as any);
-  }, 300);
+  const handleChange = debounce(
+    () => detailsMutation.mutate({...getValues(), kindredId: id} as any),
+    300,
+  );
 
   return (
     <Card className={"min-w-md max-w-md"}>
