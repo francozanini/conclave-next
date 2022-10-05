@@ -13,14 +13,12 @@ interface AttributeProps {
   onChange: (newAmount: number) => void;
 }
 
-const Attribute = ({name, amount, className = "", onChange}: AttributeProps) => {
-  return (
-    <div className={`flex flex-row justify-between ${className}`}>
-      <span className="text-xl mr-2">{capitalize(name)}</span>
-      <Trackable amount={amount} onChange={(newAmount) => onChange(newAmount)} />
-    </div>
-  );
-};
+const Attribute = ({name, amount, className = "", onChange}: AttributeProps) => (
+  <div className={`flex flex-row justify-between ${className}`}>
+    <span className="text-xl mr-2">{capitalize(name)}</span>
+    <Trackable amount={amount} onChange={(newAmount) => onChange(newAmount)} />
+  </div>
+);
 
 const Attributes = ({
   strength,
