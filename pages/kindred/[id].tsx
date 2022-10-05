@@ -18,7 +18,7 @@ const KindredSheetPage = () => {
     refetch,
     data: kindred,
   } = trpc.useQuery(["kindred.find-by-id", {kindredId: +kindredId}], {
-    refetchInterval: 5000,
+    refetchInterval: 10000,
     refetchOnReconnect: false,
     refetchOnWindowFocus: true,
   });
