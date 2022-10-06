@@ -1,3 +1,5 @@
+import {useMemo} from "react";
+
 import {Kindred} from "../pages/kindred/[id]";
 import {AttributeName} from "../types/AttributeName";
 import capitalize from "../utils/capitalize";
@@ -36,23 +38,26 @@ const Attributes = ({
   const changeAttribute = trpc.useMutation("kindred.change-attribute", {
     onSuccess: () => refetch(),
   });
-  const attributes = [
-    [
-      {amount: strength, name: AttributeName.strength, type: "physical"},
-      {amount: dexterity, name: AttributeName.dexterity, type: "physical"},
-      {amount: stamina, name: AttributeName.stamina, type: "physical"},
+  const attributes = useMemo(
+    () => [
+      [
+        {amount: strength, name: AttributeName.strength, type: "physical"},
+        {amount: dexterity, name: AttributeName.dexterity, type: "physical"},
+        {amount: stamina, name: AttributeName.stamina, type: "physical"},
+      ],
+      [
+        {amount: charisma, name: AttributeName.charisma, type: "social"},
+        {amount: manipulation, name: AttributeName.manipulation, type: "social"},
+        {amount: composure, name: AttributeName.composure, type: "social"},
+      ],
+      [
+        {amount: intelligence, name: AttributeName.intelligence, type: "mental"},
+        {amount: wits, name: AttributeName.wits, type: "mental"},
+        {amount: resolve, name: AttributeName.resolve, type: "mental"},
+      ],
     ],
-    [
-      {amount: charisma, name: AttributeName.charisma, type: "social"},
-      {amount: manipulation, name: AttributeName.manipulation, type: "social"},
-      {amount: composure, name: AttributeName.composure, type: "social"},
-    ],
-    [
-      {amount: intelligence, name: AttributeName.intelligence, type: "mental"},
-      {amount: wits, name: AttributeName.wits, type: "mental"},
-      {amount: resolve, name: AttributeName.resolve, type: "mental"},
-    ],
-  ];
+    [strength, dexterity, stamina, charisma, manipulation, composure, intelligence, wits, resolve],
+  );
 
   return (
     <Card className={"min-w-md lg:max-w-fit"}>
