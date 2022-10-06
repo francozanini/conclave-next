@@ -1,4 +1,3 @@
-import {useState} from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapitalize";
@@ -78,54 +77,50 @@ const LearnPowerButton = () => (
   </Dialog>
 );
 
-export const Powers = ({powers, className = ""}: PowersProps) => {
-  const [open, setOpen] = useState(false);
+export const Powers = ({powers, className = ""}: PowersProps) => (
+  <>
+    <div className={`grid grid-cols-3 ${className}`}>
+      <div />
+      <h2 className="text-4xl text-center mb-2">Powers</h2>
 
-  return (
-    <>
-      <div className={`grid grid-cols-3 ${className}`}>
-        <div />
-        <h2 className="text-4xl text-center mb-2">Powers</h2>
-
-        <div className="flex flex-row col-span-1 justify-end">
-          <LearnPowerButton />
-        </div>
+      <div className="flex flex-row col-span-1 justify-end">
+        <LearnPowerButton />
       </div>
+    </div>
 
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th className="py-3 px-6" scope="col">
-                Discipline
-              </th>
-              <th className="py-3 px-6" scope="col">
-                Lvl
-              </th>
-              <th className="py-3 px-6" scope="col">
-                Name
-              </th>
-              <th className="py-3 px-6" scope="col">
-                Cost
-              </th>
-              <th className="py-3 px-6" scope="col">
-                Dice Pool
-              </th>
-              <th className="py-3 px-6" scope="col">
-                vs Dice Pool
-              </th>
-              <th className="py-3 px-6" scope="col">
-                Duration
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {powers.map((power, index) => (
-              <PowersTableRow key={power.id} index={index} power={power} />
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
-  );
-};
+    <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th className="py-3 px-6" scope="col">
+              Discipline
+            </th>
+            <th className="py-3 px-6" scope="col">
+              Lvl
+            </th>
+            <th className="py-3 px-6" scope="col">
+              Name
+            </th>
+            <th className="py-3 px-6" scope="col">
+              Cost
+            </th>
+            <th className="py-3 px-6" scope="col">
+              Dice Pool
+            </th>
+            <th className="py-3 px-6" scope="col">
+              vs Dice Pool
+            </th>
+            <th className="py-3 px-6" scope="col">
+              Duration
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {powers.map((power, index) => (
+            <PowersTableRow key={power.id} index={index} power={power} />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </>
+);
