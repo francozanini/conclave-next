@@ -1,15 +1,14 @@
-import {Discipline, KnownDiscipline} from "@prisma/client";
+import {removeUnderscoreAndCapitalize} from "../../utils/RemoveUnderscoreAndCapitalize";
+import {trpc} from "../../utils/trpc";
+import {PowerWithDiscipline} from "../../types/PowerWithDiscipline";
+import Card from "../core/Card";
+import {FullDiscipline} from "../../types/FullDiscipline";
 
-import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapitalize";
-import {trpc} from "../utils/trpc";
-import {PowerWithDiscipline} from "../types/PowerWithDiscipline";
-
-import Card from "./Card";
 import Trackable from "./Trackable";
 import {Powers} from "./Powers";
 
 interface DisciplinesProps {
-  disciplines: (KnownDiscipline & {baseDiscipline: Discipline})[];
+  disciplines: FullDiscipline[];
   powers: PowerWithDiscipline[];
   kindredId: number;
   refetch: Function;

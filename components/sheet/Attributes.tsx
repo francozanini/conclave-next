@@ -1,11 +1,11 @@
 import {useMemo} from "react";
 
-import {Kindred} from "../pages/kindred/[id]";
-import {AttributeName} from "../types/AttributeName";
-import capitalize from "../utils/capitalize";
-import {trpc} from "../utils/trpc";
+import {Kindred} from "../../pages/kindred/[id]";
+import {AttributeName} from "../../types/AttributeName";
+import capitalize from "../../utils/capitalize";
+import {trpc} from "../../utils/trpc";
+import Card from "../core/Card";
 
-import Card from "./Card";
 import Trackable from "./Trackable";
 
 interface AttributeProps {

@@ -1,11 +1,11 @@
 import {useRouter} from "next/router";
 
-import Attributes from "../../components/Attributes";
-import KindredDetails from "../../components/KindredDetails";
+import Attributes from "../../components/sheet/Attributes";
+import KindredDetails from "../../components/sheet/KindredDetails";
 import {trpc} from "../../utils/trpc";
 import {inferQueryResponse} from "../api/trpc/[trpc]";
-import {Skills} from "../../components/Skills";
-import {Disciplines} from "../../components/Disciplines";
+import {Skills} from "../../components/sheet/Skills";
+import {Disciplines} from "../../components/sheet/Disciplines";
 
 export type Kindred = inferQueryResponse<"kindred.find-by-id">;
 

@@ -1,17 +1,17 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import {Discipline, KnownDiscipline} from "@prisma/client";
 
-import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapitalize";
-import capitalize from "../utils/capitalize";
-import {formatPoolResources} from "../utils/FormatPoolResources";
-import {PowerWithDiscipline} from "../types/PowerWithDiscipline";
-import {uniqueBy} from "../utils/uniques";
-import {trpc} from "../utils/trpc";
+import {removeUnderscoreAndCapitalize} from "../../utils/RemoveUnderscoreAndCapitalize";
+import capitalize from "../../utils/capitalize";
+import {formatPoolResources} from "../../utils/FormatPoolResources";
+import {PowerWithDiscipline} from "../../types/PowerWithDiscipline";
+import {uniqueBy} from "../../utils/uniques";
+import {trpc} from "../../utils/trpc";
+import {FullDiscipline} from "../../types/FullDiscipline";
 
 interface PowersProps {
   powers: PowerWithDiscipline[];
   className?: string;
-  disciplines: (KnownDiscipline & {baseDiscipline: Discipline})[];
+  disciplines: FullDiscipline[];
 }
 
 interface PowersTableRowProps {
@@ -79,7 +79,7 @@ const LearnPowerButton = ({
   disciplines,
 }: {
   powers: PowerWithDiscipline[];
-  disciplines: (KnownDiscipline & {baseDiscipline: Discipline})[];
+  disciplines: FullDiscipline[];
 }) => {
   const payloadDisciplines = uniqueBy(
     disciplines

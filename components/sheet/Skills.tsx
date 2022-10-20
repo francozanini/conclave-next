@@ -1,11 +1,11 @@
 import {Skill, SkillName, SkillType} from "@prisma/client";
 
-import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapitalize";
-import {trpc} from "../utils/trpc";
-import capitalize from "../utils/capitalize";
-import {Kindred} from "../pages/kindred/[id]";
+import {removeUnderscoreAndCapitalize} from "../../utils/RemoveUnderscoreAndCapitalize";
+import {trpc} from "../../utils/trpc";
+import capitalize from "../../utils/capitalize";
+import {Kindred} from "../../pages/kindred/[id]";
+import Card from "../core/Card";
 
-import Card from "./Card";
 import Trackable from "./Trackable";
 
 interface SkillProps {

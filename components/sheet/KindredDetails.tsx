@@ -1,13 +1,12 @@
 import {Clan, ClanName} from "@prisma/client";
 import {useForm} from "react-hook-form";
 
-import {Kindred} from "../pages/kindred/[id]";
-import {debounce} from "../utils/debounce";
-import {trpc} from "../utils/trpc";
-import {removeUnderscoreAndCapitalize} from "../utils/RemoveUnderscoreAndCapitalize";
-
-import Card from "./Card";
-import TextInput from "./TextInput";
+import {Kindred} from "../../pages/kindred/[id]";
+import {debounce} from "../../utils/debounce";
+import {trpc} from "../../utils/trpc";
+import {removeUnderscoreAndCapitalize} from "../../utils/RemoveUnderscoreAndCapitalize";
+import Card from "../core/Card";
+import TextInput from "../core/TextInput";
 
 const KindredDetails = ({
   id,
