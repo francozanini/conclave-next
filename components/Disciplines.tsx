@@ -40,7 +40,7 @@ export const Disciplines = ({disciplines, refetch, kindredId, powers}: Disciplin
           </div>
         ))}
       </>
-      <Powers className={"mt-8"} powers={powers} />
+      <Powers className={"mt-8"} disciplines={disciplines} powers={powers} />
     </Card>
   );
 };
