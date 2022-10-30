@@ -7,7 +7,8 @@
     "extends": [
         "plugin:prettier/recommended",
         "next",
-        "next/core-web-vitals"
+        "next/core-web-vitals",
+        "plugin:tailwindcss/recommended"
     ],
     "plugins": ["react", "prettier", "import", "@typescript-eslint"],
     "parser": "@typescript-eslint/parser",
@@ -35,8 +36,8 @@
                 "trailingComma": "all",
                 "tabWidth": 2,
                 "semi": true,
-                "singleQuote": false,
-                "bracketSpacing": false,
+                "singleQuote": true,
+                "bracketSpacing": true,
                 "arrowParens": "always",
                 "endOfLine":"auto"
             }
