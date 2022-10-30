@@ -9,6 +9,8 @@ import {trpc} from "../../utils/trpc";
 import {FullDiscipline} from "../../types/FullDiscipline";
 import {CloseButton} from "../core/CloseButton";
 
+import {PowerCard} from "./PowerCard";
+
 interface PowersProps {
   powers: PowerWithDiscipline[];
   className?: string;
@@ -51,33 +53,6 @@ const DialogTrigger = DialogPrimitive.Trigger;
 const DialogContent = DialogPrimitive.Content;
 const DialogClose = DialogPrimitive.Close;
 const StyledOverlay = DialogPrimitive.Overlay;
-
-function PowerCard({name, discipline}: PowerWithDiscipline) {
-  return (
-    <div className="flex justify-between p-3 text-base font-bold rounded-lg group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
-      <div className="flex flex-col">
-        <span className="pb-1">{removeUnderscoreAndCapitalize(name)}</span>
-        <span className="w-fit text-xs font-semibold mr-2 px-2.5 py-0.5 rounded bg-purple-200 text-purple-900">
-          {removeUnderscoreAndCapitalize(discipline.name)}
-        </span>
-      </div>
-      <div className="flex flex-row">
-        <button className="py-1 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-          Learn
-        </button>
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.5}
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg">
-          <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </div>
-    </div>
-  );
-}
 
 const LearnPowerButton = ({
   powers,
