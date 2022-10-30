@@ -52,6 +52,28 @@ const DialogContent = DialogPrimitive.Content;
 const DialogClose = DialogPrimitive.Close;
 const StyledOverlay = DialogPrimitive.Overlay;
 
+function PowerCard({name, discipline}: PowerWithDiscipline) {
+  return (
+    <div className="flex justify-between p-3 text-base font-bold rounded-lg group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
+      <div className="flex flex-col">
+        <span className="pb-1">{removeUnderscoreAndCapitalize(name)}</span>
+        <span className="w-fit text-xs font-semibold mr-2 px-2.5 py-0.5 rounded bg-purple-200 text-purple-900">
+          {removeUnderscoreAndCapitalize(discipline.name)}
+        </span>
+      </div>
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
+  );
+}
+
 const LearnPowerButton = ({
   powers,
   disciplines,
@@ -95,64 +117,21 @@ const LearnPowerButton = ({
           <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
               <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Learn Powers
-                </h3>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Powers</h3>
                 <DialogClose asChild>
                   <CloseButton />
                 </DialogClose>
               </div>
               <div className="p-6 space-y-6">
                 <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
-                  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                      <tr>
-                        <th className="py-3 px-6" scope="col">
-                          Discipline
-                        </th>
-                        <th className="py-3 px-6" scope="col">
-                          Lvl
-                        </th>
-                        <th className="py-3 px-6" scope="col">
-                          Name
-                        </th>
-                        <th className="py-3 px-6" scope="col">
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {learnablePowers.map((power, index) => (
-                        <tr
-                          key={index}
-                          className={`${
-                            index % 2 === 0
-                              ? "dark:bg-gray-900 bg-white"
-                              : "bg-gray-50 dark:bg-gray-800"
-                          }; bg-white border-b dark:border-gray-700`}>
-                          <th
-                            className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                            scope="row">
-                            {removeUnderscoreAndCapitalize(power.discipline.name)}
-                          </th>
-                          <td className="py-4 px-6">{power.level}</td>
-                          <td className="py-4 px-6">{removeUnderscoreAndCapitalize(power.name)}</td>
-                          <td className="py-4 px-6">
-                            {!powers.find((learnedPower) => learnedPower.name === power.name) && (
-                              <button
-                                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                type="button"
-                                onClick={() => alert("aprendiste el poder gil")}>
-                                Learn
-                              </button>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="space-y-3">
+                    {learnablePowers.map((lp) => (
+                      <PowerCard key={lp.id} {...lp} />
+                    ))}
+                  </div>
                 </div>
               </div>
+
               <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
                 <button
                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
