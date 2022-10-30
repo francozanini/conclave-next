@@ -1,20 +1,27 @@
-import { PowerWithDiscipline } from '../../types/PowerWithDiscipline';
-import { removeUnderscoreAndCapitalize } from '../../utils/RemoveUnderscoreAndCapitalize';
-import Button from '../core/Button';
+import {useContext} from 'react';
 
-export function PowerCard({ name, discipline }: PowerWithDiscipline) {
+import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
+import {removeUnderscoreAndCapitalize} from '../../utils/RemoveUnderscoreAndCapitalize';
+import Button from '../core/Button';
+import {KindredIdContext} from '../../pages/kindred/[id]';
+
+export function PowerCard({name, discipline}: PowerWithDiscipline) {
+  const kindredId = useContext(KindredIdContext);
+
+  console.log(kindredId);
+
   return (
-    <div className="flex justify-between p-3 text-base font-bold rounded-lg group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
+    <div className="group flex justify-between rounded-lg p-3 text-base font-bold hover:shadow dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500">
       <div className="flex flex-col">
         <span className="pb-1">{removeUnderscoreAndCapitalize(name)}</span>
-        <span className="w-fit text-xs font-semibold mr-2 px-2.5 py-0.5 rounded bg-purple-200 text-purple-900">
+        <span className="mr-2 w-fit rounded bg-purple-200 px-2.5 py-0.5 text-xs font-semibold text-purple-900">
           {removeUnderscoreAndCapitalize(discipline.name)}
         </span>
       </div>
       <div className="flex flex-row">
         <Button className="py-0.5 px-3">Learn</Button>
         <svg
-          className="w-6 h-6"
+          className="h-6 w-6"
           fill="none"
           stroke="currentColor"
           strokeWidth={1.5}
