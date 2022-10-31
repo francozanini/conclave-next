@@ -37,7 +37,7 @@
                 "tabWidth": 2,
                 "semi": true,
                 "singleQuote": true,
-                "bracketSpacing": true,
+                "bracketSpacing": false,
                 "arrowParens": "always",
                 "endOfLine":"auto"
             }
