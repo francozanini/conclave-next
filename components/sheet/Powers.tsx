@@ -1,15 +1,15 @@
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 
-import {removeUnderscoreAndCapitalize} from "../../utils/RemoveUnderscoreAndCapitalize";
-import capitalize from "../../utils/capitalize";
-import {formatPoolResources} from "../../utils/FormatPoolResources";
-import {PowerWithDiscipline} from "../../types/PowerWithDiscipline";
-import {uniqueBy} from "../../utils/uniques";
-import {trpc} from "../../utils/trpc";
-import {FullDiscipline} from "../../types/FullDiscipline";
-import {CloseButton} from "../core/CloseButton";
+import {removeUnderscoreAndCapitalize} from '../../utils/RemoveUnderscoreAndCapitalize';
+import capitalize from '../../utils/capitalize';
+import {formatPoolResources} from '../../utils/FormatPoolResources';
+import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
+import {uniqueBy} from '../../utils/uniques';
+import {trpc} from '../../utils/trpc';
+import {FullDiscipline} from '../../types/FullDiscipline';
+import {CloseButton} from '../core/CloseButton';
 
-import {PowerCard} from "./PowerCard";
+import {PowerCard} from './PowerCard';
 
 interface PowersProps {
   powers: PowerWithDiscipline[];
@@ -23,24 +23,37 @@ interface PowersTableRowProps {
 }
 
 const PowersTableRow = ({power, index}: PowersTableRowProps) => {
-  const styles = index % 2 === 0 ? "dark:bg-gray-900 bg-white" : "bg-gray-50 dark:bg-gray-800";
+  const styles =
+    index % 2 === 0
+      ? 'dark:bg-gray-900 bg-white'
+      : 'bg-gray-50 dark:bg-gray-800';
 
   return (
     <>
-      <tr className={`${styles} bg-white border-b dark:border-gray-700`}>
+      <tr className={`${styles} border-b bg-white dark:border-gray-700`}>
         <th
-          className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          className="whitespace-nowrap py-4 px-6 font-medium text-gray-900 dark:text-white"
           scope="row">
           {removeUnderscoreAndCapitalize(power.discipline.name)}
         </th>
         <td className="py-4 px-6">{power.level}</td>
-        <td className="py-4 px-6">{removeUnderscoreAndCapitalize(power.name)}</td>
-        <td className="py-4 px-6">{removeUnderscoreAndCapitalize(power.cost)}</td>
         <td className="py-4 px-6">
-          {formatPoolResources(power.firstPoolResource, power.secondPoolResource)}
+          {removeUnderscoreAndCapitalize(power.name)}
         </td>
         <td className="py-4 px-6">
-          {formatPoolResources(power.vsFirstPoolResource, power.vsSecondPoolResource)}
+          {removeUnderscoreAndCapitalize(power.cost)}
+        </td>
+        <td className="py-4 px-6">
+          {formatPoolResources(
+            power.firstPoolResource,
+            power.secondPoolResource
+          )}
+        </td>
+        <td className="py-4 px-6">
+          {formatPoolResources(
+            power.vsFirstPoolResource,
+            power.vsSecondPoolResource
+          )}
         </td>
         <td className="py-4 px-6">{capitalize(power.duration)}</td>
       </tr>
@@ -53,6 +66,10 @@ const DialogTrigger = DialogPrimitive.Trigger;
 const DialogContent = DialogPrimitive.Content;
 const DialogClose = DialogPrimitive.Close;
 const StyledOverlay = DialogPrimitive.Overlay;
+
+function includesBy<T>(predicate: (el: T) => boolean, arr: T[]): boolean {
+  return arr.find(predicate) != null;
+}
 
 const LearnPowerButton = ({
   powers,
@@ -68,11 +85,11 @@ const LearnPowerButton = ({
         lvl: discipline.points,
       }))
       .sort((p1, p2) => p2.lvl - p1.lvl),
-    (power) => power.disciplineName,
+    (power) => power.disciplineName
   );
 
   const {data: learnablePowers, isLoading} = trpc.useQuery([
-    "powers.learnable-powers",
+    'powers.learnable-powers',
     {
       disciplines: payloadDisciplines,
     },
@@ -85,42 +102,51 @@ const LearnPowerButton = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+        <button className="mr-2 mb-2 rounded-lg border border-gray-200 bg-white py-2.5 px-5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
           Learn
         </button>
       </DialogTrigger>
       <DialogContent className="flex items-center justify-center">
         <div
           aria-hidden="true"
-          className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full"
+          className="fixed inset-x-0 top-0 z-50 w-full overflow-y-auto overflow-x-hidden md:inset-0 md:h-full"
           id="defaultModal">
-          <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Powers</h3>
+          <div className="relative h-full w-full max-w-2xl p-4 md:h-auto">
+            <div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
+              <div className="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-600">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Powers
+                </h3>
                 <DialogClose asChild>
                   <CloseButton />
                 </DialogClose>
               </div>
-              <div className="p-6 space-y-6">
-                <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+              <div className="space-y-6 p-6">
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                   <div className="space-y-3">
                     {learnablePowers.map((lp) => (
-                      <PowerCard key={lp.id} {...lp} />
+                      <PowerCard
+                        key={lp.id}
+                        {...lp}
+                        alreadyLearnt={includesBy(
+                          (power) => power.name === lp.name,
+                          powers
+                        )}
+                      />
                     ))}
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+              <div className="flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600">
                 <button
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   data-modal-toggle="defaultModal"
                   type="button">
                   I accept
                 </button>
                 <button
-                  className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                  className="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
                   data-modal-toggle="defaultModal"
                   type="button">
                   Decline
@@ -134,20 +160,20 @@ const LearnPowerButton = ({
   );
 };
 
-export const Powers = ({powers, className = "", disciplines}: PowersProps) => (
+export const Powers = ({powers, className = '', disciplines}: PowersProps) => (
   <>
     <div className={`grid grid-cols-3 ${className}`}>
       <div />
-      <h2 className="text-4xl text-center mb-2">Powers</h2>
+      <h2 className="mb-2 text-center text-4xl">Powers</h2>
 
-      <div className="flex flex-row col-span-1 justify-end">
+      <div className="col-span-1 flex flex-row justify-end">
         <LearnPowerButton disciplines={disciplines} powers={powers} />
       </div>
     </div>
 
-    <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+        <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th className="py-3 px-6" scope="col">
               Discipline

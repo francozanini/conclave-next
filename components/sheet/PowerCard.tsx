@@ -4,11 +4,19 @@ import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import {removeUnderscoreAndCapitalize} from '../../utils/RemoveUnderscoreAndCapitalize';
 import Button from '../core/Button';
 import {KindredIdContext} from '../../pages/kindred/[id]';
+import {trpc} from '../../utils/trpc';
 
-export function PowerCard({name, discipline}: PowerWithDiscipline) {
+interface PowerCardProps {
+  alreadyLearnt: boolean;
+}
+
+export function PowerCard({
+  name,
+  discipline,
+  alreadyLearnt,
+}: PowerCardProps & PowerWithDiscipline) {
   const kindredId = useContext(KindredIdContext);
-
-  console.log(kindredId);
+  const toggleLearned = trpc.useMutation(['powers.learnOrUnlearn']);
 
   return (
     <div className="group flex justify-between rounded-lg p-3 text-base font-bold hover:shadow dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500">
@@ -19,7 +27,13 @@ export function PowerCard({name, discipline}: PowerWithDiscipline) {
         </span>
       </div>
       <div className="flex flex-row">
-        <Button className="py-0.5 px-3">Learn</Button>
+        <Button
+          className="py-0.5 px-3"
+          onClick={() =>
+            toggleLearned.mutate({kindredId: +kindredId, powerName: name})
+          }>
+          {alreadyLearnt ? 'X' : 'Learn'}
+        </Button>
         <svg
           className="h-6 w-6"
           fill="none"
