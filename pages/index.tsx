@@ -1,23 +1,23 @@
-import {UseQueryResult} from "react-query";
+import {UseQueryResult} from 'react-query';
 
-import {trpc} from "../utils/trpc";
+import {trpc} from '../utils/trpc';
 
-import {inferQueryResponse} from "./api/trpc/[trpc]";
+import {inferQueryResponse} from './api/trpc/[trpc]';
 
-type Chronicle = inferQueryResponse<"chronicle.find-chronicle">;
+type Chronicle = inferQueryResponse<'chronicle.find-chronicle'>;
 
 const IndexPage = () => {
   const {
     data: chronicle,
     isLoading,
     refetch,
-  }: UseQueryResult<Chronicle> = trpc.useQuery(["chronicle.find-chronicle", {chronicleId: 1}]);
+  }: UseQueryResult<Chronicle> = trpc.useQuery(['chronicle.find-chronicle', {chronicleId: 1}]);
 
   return (
     chronicle && (
       <section>
-        <h1 className={"text-8xl text-center"}>{chronicle.name}</h1>
-        <div className={"flex flex-col flex-wrap justify-center md:flex-row items-center m-2 p-1 "}>
+        <h1 className={'text-center text-8xl'}>{chronicle.name}</h1>
+        <div className={'m-2 flex flex-col flex-wrap items-center justify-center p-1 md:flex-row '}>
           {chronicle.kindred.map(
             ({
               name,
@@ -35,9 +35,9 @@ const IndexPage = () => {
             }: Kindred) => (
               <div
                 key={name}
-                className={"bg-gray-800 shadow-md p-6 max-w-sm my-1 md:mx-2 rounded-lg"}>
-                <h2 className={"mb-2 text-4xl font-bold capitalized text-center"}>{name}</h2>
-                <div className="w-full border-b border-gray-300 mb-2" />
+                className={'my-1 max-w-sm rounded-lg bg-gray-800 p-6 shadow-md md:mx-2'}>
+                <h2 className={'capitalized mb-2 text-center text-4xl font-bold'}>{name}</h2>
+                <div className="mb-2 w-full border-b border-gray-300" />
                 <div className="flex flex-col">
                   <div>{experience} points of experience</div>
                   <div>{hunger} hunger</div>

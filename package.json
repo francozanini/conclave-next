@@ -5,6 +5,7 @@
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
+    "lint": "eslint --fix --ext .js,.jsx .",
     "ts-node": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\"",
     "reset-db": "prisma db push --force-reset && npm run ts-node scripts/seeder.ts"
   },

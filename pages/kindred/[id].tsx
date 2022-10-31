@@ -40,13 +40,10 @@ const KindredSheetPage = () => {
         <KindredDetails
           {...kindred}
           updateKindred={(updatedKindred: Kindred) => {
-            trpcContextState.setQueryData(
-              ['kindred.find-by-id'],
-              (oldKindred) => ({
-                ...oldKindred,
-                ...updatedKindred,
-              })
-            );
+            trpcContextState.setQueryData(['kindred.find-by-id'], (oldKindred) => ({
+              ...oldKindred,
+              ...updatedKindred,
+            }));
             trpcContextState.invalidateQueries(['kindred.find-by-id']);
           }}
         />
