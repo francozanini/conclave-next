@@ -1,8 +1,11 @@
+import {useContext} from 'react';
+
 import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
 import {trpc} from '../../utils/trpc';
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import Card from '../core/Card';
 import {FullDiscipline} from '../../types/FullDiscipline';
+import {KindredIdContext} from '../../pages/kindred/[id]';
 
 import Trackable from './Trackable';
 import {Powers} from './Powers';
@@ -10,16 +13,15 @@ import {Powers} from './Powers';
 interface DisciplinesProps {
   disciplines: FullDiscipline[];
   powers: PowerWithDiscipline[];
-  kindredId: number;
   refetch: Function;
 }
 
 export const Disciplines = ({
   disciplines,
   refetch,
-  kindredId,
   powers,
 }: DisciplinesProps) => {
+  const kindredId = +useContext(KindredIdContext);
   const changePoints = trpc.useMutation('kindred.changeDisciplines', {
     onSuccess: () => refetch(),
   });

@@ -40,10 +40,13 @@ const KindredSheetPage = () => {
         <KindredDetails
           {...kindred}
           updateKindred={(updatedKindred: Kindred) => {
-            trpcContextState.setQueryData(['kindred.find-by-id'], (oldKindred) => ({
-              ...oldKindred,
-              ...updatedKindred,
-            }));
+            trpcContextState.setQueryData(
+              ['kindred.find-by-id'],
+              (oldKindred) => ({
+                ...oldKindred,
+                ...updatedKindred,
+              })
+            );
             trpcContextState.invalidateQueries(['kindred.find-by-id']);
           }}
         />
@@ -51,7 +54,6 @@ const KindredSheetPage = () => {
         <Skills {...kindred} refetch={refetch} />
         <Disciplines
           disciplines={kindred.disciplines}
-          kindredId={kindred.id}
           powers={kindred.powers.map((learnedPower) => learnedPower.basePower)}
           refetch={refetch}
         />
