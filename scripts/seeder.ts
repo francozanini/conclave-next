@@ -1,15 +1,15 @@
-import {ClanName, PowerName, Skill} from "@prisma/client";
+import {ClanName, PowerName, Skill} from '@prisma/client';
 
-import {prisma} from "../backend/db/prisma";
-import {defaultSkills} from "../utils/Skills";
-import disciplines from "../constants/disciplines";
-import clans from "../constants/clans";
+import {prisma} from '../backend/db/prisma';
+import {defaultSkills} from '../utils/domain/Skills';
+import disciplines from '../constants/disciplines';
+import clans from '../constants/clans';
 
 const initialData = [
   {
-    name: "Boris Dragunov",
-    ambition: "",
-    desire: "",
+    name: 'Boris Dragunov',
+    ambition: '',
+    desire: '',
     experience: 3,
     strength: 4,
     dexterity: 3,
@@ -55,7 +55,7 @@ const seedKindred = async () => {
 
   await prisma.chronicle.create({
     data: {
-      name: "test",
+      name: 'test',
       kindred: {
         create: initialData.map((kin) => ({
           ...kin,
@@ -63,7 +63,9 @@ const seedKindred = async () => {
             connect: kin.clan,
           },
           powers: {
-            create: kin.powers.map((power) => ({basePower: {connect: power.basePower}})),
+            create: kin.powers.map((power) => ({
+              basePower: {connect: power.basePower},
+            })),
           },
           skills: {
             createMany: {data: [...defaultSkills] as Skill[]},

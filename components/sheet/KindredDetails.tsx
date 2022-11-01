@@ -1,12 +1,12 @@
-import {Clan, ClanName} from "@prisma/client";
-import {useForm} from "react-hook-form";
+import {Clan, ClanName} from '@prisma/client';
+import {useForm} from 'react-hook-form';
 
-import {Kindred} from "../../pages/kindred/[id]";
-import {debounce} from "../../utils/debounce";
-import {trpc} from "../../utils/trpc";
-import {removeUnderscoreAndCapitalize} from "../../utils/RemoveUnderscoreAndCapitalize";
-import Card from "../core/Card";
-import TextInput from "../core/TextInput";
+import {Kindred} from '../../pages/kindred/[id]';
+import {debounce} from '../../utils/debounce';
+import {trpc} from '../../utils/trpc';
+import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
+import Card from '../core/Card';
+import TextInput from '../core/TextInput';
 
 const KindredDetails = ({
   id,
@@ -18,30 +18,38 @@ const KindredDetails = ({
   updateKindred,
 }: Kindred & {clan: Clan; updateKindred: Function}) => {
   const {register, getValues} = useForm();
-  const detailsMutation = trpc.useMutation(["kindred.update-details"]);
-  const clanMutation = trpc.useMutation(["kindred.pick-clan"]);
+  const detailsMutation = trpc.useMutation(['kindred.update-details']);
+  const clanMutation = trpc.useMutation(['kindred.pick-clan']);
   const clans = Object.values(ClanName);
   const handleChange = debounce(
     () => detailsMutation.mutate({...getValues(), kindredId: id} as any),
-    300,
+    300
   );
 
   return (
-    <Card className={"min-w-md max-w-md"}>
-      <TextInput defaultValue={name} input={{...register("name")}} label="name" />
-      <TextInput defaultValue={ambition} input={{...register("ambition")}} label="ambition" />
+    <Card className={'min-w-md max-w-md'}>
+      <TextInput
+        defaultValue={name}
+        input={{...register('name')}}
+        label="name"
+      />
+      <TextInput
+        defaultValue={ambition}
+        input={{...register('ambition')}}
+        label="ambition"
+      />
       <TextInput
         defaultValue={desire}
-        input={{...register("desire"), onChange: handleChange}}
+        input={{...register('desire'), onChange: handleChange}}
         label="desire"
       />
       <TextInput
         defaultValue={sire}
-        input={{...register("sire"), onChange: handleChange}}
+        input={{...register('sire'), onChange: handleChange}}
         label="sire"
       />
       <select
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
         defaultValue={clan.name}
         name="clans"
         onChange={(e) =>
@@ -50,7 +58,7 @@ const KindredDetails = ({
               chosenClanName: e.target.value as ClanName,
               kindredId: id,
             },
-            {onSuccess: (updatedData) => updateKindred(updatedData)},
+            {onSuccess: (updatedData) => updateKindred(updatedData)}
           )
         }>
         {clans.map((clan) => (

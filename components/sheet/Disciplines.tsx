@@ -1,11 +1,11 @@
-import {removeUnderscoreAndCapitalize} from "../../utils/RemoveUnderscoreAndCapitalize";
-import {trpc} from "../../utils/trpc";
-import {PowerWithDiscipline} from "../../types/PowerWithDiscipline";
-import Card from "../core/Card";
-import {FullDiscipline} from "../../types/FullDiscipline";
+import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
+import {trpc} from '../../utils/trpc';
+import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
+import Card from '../core/Card';
+import {FullDiscipline} from '../../types/FullDiscipline';
 
-import Trackable from "./Trackable";
-import {Powers} from "./Powers";
+import Trackable from './Trackable';
+import {Powers} from './Powers';
 
 interface DisciplinesProps {
   disciplines: FullDiscipline[];
@@ -14,16 +14,25 @@ interface DisciplinesProps {
   refetch: Function;
 }
 
-export const Disciplines = ({disciplines, refetch, kindredId, powers}: DisciplinesProps) => {
-  const changePoints = trpc.useMutation("kindred.changeDisciplines", {onSuccess: () => refetch()});
+export const Disciplines = ({
+  disciplines,
+  refetch,
+  kindredId,
+  powers,
+}: DisciplinesProps) => {
+  const changePoints = trpc.useMutation('kindred.changeDisciplines', {
+    onSuccess: () => refetch(),
+  });
 
   return (
-    <Card className={"min-w-md lg:max-w-fit"}>
-      <h1 className={"text-center text-4xl mb-3"}>Disciplines</h1>
+    <Card className={'min-w-md lg:max-w-fit'}>
+      <h1 className={'mb-3 text-center text-4xl'}>Disciplines</h1>
       <>
         {disciplines.map((discipline) => (
-          <div key={discipline.id} className={`flex flex-row justify-between mb-2`}>
-            <span className="text-xl mr-2">
+          <div
+            key={discipline.id}
+            className={`mb-2 flex flex-row justify-between`}>
+            <span className="mr-2 text-xl">
               {removeUnderscoreAndCapitalize(discipline.baseDiscipline.name)}
             </span>
             <Trackable
@@ -39,7 +48,7 @@ export const Disciplines = ({disciplines, refetch, kindredId, powers}: Disciplin
           </div>
         ))}
       </>
-      <Powers className={"mt-8"} disciplines={disciplines} powers={powers} />
+      <Powers className={'mt-8'} disciplines={disciplines} powers={powers} />
     </Card>
   );
 };
