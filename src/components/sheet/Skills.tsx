@@ -32,9 +32,15 @@ export const Skills = ({
   });
 
   const skillsByType = [
-    skills.filter((skill) => skill.type === SkillType.PHYSICAL),
-    skills.filter((skill) => skill.type === SkillType.SOCIAL),
-    skills.filter((skill) => skill.type === SkillType.MENTAL),
+    skills
+      .filter((skill) => skill.type === SkillType.PHYSICAL)
+      .sort((a, b) => a.name.localeCompare(b.name)),
+    skills
+      .filter((skill) => skill.type === SkillType.SOCIAL)
+      .sort((a, b) => a.name.localeCompare(b.name)),
+    skills
+      .filter((skill) => skill.type === SkillType.MENTAL)
+      .sort((a, b) => a.name.localeCompare(b.name)),
   ];
 
   return (
