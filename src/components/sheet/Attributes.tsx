@@ -1,10 +1,10 @@
 import {useMemo} from 'react';
 
-import {Kindred} from '../../pages/kindred/[id]';
 import {AttributeName} from '../../types/AttributeName';
 import capitalize from '../../utils/formating/capitalize';
 import {trpc} from '../../utils/trpcClient';
 import Card from '../core/Card';
+import {Kindred} from '../../types/Kindred';
 
 import Trackable from './Trackable';
 

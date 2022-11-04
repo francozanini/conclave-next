@@ -1,1 +1,1 @@
-export type TrackableName = "humanity" | "hunger" | "health" | "willpower";
+export type TrackableName = 'humanity' | 'hunger' | 'health' | 'willpower';

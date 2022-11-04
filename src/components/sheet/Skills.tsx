@@ -3,8 +3,8 @@ import {Skill, SkillName, SkillType} from '@prisma/client';
 import {removeUnderscoreAndCapitalize} from '../../utils/formating/removeUnderscoreAndCapitalize';
 import {trpc} from '../../utils/trpcClient';
 import capitalize from '../../utils/formating/capitalize';
-import {Kindred} from '../../pages/kindred/[id]';
 import Card from '../core/Card';
+import {Kindred} from '../../types/Kindred';
 
 import Trackable from './Trackable';
 
@@ -38,7 +38,7 @@ export const Skills = ({
   ];
 
   return (
-    <Card className={'min-w-md lg:max-w-fit'}>
+    <Card className={'lg:max-w-fit'}>
       <h1 className="text-center text-4xl">Skills</h1>
       <div className={'flex flex-col lg:flex-row'}>
         {skillsByType.map((skills, i) => (

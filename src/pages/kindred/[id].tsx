@@ -4,11 +4,9 @@ import {createContext} from 'react';
 import Attributes from '../../components/sheet/Attributes';
 import KindredDetails from '../../components/sheet/KindredDetails';
 import {trpc} from '../../utils/trpcClient';
-import {inferQueryResponse} from '../api/trpc/[trpc]';
 import {Skills} from '../../components/sheet/Skills';
 import {Disciplines} from '../../components/sheet/Disciplines';
-
-export type Kindred = inferQueryResponse<'kindred.find-by-id'>;
+import {Kindred} from '../../types/Kindred';
 
 export const KindredIdContext = createContext<string>('');
 
@@ -44,14 +42,13 @@ const KindredSheetPage = () => {
         <KindredDetails
           {...kindred}
           updateKindred={(updatedKindred: Kindred) => {
-            trpcContextState.setQueryData(
-              ['kindred.find-by-id'],
-              (oldKindred) => ({
-                ...oldKindred,
-                ...updatedKindred,
-              })
-            );
-            trpcContextState.invalidateQueries(['kindred.find-by-id']);
+            trpcContextState.kindred.findById.setData((oldKindred) => ({
+              ...oldKindred,
+              ...updatedKindred,
+            }));
+            trpcContextState.kindred.findById.invalidate({
+              kindredId: +kindredId,
+            });
           }}
         />
         <Attributes {...kindred} refetch={refetch} />

@@ -1,1 +1,1 @@
-export type TrackerState = "empty" | "superficial" | "aggravated";
+export type TrackerState = 'empty' | 'superficial' | 'aggravated';
