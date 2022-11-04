@@ -1,4 +1,4 @@
-import {Skill, SkillName, SkillType} from "@prisma/client";
+import {Skill, SkillName, SkillType} from '@prisma/client';
 
 export const defaultSkills: Partial<Skill>[] = [
   // PHYSICAL

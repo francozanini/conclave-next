@@ -3,7 +3,7 @@ import {useMemo} from 'react';
 import {Kindred} from '../../pages/kindred/[id]';
 import {AttributeName} from '../../types/AttributeName';
 import capitalize from '../../utils/strings/capitalize';
-import {trpc} from '../../utils/trpc';
+import {trpc} from '../../utils/trpcClient';
 import Card from '../core/Card';
 
 import Trackable from './Trackable';
@@ -40,7 +40,7 @@ const Attributes = ({
   id,
   refetch,
 }: Kindred & {refetch: Function}) => {
-  const changeAttribute = trpc.useMutation('kindred.change-attribute', {
+  const changeAttribute = trpc.kindred.changeAttribute.useMutation({
     onSuccess: () => refetch(),
   });
   const attributes = useMemo(

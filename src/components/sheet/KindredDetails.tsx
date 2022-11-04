@@ -3,7 +3,7 @@ import {useForm} from 'react-hook-form';
 
 import {Kindred} from '../../pages/kindred/[id]';
 import {debounce} from '../../utils/debounce';
-import {trpc} from '../../utils/trpc';
+import {trpc} from '../../utils/trpcClient';
 import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
 import Card from '../core/Card';
 import TextInput from '../core/TextInput';
@@ -18,8 +18,8 @@ const KindredDetails = ({
   updateKindred,
 }: Kindred & {clan: Clan; updateKindred: Function}) => {
   const {register, getValues} = useForm();
-  const detailsMutation = trpc.useMutation(['kindred.update-details']);
-  const clanMutation = trpc.useMutation(['kindred.pick-clan']);
+  const detailsMutation = trpc.kindred.updateDetails.useMutation();
+  const clanMutation = trpc.kindred.pickClan.useMutation();
   const clans = Object.values(ClanName);
   const handleChange = debounce(
     () => detailsMutation.mutate({...getValues(), kindredId: id} as any),

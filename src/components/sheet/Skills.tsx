@@ -1,7 +1,7 @@
 import {Skill, SkillName, SkillType} from '@prisma/client';
 
 import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
-import {trpc} from '../../utils/trpc';
+import {trpc} from '../../utils/trpcClient';
 import capitalize from '../../utils/strings/capitalize';
 import {Kindred} from '../../pages/kindred/[id]';
 import Card from '../core/Card';
@@ -27,7 +27,7 @@ export const Skills = ({
   skills,
   refetch,
 }: Kindred & {skills: Skill[]; refetch: Function}) => {
-  const changeSkill = trpc.useMutation('kindred.change-skill', {
+  const changeSkill = trpc.kindred.changeSkill.useMutation({
     onSuccess: () => refetch(),
   });
 

@@ -3,7 +3,7 @@ import {createContext} from 'react';
 
 import Attributes from '../../components/sheet/Attributes';
 import KindredDetails from '../../components/sheet/KindredDetails';
-import {trpc} from '../../utils/trpc';
+import {trpc} from '../../utils/trpcClient';
 import {inferQueryResponse} from '../api/trpc/[trpc]';
 import {Skills} from '../../components/sheet/Skills';
 import {Disciplines} from '../../components/sheet/Disciplines';
@@ -20,11 +20,15 @@ const KindredSheetPage = () => {
     isError,
     refetch,
     data: kindred,
-  } = trpc.useQuery(['kindred.find-by-id', {kindredId: +kindredId}], {
-    refetchInterval: 10000,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: true,
-  });
+  } = trpc.kindred.findById.useQuery(
+    {kindredId: +kindredId},
+    {
+      refetchInterval: 10000,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: true,
+      trpc: {},
+    }
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;

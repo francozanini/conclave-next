@@ -1,7 +1,7 @@
 import {useContext} from 'react';
 
 import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
-import {trpc} from '../../utils/trpc';
+import {trpc} from '../../utils/trpcClient';
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import Card from '../core/Card';
 import {FullDiscipline} from '../../types/FullDiscipline';
@@ -22,7 +22,7 @@ export const Disciplines = ({
   powers,
 }: DisciplinesProps) => {
   const kindredId = +useContext(KindredIdContext);
-  const changePoints = trpc.useMutation('kindred.changeDisciplines', {
+  const changePoints = trpc.kindred.changeDisciplines.useMutation({
     onSuccess: () => refetch(),
   });
 

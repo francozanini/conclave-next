@@ -3,7 +3,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import {FullDiscipline} from '../../types/FullDiscipline';
 import {uniqueBy} from '../../utils/arrays/uniques';
-import {trpc} from '../../utils/trpc';
+import {trpc} from '../../utils/trpcClient';
 import {CloseButton} from '../core/CloseButton';
 import {includesBy} from '../../utils/arrays/IncludesBy';
 
@@ -32,12 +32,10 @@ export const LearnPowerButton = ({
     (power) => power.disciplineName
   );
 
-  const {data: learnablePowers, isLoading} = trpc.useQuery([
-    'powers.learnable-powers',
-    {
+  const {data: learnablePowers, isLoading} =
+    trpc.powers.learnablePowers.useQuery({
       disciplines: payloadDisciplines,
-    },
-  ]);
+    });
 
   if (isLoading || !learnablePowers) {
     return <div>sad</div>;

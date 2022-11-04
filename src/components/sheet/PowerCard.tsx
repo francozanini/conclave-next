@@ -4,7 +4,7 @@ import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
 import Button from '../core/Button';
 import {KindredIdContext} from '../../pages/kindred/[id]';
-import {trpc} from '../../utils/trpc';
+import {trpc} from '../../utils/trpcClient';
 
 interface PowerCardProps {
   alreadyLearnt: boolean;
@@ -16,7 +16,7 @@ export function PowerCard({
   alreadyLearnt,
 }: PowerCardProps & PowerWithDiscipline) {
   const kindredId = useContext(KindredIdContext);
-  const toggleLearned = trpc.useMutation(['powers.learnOrUnlearn']);
+  const toggleLearned = trpc.powers.learnOrUnlearn.useMutation();
 
   return (
     <div className="group flex justify-between rounded-lg p-3 text-base font-bold hover:shadow dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500">
