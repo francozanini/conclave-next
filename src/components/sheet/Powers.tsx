@@ -1,6 +1,6 @@
-import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
-import capitalize from '../../utils/strings/capitalize';
-import {formatPoolResources} from '../../utils/domain/FormatPoolResources';
+import {removeUnderscoreAndCapitalize} from '../../utils/formating/removeUnderscoreAndCapitalize';
+import capitalize from '../../utils/formating/capitalize';
+import {formatPoolResources} from '../../utils/formating/formatPoolResources';
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import {FullDiscipline} from '../../types/FullDiscipline';
 

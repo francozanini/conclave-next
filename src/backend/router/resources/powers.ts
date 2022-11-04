@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import {DisciplineName, PowerName} from '@prisma/client';
+import {DisciplineName, Power, PowerName} from '@prisma/client';
 
 import {prisma} from '../../db/prisma';
 import {publicProcedure, router} from '../trpc';
@@ -16,7 +16,7 @@ export const powersRouter = router({
         ),
       })
     )
-    .query(async ({input: {disciplines}}) => {
+    .query(async ({input: {disciplines}}): Promise<Power[]> => {
       const disciplineNames = disciplines.map(
         (discipline) => discipline.disciplineName
       );

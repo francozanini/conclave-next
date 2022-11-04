@@ -4,7 +4,7 @@ import {useForm} from 'react-hook-form';
 import {Kindred} from '../../pages/kindred/[id]';
 import {debounce} from '../../utils/debounce';
 import {trpc} from '../../utils/trpcClient';
-import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
+import {removeUnderscoreAndCapitalize} from '../../utils/formating/removeUnderscoreAndCapitalize';
 import Card from '../core/Card';
 import TextInput from '../core/TextInput';
 
@@ -27,7 +27,7 @@ const KindredDetails = ({
   );
 
   return (
-    <Card className={'min-w-md max-w-md'}>
+    <Card className={'max-w-md'}>
       <TextInput
         defaultValue={name}
         input={{...register('name')}}

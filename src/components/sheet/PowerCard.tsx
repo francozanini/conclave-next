@@ -1,7 +1,7 @@
 import {useContext} from 'react';
 
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
-import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
+import {removeUnderscoreAndCapitalize} from '../../utils/formating/removeUnderscoreAndCapitalize';
 import Button from '../core/Button';
 import {KindredIdContext} from '../../pages/kindred/[id]';
 import {trpc} from '../../utils/trpcClient';

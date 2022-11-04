@@ -4,14 +4,15 @@ export function debounce(func: Function, wait: number) {
   let timeout: string | number | Timeout | undefined;
 
   return () => {
-    const context: any = this;
+    // @ts-ignore
+    const context: Function = this;
     const args = arguments;
-    const later = () => {
+    const callbackToRun = () => {
       timeout = undefined;
       func.apply(context, args);
     };
 
     clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
+    timeout = setTimeout(callbackToRun, wait);
   };
 }

@@ -1,8 +1,8 @@
 import {Skill, SkillName, SkillType} from '@prisma/client';
 
-import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
+import {removeUnderscoreAndCapitalize} from '../../utils/formating/removeUnderscoreAndCapitalize';
 import {trpc} from '../../utils/trpcClient';
-import capitalize from '../../utils/strings/capitalize';
+import capitalize from '../../utils/formating/capitalize';
 import {Kindred} from '../../pages/kindred/[id]';
 import Card from '../core/Card';
 

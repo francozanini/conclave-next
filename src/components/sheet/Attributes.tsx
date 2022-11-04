@@ -2,7 +2,7 @@ import {useMemo} from 'react';
 
 import {Kindred} from '../../pages/kindred/[id]';
 import {AttributeName} from '../../types/AttributeName';
-import capitalize from '../../utils/strings/capitalize';
+import capitalize from '../../utils/formating/capitalize';
 import {trpc} from '../../utils/trpcClient';
 import Card from '../core/Card';
 
@@ -83,7 +83,7 @@ const Attributes = ({
   );
 
   return (
-    <Card className={'min-w-md lg:max-w-fit'}>
+    <Card className={'lg:max-w-fit'}>
       <h1 className="text-center text-4xl">Attributes</h1>
       <div className={'flex flex-col lg:flex-row'}>
         {attributes.map((attrs, i) => (

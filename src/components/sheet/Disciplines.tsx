@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 
-import {removeUnderscoreAndCapitalize} from '../../utils/strings/RemoveUnderscoreAndCapitalize';
+import {removeUnderscoreAndCapitalize} from '../../utils/formating/removeUnderscoreAndCapitalize';
 import {trpc} from '../../utils/trpcClient';
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import Card from '../core/Card';
@@ -27,7 +27,7 @@ export const Disciplines = ({
   });
 
   return (
-    <Card className={'min-w-md lg:max-w-fit'}>
+    <Card className={'lg:max-w-fit'}>
       <h1 className={'mb-3 text-center text-4xl'}>Disciplines</h1>
       <>
         {disciplines.map((discipline) => (
