@@ -4,5 +4,6 @@
   "jsxBracketSameLine": true,
   "tabWidth": 2,
   "bracketSpacing": false,
-  "printWidth": 80
+  "printWidth": 80,
+  "trailingComma": "none"
 }
