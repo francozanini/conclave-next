@@ -49,12 +49,12 @@ export const LearnPowerButton = ({
           Learn
         </button>
       </DialogTrigger>
-      <DialogContent className="flex items-center justify-center">
+      <DialogContent className="flex items-center justify-center ">
         <div
           aria-hidden="true"
           className="fixed inset-x-0 top-0 z-50 w-full overflow-y-auto overflow-x-hidden md:inset-0 md:h-full"
           id="defaultModal">
-          <div className="relative h-full w-full max-w-2xl p-4 md:h-auto">
+          <div className="relative h-full w-full max-w-2xl p-4 md:h-auto mx-auto">
             <div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
               <div className="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
