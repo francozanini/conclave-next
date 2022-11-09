@@ -11,40 +11,42 @@ export const powersRouter = router({
         disciplines: z.array(
           z.object({
             disciplineName: z.nativeEnum(DisciplineName),
-            lvl: z.number().nonnegative(),
+            lvl: z.number().nonnegative()
           })
-        ),
+        )
       })
     )
     .query(async ({input: {disciplines}}) => {
       const disciplineNames = disciplines.map(
-        (discipline) => discipline.disciplineName
+        discipline => discipline.disciplineName
       );
       const powers = await prisma.power.findMany({
         where: {discipline: {name: {in: disciplineNames}}},
-        include: {discipline: true},
+        include: {discipline: true}
       });
 
-      return powers.filter(
-        (power) =>
-          power.level <=
-          (disciplines.find(
-            (discipline) => discipline.disciplineName === power.discipline.name
-          )?.lvl ?? 0)
-      );
+      return powers
+        .filter(
+          power =>
+            power.level <=
+            (disciplines.find(
+              discipline => discipline.disciplineName === power.discipline.name
+            )?.lvl ?? 0)
+        )
+        .sort((p1, p2) => p1.level - p2.level);
     }),
   learnOrUnlearn: publicProcedure
     .input(
       z.object({
         kindredId: z.number().positive(),
-        powerName: z.nativeEnum(PowerName),
+        powerName: z.nativeEnum(PowerName)
       })
     )
     .mutation(async ({input}) => {
       const {kindredId, powerName} = input;
       const learnedPower = await prisma.learnedPower.findFirst({
         include: {basePower: true},
-        where: {basePower: {name: powerName}, kindredId: kindredId},
+        where: {basePower: {name: powerName}, kindredId: kindredId}
       });
 
       if (learnedPower) {
@@ -53,9 +55,9 @@ export const powersRouter = router({
         await prisma.learnedPower.create({
           data: {
             basePower: {connect: {name: powerName}},
-            kindred: {connect: {id: kindredId}},
-          },
+            kindred: {connect: {id: kindredId}}
+          }
         });
       }
-    }),
+    })
 });
