@@ -3,7 +3,6 @@ import {useState} from 'react';
 
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import {FullDiscipline} from '../../types/FullDiscipline';
-import {uniqueBy} from '../../utils/arrays/uniqueBy';
 import {trpc} from '../../utils/trpcClient';
 import {CloseButton} from '../core/CloseButton';
 import {includesBy} from '../../utils/arrays/includesBy';
@@ -22,20 +21,14 @@ export const LearnPowerButton = ({
   powers: PowerWithDiscipline[];
   disciplines: FullDiscipline[];
 }) => {
-  const [isOpen, setIsOpen] = useState(true);
-  const payloadDisciplines = uniqueBy(
-    disciplines
-      .map((discipline) => ({
-        disciplineName: discipline.baseDiscipline.name,
-        lvl: discipline.points
-      }))
-      .sort((p1, p2) => p2.lvl - p1.lvl),
-    (power) => power.disciplineName
-  );
+  const [isOpen, setIsOpen] = useState(false);
 
   const {data: learnablePowers, isLoading} =
     trpc.powers.learnablePowers.useQuery({
-      disciplines: payloadDisciplines
+      disciplines: disciplines.map(discipline => ({
+        disciplineName: discipline.baseDiscipline.name,
+        lvl: discipline.points
+      }))
     });
 
   if (isLoading || !learnablePowers) {
@@ -67,33 +60,18 @@ export const LearnPowerButton = ({
               <div className="space-y-6 p-6">
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                   <div className="space-y-3">
-                    {learnablePowers.map((lp) => (
+                    {learnablePowers.map(lp => (
                       <PowerCard
                         key={lp.id}
                         {...lp}
                         alreadyLearnt={includesBy(
-                          (power) => power.name === lp.name,
+                          power => power.name === lp.name,
                           powers
                         )}
                       />
                     ))}
                   </div>
                 </div>
-              </div>
-
-              <div className="flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600">
-                <button
-                  className="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  data-modal-toggle="defaultModal"
-                  type="button">
-                  I accept
-                </button>
-                <button
-                  className="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
-                  data-modal-toggle="defaultModal"
-                  type="button">
-                  Decline
-                </button>
               </div>
             </div>
           </div>
