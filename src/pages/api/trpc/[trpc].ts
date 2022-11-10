@@ -1,12 +1,13 @@
 import {inferProcedureOutput} from '@trpc/server';
 import * as trpcNext from '@trpc/server/adapters/next';
 
+import {createContext} from '../../../backend/router/context';
 import {appRouter, AppRouter} from '../../../backend/router/resources';
 
 // export API handler
 export default trpcNext.createNextApiHandler({
   router: appRouter,
-  createContext: () => null,
+  createContext
 });
 
 export type inferQueryResponse<

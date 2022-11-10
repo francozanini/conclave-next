@@ -4,7 +4,7 @@ import {
   ClanName,
   Discipline,
   KnownDiscipline,
-  SkillName,
+  SkillName
 } from '@prisma/client';
 
 import {prisma} from '../../db/prisma';
@@ -14,15 +14,15 @@ import {publicProcedure, router} from '../trpc';
 export const kindredRouter = router({
   findById: publicProcedure
     .input(z.object({kindredId: z.number().positive()}))
-    .query(async ({input}) => {
-      const retrievedKindred = await prisma.kindred.findUnique({
+    .query(async ({input, ctx}) => {
+      const retrievedKindred = await ctx.prisma.kindred.findUnique({
         where: {id: input.kindredId},
         include: {
           clan: true,
           skills: true,
           disciplines: {include: {baseDiscipline: true}},
-          powers: {include: {basePower: {include: {discipline: true}}}},
-        },
+          powers: {include: {basePower: {include: {discipline: true}}}}
+        }
       });
 
       if (!retrievedKindred) {
@@ -35,7 +35,7 @@ export const kindredRouter = router({
     .input(
       z.object({
         kindredId: z.number().positive(),
-        chosenClanName: z.nativeEnum(ClanName),
+        chosenClanName: z.nativeEnum(ClanName)
       })
     )
     .mutation(async ({input}) => {
@@ -43,15 +43,15 @@ export const kindredRouter = router({
       const chosenClan: Clan & {disciplines: Discipline[]} =
         await prisma.clan.findUniqueOrThrow({
           where: {name: chosenClanName},
-          include: {disciplines: true},
+          include: {disciplines: true}
         });
 
       const learntDisciplines: KnownDiscipline[] = chosenClan.disciplines.map(
-        (discipline) =>
+        discipline =>
           ({
             learntFromClan: true,
             baseDisciplineId: discipline.id,
-            points: 0,
+            points: 0
           } as KnownDiscipline)
       );
 
@@ -59,13 +59,13 @@ export const kindredRouter = router({
         where: {id: kindredId},
         data: {
           clan: {connect: {name: chosenClanName}},
-          disciplines: {deleteMany: {}, create: learntDisciplines},
+          disciplines: {deleteMany: {}, create: learntDisciplines}
         },
         include: {
           disciplines: {include: {baseDiscipline: true}},
           clan: true,
-          powers: true,
-        },
+          powers: true
+        }
       });
     }),
   updateDetails: publicProcedure
@@ -74,7 +74,7 @@ export const kindredRouter = router({
         kindredId: z.number().positive(),
         ambition: z.string().optional(),
         name: z.string().optional(),
-        desire: z.string().optional(),
+        desire: z.string().optional()
       })
     )
     .mutation(async ({input}) => {
@@ -83,8 +83,8 @@ export const kindredRouter = router({
         data: {
           name: input.name || undefined,
           ambition: input.ambition || undefined,
-          desire: input.desire || undefined,
-        },
+          desire: input.desire || undefined
+        }
       });
     }),
   changeAttribute: publicProcedure
@@ -92,13 +92,13 @@ export const kindredRouter = router({
       z.object({
         kindredId: z.number().positive(),
         attributeToChange: z.nativeEnum(AttributeName),
-        newAmountOfPoints: z.number().min(0).max(5),
+        newAmountOfPoints: z.number().min(0).max(5)
       })
     )
     .mutation(async ({input}) => {
       const updtedKindred = await prisma.kindred.update({
         where: {id: input.kindredId},
-        data: {[input.attributeToChange]: input.newAmountOfPoints},
+        data: {[input.attributeToChange]: input.newAmountOfPoints}
       });
 
       return updtedKindred[input.attributeToChange];
@@ -108,7 +108,7 @@ export const kindredRouter = router({
       z.object({
         kindredId: z.number().positive(),
         skillToChange: z.nativeEnum(SkillName),
-        newAmountOfPoints: z.number().min(0).max(5),
+        newAmountOfPoints: z.number().min(0).max(5)
       })
     )
     .mutation(async ({input}) => {
@@ -122,13 +122,13 @@ export const kindredRouter = router({
               where: {
                 name_kindredId: {
                   name: skillToChange,
-                  kindredId: kindredId,
-                },
+                  kindredId: kindredId
+                }
               },
-              data: {points: newAmountOfPoints},
-            },
-          },
-        },
+              data: {points: newAmountOfPoints}
+            }
+          }
+        }
       });
     }),
   changeDisciplines: publicProcedure
@@ -136,7 +136,7 @@ export const kindredRouter = router({
       z.object({
         kindredId: z.number().positive(),
         knownDisciplineId: z.number().positive(),
-        newAmountOfPoints: z.number().min(0),
+        newAmountOfPoints: z.number().min(0)
       })
     )
     .mutation(async ({input}) => {
@@ -148,10 +148,10 @@ export const kindredRouter = router({
           disciplines: {
             update: {
               data: {points: newAmountOfPoints},
-              where: {id: knownDisciplineId},
-            },
-          },
-        },
+              where: {id: knownDisciplineId}
+            }
+          }
+        }
       });
-    }),
+    })
 });
