@@ -1,11 +1,20 @@
 import '../styles/global.css';
 import {withTRPC} from '@trpc/next';
 import {AppType} from 'next/dist/shared/lib/utils';
+import {Session} from 'next-auth';
+import {SessionProvider} from 'next-auth/react';
 
 import {AppRouter} from './api/trpc/[trpc]';
 
-const MyApp: AppType = ({Component, pageProps}) => {
-  return <Component {...pageProps} />;
+const MyApp: AppType<{session: Session | null}> = ({
+  Component,
+  pageProps: {session, ...pageProps}
+}) => {
+  return (
+    <SessionProvider session={session}>
+      <Component {...pageProps} />
+    </SessionProvider>
+  );
 };
 
 export default withTRPC<AppRouter>({
@@ -19,7 +28,7 @@ export default withTRPC<AppRouter>({
       : 'http://localhost:3000/api/trpc';
 
     return {
-      url,
+      url
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
        */
@@ -29,5 +38,5 @@ export default withTRPC<AppRouter>({
   /**
    * @link https://trpc.io/docs/ssr
    */
-  ssr: true,
+  ssr: true
 })(MyApp);
