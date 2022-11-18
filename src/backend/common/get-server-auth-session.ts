@@ -1,5 +1,5 @@
 import {type GetServerSidePropsContext} from 'next';
-import {unstable_getServerSession} from 'next-auth';
+import {unstable_getServerSession} from 'next-auth/next';
 
 import {authOptions} from '../../pages/api/auth/[...nextauth]';
 
