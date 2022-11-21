@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+  },
+  "esm": true,
+  "experimentalSpecifierResolution": "node"
+}
