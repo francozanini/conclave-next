@@ -1,4 +1,5 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import Button from '../components/core/Button';
 import { trpc } from '../utils/trpcClient';
 
@@ -8,7 +9,11 @@ const LoginPage = () => {
     undefined, // no input
     { enabled: sessionData?.user !== undefined },
   );
-
+  const router = useRouter();
+  
+  if(sessionData) {
+    router.push('/');
+  }
 
 
   return (

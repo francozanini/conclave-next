@@ -1,24 +1,27 @@
 import '../styles/global.css';
-import {withTRPC} from '@trpc/next';
-import {type AppType} from 'next/dist/shared/lib/utils';
-import {type Session} from 'next-auth';
-import {SessionProvider} from 'next-auth/react';
+import { withTRPC } from '@trpc/next';
+import { type AppType } from 'next/dist/shared/lib/utils';
+import { type Session } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
 
-import {AppRouter} from './api/trpc/[trpc]';
+import { AppRouter } from './api/trpc/[trpc]';
+import Layout from '../components/core/Layout';
 
-const MyApp: AppType<{session: Session | null}> = ({
+const MyApp: AppType<{ session: Session | null }> = ({
   Component,
-  pageProps: {session, ...pageProps}
+  pageProps: { session, ...pageProps }
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </SessionProvider>
   );
 };
 
 export default withTRPC<AppRouter>({
-  config({ctx}) {
+  config({ ctx }) {
     /**
      * If you want to use SSR, you need to use the server's full URL
      * @link https://trpc.io/docs/ssr
