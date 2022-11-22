@@ -1,8 +1,16 @@
-export default function Layout({children}) {
+import Head from 'next/head';
+
+export default function Layout({ children }) {
   return (
     <>
+      <Head>
+        <title>Conclave</title>
+        <meta charSet="utf-8" />
+        <meta content="initial-scale=1.0, width=device-width" name="viewport" />
+        <meta name='color-scheme' content='dark' />
+      </Head>
       <Navbar />
-      <main>{children}</main>
+      <main>{children ?? null}</main>
       <Footer />
     </>
   );
