@@ -1,7 +1,11 @@
 import Head from 'next/head';
 import {signOut} from 'next-auth/react';
 
-export default function Layout({children}) {
+interface LayoutProps {
+  children: JSX.Element[] | JSX.Element;
+}
+
+export default function Layout({children}: LayoutProps) {
   return (
     <>
       <Head>
