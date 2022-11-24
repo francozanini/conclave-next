@@ -1,12 +1,15 @@
 import {useRouter} from 'next/router';
 import {createContext} from 'react';
+import {useSession} from 'next-auth/react';
 
-import Attributes from '../../components/sheet/Attributes';
-import KindredDetails from '../../components/sheet/KindredDetails';
+import Attributes from '../../modules/sheet/Attributes';
+import KindredDetails from '../../modules/sheet/KindredDetails';
 import {trpc} from '../../utils/trpcClient';
-import {Skills} from '../../components/sheet/Skills';
-import {Disciplines} from '../../components/sheet/Disciplines';
+import {Skills} from '../../modules/sheet/Skills';
+import {Disciplines} from '../../modules/sheet/Disciplines';
 import {Kindred} from '../../types/Kindred';
+import Login from '../../modules/auth/Login';
+import withSessionGuard from '../../modules/auth/SessionGuard';
 
 export const KindredIdContext = createContext<string>('');
 
@@ -17,14 +20,13 @@ const KindredSheetPage = () => {
     isLoading,
     isError,
     refetch,
-    data: kindred,
+    data: kindred
   } = trpc.kindred.findById.useQuery(
     {kindredId: +kindredId},
     {
-      refetchInterval: 10000,
       refetchOnReconnect: false,
       refetchOnWindowFocus: true,
-      trpc: {},
+      trpc: {}
     }
   );
 
@@ -42,12 +44,12 @@ const KindredSheetPage = () => {
         <KindredDetails
           {...kindred}
           updateKindred={(updatedKindred: Kindred) => {
-            trpcContextState.kindred.findById.setData((oldKindred) => ({
+            trpcContextState.kindred.findById.setData(oldKindred => ({
               ...oldKindred,
-              ...updatedKindred,
+              ...updatedKindred
             }));
             trpcContextState.kindred.findById.invalidate({
-              kindredId: +kindredId,
+              kindredId: +kindredId
             });
           }}
         />
@@ -55,7 +57,7 @@ const KindredSheetPage = () => {
         <Skills {...kindred} refetch={refetch} />
         <Disciplines
           disciplines={kindred.disciplines}
-          powers={kindred.powers.map((learnedPower) => learnedPower.basePower)}
+          powers={kindred.powers.map(learnedPower => learnedPower.basePower)}
           refetch={refetch}
         />
       </KindredIdContext.Provider>
@@ -63,4 +65,4 @@ const KindredSheetPage = () => {
   );
 };
 
-export default KindredSheetPage;
+export default withSessionGuard(KindredSheetPage);
