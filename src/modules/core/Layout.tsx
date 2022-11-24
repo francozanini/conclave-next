@@ -1,11 +1,17 @@
 import Head from 'next/head';
-import {signOut} from 'next-auth/react';
+import {signOut, useSession} from 'next-auth/react';
 
 interface LayoutProps {
   children: JSX.Element[] | JSX.Element;
 }
 
 export default function Layout({children}: LayoutProps) {
+  const session = useSession();
+
+  if (!session.data) {
+    return <div>{children ?? null}</div>;
+  }
+
   return (
     <>
       <Head>
