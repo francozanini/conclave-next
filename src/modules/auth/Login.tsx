@@ -10,7 +10,6 @@ const Login = () => {
     undefined, // no input
     {enabled: sessionData?.user !== undefined}
   );
-  const router = useRouter();
 
   return (
     <main>
