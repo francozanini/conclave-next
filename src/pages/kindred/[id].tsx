@@ -1,6 +1,5 @@
 import {useRouter} from 'next/router';
 import {createContext} from 'react';
-import {useSession} from 'next-auth/react';
 
 import Attributes from '../../modules/sheet/Attributes';
 import KindredDetails from '../../modules/sheet/KindredDetails';
@@ -8,7 +7,6 @@ import {trpc} from '../../utils/trpcClient';
 import {Skills} from '../../modules/sheet/Skills';
 import {Disciplines} from '../../modules/sheet/Disciplines';
 import {Kindred} from '../../types/Kindred';
-import Login from '../../modules/auth/Login';
 import withSessionGuard from '../../modules/auth/SessionGuard';
 
 export const KindredIdContext = createContext<string>('');

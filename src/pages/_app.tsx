@@ -4,10 +4,8 @@ import {type AppType} from 'next/dist/shared/lib/utils';
 import {SessionProvider} from 'next-auth/react';
 import {Session} from 'next-auth/core/types';
 
-import Login from '../modules/auth/Login';
 import Layout from '../modules/core/Layout';
-
-import {AppRouter} from './api/trpc/[trpc]';
+import {AppRouter} from '../backend/router/resources';
 
 const MyApp: AppType<{session: Session | null | undefined}> = ({
   Component,
