@@ -1,5 +1,4 @@
 import {signIn, signOut, useSession} from 'next-auth/react';
-import {useRouter} from 'next/router';
 
 import {trpc} from '../../utils/trpcClient';
 import Button from '../core/Button';
