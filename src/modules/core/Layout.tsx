@@ -22,7 +22,6 @@ export default function Layout({children}: LayoutProps) {
       </Head>
       <Navbar />
       <main>{children ?? null}</main>
-      <Footer />
     </>
   );
 }
