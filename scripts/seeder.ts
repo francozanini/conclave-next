@@ -22,7 +22,7 @@ const initialData = [
     resolve: 2,
 
     clan: {
-      name: ClanName.BRUJAH,
+      name: ClanName.BRUJAH
     },
 
     powers: [{basePower: {name: PowerName.LETHAL_BODY}}],
@@ -36,8 +36,8 @@ const initialData = [
     humanity: 6,
     damagedHumanity: 0,
 
-    hunger: 0,
-  },
+    hunger: 0
+  }
 ];
 
 const seedKindred = async () => {
@@ -48,32 +48,32 @@ const seedKindred = async () => {
       data: {
         ...discipline,
         clans: {connect: discipline.clans},
-        powers: {create: discipline.powers},
-      },
+        powers: {create: discipline.powers}
+      }
     });
   }
 
-  await prisma.chronicle.create({
-    data: {
-      name: 'test',
-      kindred: {
-        create: initialData.map((kin) => ({
-          ...kin,
-          clan: {
-            connect: kin.clan,
-          },
-          powers: {
-            create: kin.powers.map((power) => ({
-              basePower: {connect: power.basePower},
-            })),
-          },
-          skills: {
-            createMany: {data: [...defaultSkills] as Skill[]},
-          },
-        })),
-      },
-    },
-  });
+  // await prisma.chronicle.create({
+  //   data: {
+  //     name: 'test',
+  //     kindred: {
+  //       create: initialData.map((kin) => ({
+  //         ...kin,
+  //         clan: {
+  //           connect: kin.clan,
+  //         },
+  //         powers: {
+  //           create: kin.powers.map((power) => ({
+  //             basePower: {connect: power.basePower},
+  //           })),
+  //         },
+  //         skills: {
+  //           createMany: {data: [...defaultSkills] as Skill[]},
+  //         },
+  //       })),
+  //     },
+  //   },
+  // });
 };
 
 seedKindred();

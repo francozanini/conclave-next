@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-
 }
 
 enum ClanName {
@@ -39,44 +38,43 @@ model Power {
   disciplineId Int
 
   level         Int
-  name          PowerName @unique
+  name          PowerName      @unique
   duration      Duration
-  cost          PowerCost @default(FREE)
+  cost          PowerCost      @default(FREE)
   learnedPowers LearnedPower[]
 
-  firstPoolResource     PoolResource @default(NONE)
-  secondPoolResource    PoolResource @default(NONE)
-  vsFirstPoolResource   PoolResource @default(NONE)
-  vsSecondPoolResource  PoolResource @default(NONE)
+  firstPoolResource    PoolResource @default(NONE)
+  secondPoolResource   PoolResource @default(NONE)
+  vsFirstPoolResource  PoolResource @default(NONE)
+  vsSecondPoolResource PoolResource @default(NONE)
 }
 
 enum PoolResource {
-    NONE
-    //SKILLS
-    ATHLETICS
+  NONE
+  //SKILLS
+  ATHLETICS
 
-    ANIMAL_KIN
+  ANIMAL_KIN
 
-    SUBTERFUGE
-    SURVIVAL
+  SUBTERFUGE
+  SURVIVAL
 
-    //ATTRIBUTES
-    STRENGTH
-    DEXTERITY
+  //ATTRIBUTES
+  STRENGTH
+  DEXTERITY
 
-    CHARISMA
-    MANIPULATION
-    COMPOSURE
+  CHARISMA
+  MANIPULATION
+  COMPOSURE
 
-    INTELLIGENCE
-    WITS
-    RESOLVE
-    //DISCIPLINES
-    ANIMALISM
-    AUSPEX
-    DOMINATE
-    PRESENCE
-
+  INTELLIGENCE
+  WITS
+  RESOLVE
+  //DISCIPLINES
+  ANIMALISM
+  AUSPEX
+  DOMINATE
+  PRESENCE
 }
 
 model LearnedPower {
@@ -107,63 +105,63 @@ enum Duration {
 }
 
 enum PowerCost {
-    FREE
-    ROUSE_CHECK
-    FREE_RC
+  FREE
+  ROUSE_CHECK
+  FREE_RC
 }
 
 enum PowerName {
- //ANIMALISM
- BOND_FAMULUS
- SENSE_THE_BEAST
- FERAL_WHISPERS
- ANIMAL_SUCCULENCE
+  //ANIMALISM
+  BOND_FAMULUS
+  SENSE_THE_BEAST
+  FERAL_WHISPERS
+  ANIMAL_SUCCULENCE
 
- //AUSPEX
- HEIGHTENED_SENSES
- SENSE_THE_UNSEEN
- PREMONITION
- SCRY_THE_SOUL
- SHARE_THE_SENSES
+  //AUSPEX
+  HEIGHTENED_SENSES
+  SENSE_THE_UNSEEN
+  PREMONITION
+  SCRY_THE_SOUL
+  SHARE_THE_SENSES
 
- //BLOODSORCERY
+  //BLOODSORCERY
 
- //CELERITY
- CATS_GRACE
- RAPID_REFLEXES
- FLEETNESS
- BLINK
- TRAVERSAL
+  //CELERITY
+  CATS_GRACE
+  RAPID_REFLEXES
+  FLEETNESS
+  BLINK
+  TRAVERSAL
 
- //DOMINATE
- CLOUD_MEMORY
- COMPEL
- MESMERIZE
- THE_FORGETFUL_MIND
+  //DOMINATE
+  CLOUD_MEMORY
+  COMPEL
+  MESMERIZE
+  THE_FORGETFUL_MIND
 
- //FORTITUDE
- RESILIENCE
- UNSWAYABLE_MIND
- COMPELL
+  //FORTITUDE
+  RESILIENCE
+  UNSWAYABLE_MIND
+  COMPELL
 
- //OBFUSCATE
+  //OBFUSCATE
 
- //OBLIVION
+  //OBLIVION
 
- //POTENCE
- LETHAL_BODY
- SOARING_LEAP
- PROWESS
+  //POTENCE
+  LETHAL_BODY
+  SOARING_LEAP
+  PROWESS
 
- //PRESENCE
- AWE
- DAUNT
- LINGERING_KISS
+  //PRESENCE
+  AWE
+  DAUNT
+  LINGERING_KISS
 
- //PROTEAN
- EYES_OF_THE_BEAST
- WEIGHT_OF_THE_FEATHER
- FERAL_WEAPONS
+  //PROTEAN
+  EYES_OF_THE_BEAST
+  WEIGHT_OF_THE_FEATHER
+  FERAL_WEAPONS
 }
 
 model Discipline {
@@ -204,10 +202,10 @@ enum DisciplineName {
 
 model Kindred {
   id         Int    @id @default(autoincrement())
-  name       String
+  name       String @default("New kindred")
   experience Int    @default(0)
-  ambition   String
-  desire     String
+  ambition   String @default("")
+  desire     String @default("")
   sire       String @default("")
 
   clan   Clan @relation(fields: [clanId], references: [id])
@@ -239,12 +237,15 @@ model Kindred {
   powers      LearnedPower[]
 
   chronicles Chronicle[]
+
+  player   User   @relation(fields: [playerId], references: [id])
+  playerId String
 }
 
 model Skill {
   id        Int       @id @default(autoincrement())
   name      SkillName
-  points    Int
+  points    Int       @default(0)
   type      SkillType
   Kindred   Kindred   @relation(fields: [kindredId], references: [id])
   kindredId Int
@@ -296,7 +297,6 @@ model Chronicle {
   kindred Kindred[]
 }
 
- 
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
@@ -332,6 +332,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  characters    Kindred[]
 }
 
 model VerificationToken {
