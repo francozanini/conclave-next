@@ -1,7 +1,3 @@
-/* eslint-disable tailwindcss/migration-from-tailwind-2 */
-import {FieldValues, UseFormRegister} from 'react-hook-form';
-import {useState} from 'react';
-
 interface Props {
   label: string;
   defaultValue: string;
@@ -18,7 +14,7 @@ const TextInput = ({label, defaultValue = '', input}: Props) => {
         type="text"
       />
       <label
-        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
         htmlFor="floating_email">
         {label.charAt(0).toUpperCase() + label.slice(1)}
       </label>
