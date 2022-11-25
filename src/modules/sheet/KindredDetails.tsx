@@ -30,12 +30,12 @@ const KindredDetails = ({
     <Card className={'max-w-md'}>
       <TextInput
         defaultValue={name}
-        input={{...register('name')}}
+        input={{...register('name'), onChange: handleChange}}
         label="name"
       />
       <TextInput
         defaultValue={ambition}
-        input={{...register('ambition')}}
+        input={{...register('ambition'), onChange: handleChange}}
         label="ambition"
       />
       <TextInput
