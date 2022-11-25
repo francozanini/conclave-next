@@ -27,7 +27,10 @@ function CharactersPage() {
         {data?.map(kindred => (
           <Card key={kindred.id} className="flex justify-between">
             <div>{kindred.name}</div>
-            <Button borderless className="uppercase font-bold">
+            <Button
+              borderless
+              className="uppercase font-bold"
+              onClick={() => router.push(`/kindred/${kindred.id}`)}>
               edit
             </Button>
           </Card>
