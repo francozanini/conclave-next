@@ -11,7 +11,7 @@ const Login = () => {
   );
 
   return (
-    <main>
+    <section>
       <div className="mt-40 justify-items-center items-center flex flex-col ">
         <h1 className="text-8xl">Conclave</h1>
         <div className="mt-4">
@@ -28,7 +28,7 @@ const Login = () => {
           </p>
         </div>
       </div>
-    </main>
+    </section>
   );
 };
 
