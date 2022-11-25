@@ -1,4 +1,4 @@
-import {removeUnderscoreAndCapitalize} from '../../utils/formating/removeUnderscoreAndCapitalize';
+import removeUnderscoreAndCapitalize from '../../utils/formating/removeUnderscoreAndCapitalize';
 import capitalize from '../../utils/formating/capitalize';
 import {formatPoolResources} from '../../utils/formating/formatPoolResources';
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';

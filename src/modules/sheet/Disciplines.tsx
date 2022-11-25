@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 
-import {removeUnderscoreAndCapitalize} from '../../utils/formating/removeUnderscoreAndCapitalize';
+import removeUnderscoreAndCapitalize from '../../utils/formating/removeUnderscoreAndCapitalize';
 import {trpc} from '../../utils/trpcClient';
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import Card from '../core/Card';
@@ -19,18 +19,18 @@ interface DisciplinesProps {
 export const Disciplines = ({
   disciplines,
   refetch,
-  powers,
+  powers
 }: DisciplinesProps) => {
   const kindredId = +useContext(KindredIdContext);
   const changePoints = trpc.kindred.changeDisciplines.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => refetch()
   });
 
   return (
     <Card className={'lg:max-w-fit'}>
       <h1 className={'mb-3 text-center text-4xl'}>Disciplines</h1>
       <>
-        {disciplines.map((discipline) => (
+        {disciplines.map(discipline => (
           <div
             key={discipline.id}
             className={`mb-2 flex flex-row justify-between`}>
@@ -39,11 +39,11 @@ export const Disciplines = ({
             </span>
             <Trackable
               amount={discipline.points}
-              onChange={(newAmount) =>
+              onChange={newAmount =>
                 changePoints.mutate({
                   newAmountOfPoints: newAmount,
                   knownDisciplineId: discipline.id,
-                  kindredId,
+                  kindredId
                 })
               }
             />

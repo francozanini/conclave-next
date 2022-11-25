@@ -1,15 +1,13 @@
 import React from 'react';
 
+import classNames from '../../utils/classNames';
+
 interface ButtonProps {
   children: React.ReactNode | undefined;
   className?: string;
   onClick?: Function;
   color?: 'blue' | 'gray';
   borderless?: boolean;
-}
-
-function classNames(...classes: (string | boolean)[]) {
-  return classes.filter(Boolean).join(' ');
 }
 
 const blueButtonStyles =

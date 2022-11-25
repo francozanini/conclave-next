@@ -1,6 +1,6 @@
 import {Skill, SkillName, SkillType} from '@prisma/client';
 
-import {removeUnderscoreAndCapitalize} from '../../utils/formating/removeUnderscoreAndCapitalize';
+import removeUnderscoreAndCapitalize from '../../utils/formating/removeUnderscoreAndCapitalize';
 import {trpc} from '../../utils/trpcClient';
 import capitalize from '../../utils/formating/capitalize';
 import Card from '../core/Card';
@@ -18,29 +18,29 @@ interface SkillProps {
 const Skill = ({className, onChange, name, amount}: SkillProps) => (
   <div className={`flex flex-row justify-between ${className}`}>
     <span className="mr-2 text-xl">{removeUnderscoreAndCapitalize(name)}</span>
-    <Trackable amount={amount} onChange={(newAmount) => onChange(newAmount)} />
+    <Trackable amount={amount} onChange={newAmount => onChange(newAmount)} />
   </div>
 );
 
 export const Skills = ({
   id,
   skills,
-  refetch,
+  refetch
 }: Kindred & {skills: Skill[]; refetch: Function}) => {
   const changeSkill = trpc.kindred.changeSkill.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => refetch()
   });
 
   const skillsByType = [
     skills
-      .filter((skill) => skill.type === SkillType.PHYSICAL)
+      .filter(skill => skill.type === SkillType.PHYSICAL)
       .sort((a, b) => a.name.localeCompare(b.name)),
     skills
-      .filter((skill) => skill.type === SkillType.SOCIAL)
+      .filter(skill => skill.type === SkillType.SOCIAL)
       .sort((a, b) => a.name.localeCompare(b.name)),
     skills
-      .filter((skill) => skill.type === SkillType.MENTAL)
-      .sort((a, b) => a.name.localeCompare(b.name)),
+      .filter(skill => skill.type === SkillType.MENTAL)
+      .sort((a, b) => a.name.localeCompare(b.name))
   ];
 
   return (
@@ -54,7 +54,7 @@ export const Skills = ({
             <h2 className="mb-2 text-center text-2xl">
               {capitalize(skills[i].type)}
             </h2>
-            {skills.map((skill) => (
+            {skills.map(skill => (
               <Skill
                 key={skill.name}
                 amount={skill.points}
@@ -64,7 +64,7 @@ export const Skills = ({
                   changeSkill.mutate({
                     newAmountOfPoints: newAmount,
                     skillToChange: skill.name,
-                    kindredId: id,
+                    kindredId: id
                   })
                 }
               />

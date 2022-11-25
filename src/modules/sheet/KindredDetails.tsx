@@ -3,7 +3,7 @@ import {useForm} from 'react-hook-form';
 
 import {debounce} from '../../utils/debounce';
 import {trpc} from '../../utils/trpcClient';
-import {removeUnderscoreAndCapitalize} from '../../utils/formating/removeUnderscoreAndCapitalize';
+import removeUnderscoreAndCapitalize from '../../utils/formating/removeUnderscoreAndCapitalize';
 import Card from '../core/Card';
 import TextInput from '../core/TextInput';
 import {Kindred} from '../../types/Kindred';
@@ -15,7 +15,7 @@ const KindredDetails = ({
   desire,
   sire,
   clan,
-  updateKindred,
+  updateKindred
 }: Kindred & {clan: Clan; updateKindred: Function}) => {
   const {register, getValues} = useForm();
   const detailsMutation = trpc.kindred.updateDetails.useMutation();
@@ -52,16 +52,16 @@ const KindredDetails = ({
         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
         defaultValue={clan.name}
         name="clans"
-        onChange={(e) =>
+        onChange={e =>
           clanMutation.mutate(
             {
               chosenClanName: e.target.value as ClanName,
-              kindredId: id,
+              kindredId: id
             },
-            {onSuccess: (updatedData) => updateKindred(updatedData)}
+            {onSuccess: updatedData => updateKindred(updatedData)}
           )
         }>
-        {clans.map((clan) => (
+        {clans.map(clan => (
           <option key={clan} value={clan}>
             {removeUnderscoreAndCapitalize(clan)}
           </option>
