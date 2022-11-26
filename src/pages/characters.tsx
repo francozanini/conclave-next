@@ -31,7 +31,7 @@ function CharactersPage() {
         {data?.map(kindred => (
           <Card
             key={kindred.id}
-            className="max-w-2xl lg:max-w-md xl:max-w-sm flex justify-between">
+            className="md:max-w-md max-w-2xl xl:max-w-sm flex justify-between">
             <h2 className="text-xl font-medium">{kindred.name}</h2>
             <div>
               <Button
