@@ -6,37 +6,49 @@ import Card from '../modules/core/Card';
 import {trpc} from '../utils/trpcClient';
 
 function CharactersPage() {
+  const trpcContext = trpc.useContext();
   const router = useRouter();
   const {data} = trpc.characters.findForUser.useQuery();
-  const {mutate} = trpc.characters.newCharacter.useMutation({
+  const {mutate: createKindred} = trpc.characters.newCharacter.useMutation({
     onSettled: createdKindred => router.push(`/kindred/${createdKindred?.id}`)
   });
+  const {mutate: deleteCharacter} = trpc.characters.deleteCharacter.useMutation(
+    {onSuccess: () => trpcContext.characters.findForUser.invalidate()}
+  );
 
   return (
-    <>
+    <section className="xl:mx-20">
       <div className="m-2 justify-between flex">
         <h1 className="text-4xl font-bold uppercase">My Characters</h1>
         <Button
           className="font-bold px-4 py-3 uppercase"
           color="gray"
-          onClick={() => mutate()}>
+          onClick={() => createKindred()}>
           Create a Character
         </Button>
       </div>
-      <div className="justify-between mt-4 gap-4 items-center flex flex-col">
+      <div className="flex md:flex-row flex-col flex-wrap justify-between mt-4 gap-4 items-center flex md:flex-row flex-col">
         {data?.map(kindred => (
           <Card key={kindred.id} className="flex justify-between">
-            <div>{kindred.name}</div>
-            <Button
-              borderless
-              className="uppercase font-bold"
-              onClick={() => router.push(`/kindred/${kindred.id}`)}>
-              edit
-            </Button>
+            <h2 className="text-xl font-medium">{kindred.name}</h2>
+            <div>
+              <Button
+                borderless
+                className="uppercase font-bold"
+                onClick={() => router.push(`/kindred/${kindred.id}`)}>
+                edit
+              </Button>
+              <Button
+                borderless
+                className="uppercase font-bold"
+                onClick={() => deleteCharacter({kindredId: kindred.id})}>
+                delete
+              </Button>
+            </div>
           </Card>
         ))}
       </div>
-    </>
+    </section>
   );
 }
 
