@@ -17,7 +17,7 @@ function CharactersPage() {
   );
 
   return (
-    <section className="xl:mx-20">
+    <section className="max-w-7xl lg:mx-4 xl:mx-auto">
       <div className="m-2 justify-between flex">
         <h1 className="text-4xl font-bold uppercase">My Characters</h1>
         <Button
@@ -27,9 +27,11 @@ function CharactersPage() {
           Create a Character
         </Button>
       </div>
-      <div className="flex md:flex-row flex-col flex-wrap justify-between mt-4 gap-4 items-center flex md:flex-row flex-col">
+      <div className="flex flex-col lg:flex-row flex-wrap items-center justify-between mt-4 gap-4">
         {data?.map(kindred => (
-          <Card key={kindred.id} className="flex justify-between">
+          <Card
+            key={kindred.id}
+            className="max-w-2xl lg:max-w-md xl:max-w-sm flex justify-between">
             <h2 className="text-xl font-medium">{kindred.name}</h2>
             <div>
               <Button
