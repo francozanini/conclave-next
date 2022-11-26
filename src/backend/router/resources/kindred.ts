@@ -7,7 +7,6 @@ import {
   SkillName
 } from '@prisma/client';
 
-import {prisma} from '../../db/prisma';
 import {AttributeName} from '../../../types/AttributeName';
 import {publicProcedure, router} from '../trpc';
 
@@ -38,10 +37,10 @@ export const kindredRouter = router({
         chosenClanName: z.nativeEnum(ClanName)
       })
     )
-    .mutation(async ({input}) => {
+    .mutation(async ({input, ctx}) => {
       const {chosenClanName, kindredId} = input;
       const chosenClan: Clan & {disciplines: Discipline[]} =
-        await prisma.clan.findUniqueOrThrow({
+        await ctx.prisma.clan.findUniqueOrThrow({
           where: {name: chosenClanName},
           include: {disciplines: true}
         });
@@ -55,7 +54,7 @@ export const kindredRouter = router({
           } as KnownDiscipline)
       );
 
-      return await prisma.kindred.update({
+      return await ctx.prisma.kindred.update({
         where: {id: kindredId},
         data: {
           clan: {connect: {name: chosenClanName}},
@@ -77,8 +76,8 @@ export const kindredRouter = router({
         desire: z.string().optional()
       })
     )
-    .mutation(async ({input}) => {
-      return await prisma.kindred.update({
+    .mutation(async ({input, ctx}) => {
+      return await ctx.prisma.kindred.update({
         where: {id: input.kindredId},
         data: {
           name: input.name || undefined,
@@ -95,8 +94,8 @@ export const kindredRouter = router({
         newAmountOfPoints: z.number().min(0).max(5)
       })
     )
-    .mutation(async ({input}) => {
-      const updtedKindred = await prisma.kindred.update({
+    .mutation(async ({input, ctx}) => {
+      const updtedKindred = await ctx.prisma.kindred.update({
         where: {id: input.kindredId},
         data: {[input.attributeToChange]: input.newAmountOfPoints}
       });
@@ -111,10 +110,10 @@ export const kindredRouter = router({
         newAmountOfPoints: z.number().min(0).max(5)
       })
     )
-    .mutation(async ({input}) => {
+    .mutation(async ({input, ctx}) => {
       const {newAmountOfPoints, kindredId, skillToChange} = input;
 
-      await prisma.kindred.update({
+      await ctx.prisma.kindred.update({
         where: {id: kindredId},
         data: {
           skills: {
@@ -139,10 +138,10 @@ export const kindredRouter = router({
         newAmountOfPoints: z.number().min(0)
       })
     )
-    .mutation(async ({input}) => {
+    .mutation(async ({input, ctx}) => {
       const {newAmountOfPoints, kindredId, knownDisciplineId} = input;
 
-      await prisma.kindred.update({
+      await ctx.prisma.kindred.update({
         where: {id: kindredId},
         data: {
           disciplines: {
