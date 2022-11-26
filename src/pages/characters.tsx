@@ -28,27 +28,33 @@ function CharactersPage() {
         </Button>
       </div>
       <div className="flex flex-col lg:flex-row flex-wrap items-center justify-between mt-4 gap-4">
-        {data?.map(kindred => (
-          <Card
-            key={kindred.id}
-            className="md:max-w-md max-w-2xl xl:max-w-sm flex justify-between">
-            <h2 className="text-xl font-medium">{kindred.name}</h2>
-            <div>
-              <Button
-                borderless
-                className="uppercase font-bold"
-                onClick={() => router.push(`/kindred/${kindred.id}`)}>
-                edit
-              </Button>
-              <Button
-                borderless
-                className="uppercase font-bold"
-                onClick={() => deleteCharacter({kindredId: kindred.id})}>
-                delete
-              </Button>
-            </div>
-          </Card>
-        ))}
+        {data?.length === 0 ? (
+          <h2 className="text-center">You have no characters</h2>
+        ) : (
+          data?.map(({id, name}) => (
+            <Card
+              key={id}
+              className="md:max-w-md max-w-2xl xl:max-w-sm flex justify-between">
+              <h2 className="text-xl font-medium">
+                {name.length > 15 ? name.substring(0, 15) + '...' : name}
+              </h2>
+              <div>
+                <Button
+                  borderless
+                  className="uppercase font-bold"
+                  onClick={() => router.push(`/kindred/${id}`)}>
+                  edit
+                </Button>
+                <Button
+                  borderless
+                  className="uppercase font-bold"
+                  onClick={() => deleteCharacter({kindredId: id})}>
+                  delete
+                </Button>
+              </div>
+            </Card>
+          ))
+        )}
       </div>
     </section>
   );
