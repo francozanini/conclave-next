@@ -17,7 +17,7 @@ function CharactersPage() {
   );
 
   return (
-    <section className="xl:mx-20 mx-4">
+    <section className="mx-1 xl:mx-20">
       <div className="m-2 justify-between flex">
         <h1 className="text-4xl font-bold uppercase">My Characters</h1>
         <Button
