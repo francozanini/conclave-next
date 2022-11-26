@@ -8,10 +8,10 @@ import {
 } from '@prisma/client';
 
 import {AttributeName} from '../../../types/AttributeName';
-import {publicProcedure, router} from '../trpc';
+import {protectedProcedure, router} from '../trpc';
 
 export const kindredRouter = router({
-  findById: publicProcedure
+  findById: protectedProcedure
     .input(z.object({kindredId: z.number().positive()}))
     .query(async ({input, ctx}) => {
       const retrievedKindred = await ctx.prisma.kindred.findUnique({
@@ -30,7 +30,7 @@ export const kindredRouter = router({
 
       return retrievedKindred;
     }),
-  pickClan: publicProcedure
+  pickClan: protectedProcedure
     .input(
       z.object({
         kindredId: z.number().positive(),
@@ -67,7 +67,7 @@ export const kindredRouter = router({
         }
       });
     }),
-  updateDetails: publicProcedure
+  updateDetails: protectedProcedure
     .input(
       z.object({
         kindredId: z.number().positive(),
@@ -86,7 +86,7 @@ export const kindredRouter = router({
         }
       });
     }),
-  changeAttribute: publicProcedure
+  changeAttribute: protectedProcedure
     .input(
       z.object({
         kindredId: z.number().positive(),
@@ -102,7 +102,7 @@ export const kindredRouter = router({
 
       return updtedKindred[input.attributeToChange];
     }),
-  changeSkill: publicProcedure
+  changeSkill: protectedProcedure
     .input(
       z.object({
         kindredId: z.number().positive(),
@@ -130,7 +130,7 @@ export const kindredRouter = router({
         }
       });
     }),
-  changeDisciplines: publicProcedure
+  changeDisciplines: protectedProcedure
     .input(
       z.object({
         kindredId: z.number().positive(),
