@@ -16,6 +16,7 @@ const Login = () => {
         <h1 className="text-8xl">Conclave</h1>
         <div className="mt-4">
           <Button
+            className="py-3"
             color="blue"
             onClick={sessionData ? () => signOut() : () => signIn()}>
             Continue with Discord
