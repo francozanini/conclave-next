@@ -1,10 +1,10 @@
 import {z} from 'zod';
 import {DisciplineName, PowerName} from '@prisma/client';
 
-import {publicProcedure, router} from '../trpc';
+import {protectedProcedure, router} from '../trpc';
 
 export const powersRouter = router({
-  learnablePowers: publicProcedure
+  learnablePowers: protectedProcedure
     .input(
       z.object({
         disciplines: z.array(
@@ -34,7 +34,7 @@ export const powersRouter = router({
         )
         .sort((p1, p2) => p1.level - p2.level);
     }),
-  learnOrUnlearn: publicProcedure
+  learnOrUnlearn: protectedProcedure
     .input(
       z.object({
         kindredId: z.number().positive(),
