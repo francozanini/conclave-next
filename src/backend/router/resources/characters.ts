@@ -1,4 +1,5 @@
 import {Skill} from '@prisma/client';
+import {z} from 'zod';
 
 import {defaultSkills} from '../../../constants/skills';
 import {protectedProcedure, router} from '../trpc';
@@ -23,5 +24,19 @@ export const charactersRouter = router({
       await ctx.prisma.kindred.findMany({
         where: {playerId: ctx.session.user.id}
       })
-  )
+  ),
+  deleteCharacter: protectedProcedure
+    .input(z.object({kindredId: z.number().positive()}))
+    .mutation(async ({input, ctx}) => {
+      const kindredToDelete = await ctx.prisma.kindred.findUnique({
+        where: {id: input.kindredId},
+        include: {player: true}
+      });
+
+      if (kindredToDelete?.player.id === ctx.session.user.id) {
+        await ctx.prisma.kindred.delete({
+          where: {id: kindredToDelete?.id}
+        });
+      }
+    })
 });
