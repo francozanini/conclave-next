@@ -247,7 +247,7 @@ model Skill {
   name      SkillName
   points    Int       @default(0)
   type      SkillType
-  Kindred   Kindred   @relation(fields: [kindredId], references: [id])
+  Kindred   Kindred   @relation(fields: [kindredId], references: [id], onDelete: Cascade)
   kindredId Int
 
   @@unique([name, kindredId])
