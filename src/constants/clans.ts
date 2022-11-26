@@ -1,4 +1,4 @@
-import {ClanName} from "@prisma/client";
+import {ClanName} from '@prisma/client';
 
 const clans: {name: ClanName}[] = [
   {name: ClanName.BANU_HAQIM},
@@ -15,7 +15,7 @@ const clans: {name: ClanName}[] = [
   {name: ClanName.TOREADOR},
   {name: ClanName.TREMERE},
   {name: ClanName.TZIMISCE},
-  {name: ClanName.VENTRUE},
+  {name: ClanName.VENTRUE}
 ];
 
 export default clans;

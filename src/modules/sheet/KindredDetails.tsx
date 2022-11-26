@@ -17,30 +17,48 @@ const KindredDetails = ({
   clan,
   updateKindred
 }: Kindred & {clan: Clan; updateKindred: Function}) => {
-  const {register, getValues} = useForm();
+  const {register, getValues, setValue} = useForm();
   const detailsMutation = trpc.kindred.updateDetails.useMutation();
   const clanMutation = trpc.kindred.pickClan.useMutation();
   const clans = Object.values(ClanName);
   const handleChange = debounce(
     () => detailsMutation.mutate({...getValues(), kindredId: id} as any),
-    300
+    200
   );
 
   return (
     <Card className={'max-w-md'}>
       <TextInput
         defaultValue={name}
-        input={{...register('name'), onChange: handleChange}}
+        input={{
+          ...register('name'),
+          onChange: event => {
+            setValue('name', event.target.value);
+            handleChange();
+          }
+        }}
         label="name"
       />
       <TextInput
         defaultValue={ambition}
-        input={{...register('ambition'), onChange: handleChange}}
+        input={{
+          ...register('ambition'),
+          onChange: event => {
+            setValue('ambition', event.target.value);
+            handleChange();
+          }
+        }}
         label="ambition"
       />
       <TextInput
         defaultValue={desire}
-        input={{...register('desire'), onChange: handleChange}}
+        input={{
+          ...register('desire'),
+          onChange: event => {
+            setValue('desire', event.target.value);
+            handleChange();
+          }
+        }}
         label="desire"
       />
       <TextInput
