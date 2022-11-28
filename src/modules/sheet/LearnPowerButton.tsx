@@ -60,16 +60,20 @@ export const LearnPowerButton = ({
               <div className="space-y-6 p-6">
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                   <div className="space-y-3">
-                    {learnablePowers.map(lp => (
-                      <PowerCard
-                        key={lp.id}
-                        {...lp}
-                        alreadyLearnt={includesBy(
-                          power => power.name === lp.name,
-                          powers
-                        )}
-                      />
-                    ))}
+                    {learnablePowers.length ? (
+                      learnablePowers.map(lp => (
+                        <PowerCard
+                          key={lp.id}
+                          {...lp}
+                          alreadyLearnt={includesBy(
+                            power => power.name === lp.name,
+                            powers
+                          )}
+                        />
+                      ))
+                    ) : (
+                      <p>No powers to learn</p>
+                    )}
                   </div>
                 </div>
               </div>
