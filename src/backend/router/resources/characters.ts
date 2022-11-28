@@ -12,7 +12,19 @@ export const charactersRouter = router({
       data: {
         name: 'My Character',
         powers: {},
-        disciplines: {},
+        disciplines: {
+          createMany: {
+            data: (
+              await ctx.prisma.discipline.findMany({
+                where: {clans: {some: {id: {equals: 1}}}}
+              })
+            ).map(dis => ({
+              points: 0,
+              baseDisciplineId: dis.id,
+              learntFromClan: true
+            }))
+          }
+        },
         player: {connect: {id: userId}},
         clan: {connect: {id: 1}},
         skills: {createMany: {data: defaultSkills as Skill[]}}
