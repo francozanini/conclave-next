@@ -1,4 +1,7 @@
+import autoAnimate from '@formkit/auto-animate';
 import {useRouter} from 'next/router';
+import {useEffect, useRef} from 'react';
+import {useAutoAnimate} from '@formkit/auto-animate/react';
 
 import withSessionGuard from '../modules/auth/SessionGuard';
 import Button from '../modules/core/Button';
@@ -15,6 +18,7 @@ function CharactersPage() {
   const {mutate: deleteCharacter} = trpc.characters.deleteCharacter.useMutation(
     {onSuccess: () => trpcContext.characters.findForUser.invalidate()}
   );
+  const [parent] = useAutoAnimate<HTMLDivElement>();
 
   return (
     <section className="max-w-7xl mx-1 lg:mx-4 xl:mx-auto">
@@ -27,7 +31,9 @@ function CharactersPage() {
           Create a Character
         </Button>
       </div>
-      <div className="flex flex-col lg:flex-row flex-wrap items-center justify-between mt-4 gap-4">
+      <div
+        ref={parent}
+        className="flex flex-col lg:flex-row flex-wrap items-center justify-between mt-4 gap-4">
         {data?.length === 0 ? (
           <h2 className="text-center">You have no characters</h2>
         ) : (
