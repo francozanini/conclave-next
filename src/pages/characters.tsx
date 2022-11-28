@@ -1,6 +1,4 @@
-import autoAnimate from '@formkit/auto-animate';
 import {useRouter} from 'next/router';
-import {useEffect, useRef} from 'react';
 import {useAutoAnimate} from '@formkit/auto-animate/react';
 
 import withSessionGuard from '../modules/auth/SessionGuard';
