@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import {signOut, useSession} from 'next-auth/react';
 import Link from 'next/link';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 interface LayoutProps {
   children: JSX.Element[] | JSX.Element;
@@ -26,6 +27,54 @@ export default function Layout({children}: LayoutProps) {
   );
 }
 
+function NavbarMenu() {
+  const menuItems = [
+    {link: '/characters', name: 'Characters'},
+    {link: '/chronicles', name: 'Chronicles'},
+    {link: '/profile', name: 'Profile'}
+  ];
+
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild>
+        <button
+          aria-controls="navbar-sticky"
+          aria-expanded="false"
+          className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          data-collapse-toggle="navbar-sticky"
+          type="button">
+          <span className="sr-only">Open main menu</span>
+          <svg
+            aria-hidden="true"
+            className="w-6 h-6"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              clipRule="evenodd"
+              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+              fillRule="evenodd"
+            />
+          </svg>
+        </button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content className="min-w-full bg-gray-900 rounded p-1 flex flex-col gap-4">
+          {menuItems.map(({link, name}) => (
+            <DropdownMenu.Item key={link} className="text-lg h-8 w-full">
+              <Link
+                className="block py-2 pl-3 pr-4 text-gray-700 rounded md:hover:bg-transparent md:dark:hover:text-white dark:text-gray-400  dark:hover:text-white  dark:border-gray-700"
+                href={link}>
+                {name}
+              </Link>
+            </DropdownMenu.Item>
+          ))}
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
+  );
+}
+
 function Navbar() {
   return (
     <nav className="bg-white px-2 sm:px-4 py-2.5 dark:bg-gray-900 relative w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
@@ -42,26 +91,7 @@ function Navbar() {
             onClick={() => signOut()}>
             Logout
           </button>
-          <button
-            aria-controls="navbar-sticky"
-            aria-expanded="false"
-            className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-            data-collapse-toggle="navbar-sticky"
-            type="button">
-            <span className="sr-only">Open main menu</span>
-            <svg
-              aria-hidden="true"
-              className="w-6 h-6"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                clipRule="evenodd"
-                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                fillRule="evenodd"
-              />
-            </svg>
-          </button>
+          <NavbarMenu />
         </div>
         <div
           className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
