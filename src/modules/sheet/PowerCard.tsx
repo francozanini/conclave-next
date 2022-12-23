@@ -3,7 +3,7 @@ import {useContext} from 'react';
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import removeUnderscoreAndCapitalize from '../../utils/formating/removeUnderscoreAndCapitalize';
 import Button from '../core/Button';
-import {KindredIdContext} from '../../pages/kindred/[id]';
+import {KindredIdContext} from '../../pages/kindred/[id]/sheet';
 import {trpc} from '../../utils/trpcClient';
 
 interface PowerCardProps {

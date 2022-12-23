@@ -11,7 +11,8 @@ function CharactersPage() {
   const router = useRouter();
   const {data} = trpc.characters.findForUser.useQuery();
   const {mutate: createKindred} = trpc.characters.newCharacter.useMutation({
-    onSettled: createdKindred => router.push(`/kindred/${createdKindred?.id}`)
+    onSettled: createdKindred =>
+      router.push(`/kindred/${createdKindred?.id}/builder`)
   });
   const {mutate: deleteCharacter} = trpc.characters.deleteCharacter.useMutation(
     {onSuccess: () => trpcContext.characters.findForUser.invalidate()}

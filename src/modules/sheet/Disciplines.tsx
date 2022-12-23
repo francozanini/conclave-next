@@ -5,7 +5,7 @@ import {trpc} from '../../utils/trpcClient';
 import {PowerWithDiscipline} from '../../types/PowerWithDiscipline';
 import Card from '../core/Card';
 import {FullDiscipline} from '../../types/FullDiscipline';
-import {KindredIdContext} from '../../pages/kindred/[id]';
+import {KindredIdContext} from '../../pages/kindred/[id]/sheet';
 
 import Trackable from './Trackable';
 import {Powers} from './Powers';
