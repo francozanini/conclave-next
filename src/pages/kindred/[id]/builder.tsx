@@ -1,6 +1,6 @@
 import * as Tabs from '@radix-ui/react-tabs';
 import {useRouter} from 'next/router';
-import {ClanName} from '@prisma/client';
+import {ClanName, Skill, SkillType} from '@prisma/client';
 import {useMemo} from 'react';
 
 import KindredDetails from '../../../modules/sheet/KindredDetails';
@@ -10,8 +10,9 @@ import withSessionGuard from '../../../modules/auth/SessionGuard';
 import removeUnderscoreAndCapitalize from '../../../utils/formating/removeUnderscoreAndCapitalize';
 import Card from '../../../modules/core/Card';
 import {AttributeName} from '../../../types/AttributeName';
+import capitalize from '../../../utils/formating/capitalize';
 
-const AttributesAndSkills = ({
+const Attributes = ({
   strength,
   dexterity,
   stamina,
@@ -67,37 +68,107 @@ const AttributesAndSkills = ({
   );
 
   return (
+    <>
+      <Card className="max-w-4xl">
+        <div className="flex md:flex-row gap-12 flex-col justify-around">
+          {attributes.map((attrs, i) => (
+            <div key={attrs[i].type}>
+              <h2 className="mb-2 text-center text-4xl capitalize">
+                {attrs[i].type}
+              </h2>
+              {attrs.map(attr => (
+                <div
+                  key={attr.name}
+                  className="justify-between flex flex-row gap-2">
+                  <span className="text-xl capitalize">{attr.name}</span>
+                  <div className="flex flex-row gap-2">
+                    <button
+                      className="rounded-full w-6 h-6  bg-red-800"
+                      onClick={() =>
+                        changeAttribute.mutate({
+                          newAmountOfPoints: Math.max(attr.amount - 1, 0),
+                          attributeToChange: attr.name,
+                          kindredId: id
+                        })
+                      }>
+                      -
+                    </button>
+                    <span>{attr.amount}/5</span>
+                    <button
+                      className="rounded-full w-6 h-6  bg-red-800"
+                      onClick={() =>
+                        changeAttribute.mutate({
+                          newAmountOfPoints: Math.min(attr.amount + 1, 5),
+                          attributeToChange: attr.name,
+                          kindredId: id
+                        })
+                      }>
+                      +
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </Card>
+    </>
+  );
+};
+
+export const Skills = ({
+  id,
+  skills,
+  refetch
+}: Kindred & {skills: Skill[]; refetch: Function}) => {
+  const changeSkill = trpc.kindred.changeSkill.useMutation({
+    onSuccess: () => refetch()
+  });
+
+  const skillsByType = [
+    skills
+      .filter(skill => skill.type === SkillType.PHYSICAL)
+      .sort((a, b) => a.name.localeCompare(b.name)),
+    skills
+      .filter(skill => skill.type === SkillType.SOCIAL)
+      .sort((a, b) => a.name.localeCompare(b.name)),
+    skills
+      .filter(skill => skill.type === SkillType.MENTAL)
+      .sort((a, b) => a.name.localeCompare(b.name))
+  ];
+
+  return (
     <Card className="max-w-4xl">
       <div className="flex md:flex-row gap-12 flex-col justify-around">
-        {attributes.map((attrs, i) => (
-          <div key={attrs[i].type}>
+        {skillsByType.map((skills, i) => (
+          <div key={skills[i].type}>
             <h2 className="mb-2 text-center text-4xl capitalize">
-              {attrs[i].type}
+              {skills[i].type}
             </h2>
-            {attrs.map(attr => (
+            {skills.map(skill => (
               <div
-                key={attr.name}
+                key={skill.name}
                 className="justify-between flex flex-row gap-2">
-                <span className="text-xl capitalize">{attr.name}</span>
+                <span className="text-xl capitalize">{skill.name}</span>
                 <div className="flex flex-row gap-2">
                   <button
                     className="rounded-full w-6 h-6  bg-red-800"
                     onClick={() =>
-                      changeAttribute.mutate({
-                        newAmountOfPoints: Math.max(attr.amount - 1, 0),
-                        attributeToChange: attr.name,
+                      changeSkill.mutate({
+                        newAmountOfPoints: Math.max(skill.points - 1, 0),
+                        skillToChange: skill.name,
                         kindredId: id
                       })
                     }>
                     -
                   </button>
-                  <span>{attr.amount}/5</span>
+                  <span>{skill.points}/5</span>
                   <button
                     className="rounded-full w-6 h-6  bg-red-800"
                     onClick={() =>
-                      changeAttribute.mutate({
-                        newAmountOfPoints: Math.min(attr.amount + 1, 5),
-                        attributeToChange: attr.name,
+                      changeSkill.mutate({
+                        newAmountOfPoints: Math.min(skill.points + 1, 5),
+                        skillToChange: skill.name,
                         kindredId: id
                       })
                     }>
@@ -218,7 +289,10 @@ export function BuilderPage() {
         </select>
       </TabContent>
       <TabContent value="tab3">
-        <AttributesAndSkills {...kindred} refetch={refetch} />
+        <div className="flex flex-col gap-4">
+          <Attributes {...kindred} refetch={refetch} />
+          <Skills {...kindred} refetch={refetch} />
+        </div>
       </TabContent>
     </Tabs.Root>
   );
