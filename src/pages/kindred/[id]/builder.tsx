@@ -116,7 +116,7 @@ function PointBuyer({
 }) {
   return (
     <div className="justify-between flex flex-row gap-2">
-      <span className="text-xl capitalize">{label}</span>
+      <span className="w-32 text-xl capitalize">{label}</span>
       <div className="flex flex-row gap-2">
         <button className="rounded-full w-6 h-6  bg-red-800" onClick={onBuy}>
           -
