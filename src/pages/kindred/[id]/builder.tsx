@@ -1,47 +1,243 @@
 import * as Tabs from '@radix-ui/react-tabs';
+import {useRouter} from 'next/router';
+import {ClanName} from '@prisma/client';
+import {useMemo} from 'react';
 
-export default function BuilderPage() {
+import KindredDetails from '../../../modules/sheet/KindredDetails';
+import {Kindred} from '../../../types/Kindred';
+import {trpc} from '../../../utils/trpcClient';
+import withSessionGuard from '../../../modules/auth/SessionGuard';
+import removeUnderscoreAndCapitalize from '../../../utils/formating/removeUnderscoreAndCapitalize';
+import Card from '../../../modules/core/Card';
+import {AttributeName} from '../../../types/AttributeName';
+
+const AttributesAndSkills = ({
+  strength,
+  dexterity,
+  stamina,
+  charisma,
+  composure,
+  manipulation,
+  resolve,
+  intelligence,
+  wits,
+  id,
+  refetch
+}: Kindred & {refetch: Function}) => {
+  const changeAttribute = trpc.kindred.changeAttribute.useMutation({
+    onSettled: () => refetch()
+  });
+  const attributes = useMemo(
+    () => [
+      [
+        {amount: strength, name: AttributeName.strength, type: 'physical'},
+        {amount: dexterity, name: AttributeName.dexterity, type: 'physical'},
+        {amount: stamina, name: AttributeName.stamina, type: 'physical'}
+      ],
+      [
+        {amount: charisma, name: AttributeName.charisma, type: 'social'},
+        {
+          amount: manipulation,
+          name: AttributeName.manipulation,
+          type: 'social'
+        },
+        {amount: composure, name: AttributeName.composure, type: 'social'}
+      ],
+      [
+        {
+          amount: intelligence,
+          name: AttributeName.intelligence,
+          type: 'mental'
+        },
+        {amount: wits, name: AttributeName.wits, type: 'mental'},
+        {amount: resolve, name: AttributeName.resolve, type: 'mental'}
+      ]
+    ],
+    [
+      strength,
+      dexterity,
+      stamina,
+      charisma,
+      manipulation,
+      composure,
+      intelligence,
+      wits,
+      resolve
+    ]
+  );
+
   return (
-    <Tabs.Root className="mt-4" defaultValue="tab1">
+    <Card className="max-w-4xl">
+      <div className="flex md:flex-row gap-12 flex-col justify-around">
+        {attributes.map((attrs, i) => (
+          <div key={attrs[i].type}>
+            <h2 className="mb-2 text-center text-4xl capitalize">
+              {attrs[i].type}
+            </h2>
+            {attrs.map(attr => (
+              <div
+                key={attr.name}
+                className="justify-between flex flex-row gap-2">
+                <span className="text-xl capitalize">{attr.name}</span>
+                <div className="flex flex-row gap-2">
+                  <button
+                    className="rounded-full w-6 h-6  bg-red-800"
+                    onClick={() =>
+                      changeAttribute.mutate({
+                        newAmountOfPoints: Math.max(attr.amount - 1, 0),
+                        attributeToChange: attr.name,
+                        kindredId: id
+                      })
+                    }>
+                    -
+                  </button>
+                  <span>{attr.amount}/5</span>
+                  <button
+                    className="rounded-full w-6 h-6  bg-red-800"
+                    onClick={() =>
+                      changeAttribute.mutate({
+                        newAmountOfPoints: Math.min(attr.amount + 1, 5),
+                        attributeToChange: attr.name,
+                        kindredId: id
+                      })
+                    }>
+                    +
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+};
+
+export function BuilderPage() {
+  const trpcContextState = trpc.useContext();
+  const kindredId = useRouter().query.id as string;
+  const {
+    isLoading,
+    isError,
+    refetch,
+    data: kindred
+  } = trpc.kindred.findById.useQuery(
+    {kindredId: +kindredId},
+    {
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: true,
+      trpc: {}
+    }
+  );
+  const clanMutation = trpc.kindred.pickClan.useMutation();
+  const clans = Object.values(ClanName);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError || !kindred) {
+    return <div>Kindred not found</div>;
+  }
+
+  return (
+    <Tabs.Root activationMode="manual" className="mt-4" defaultValue="tab1">
       <Tabs.List
         aria-label="Manage your account"
         className="flex flex-wrap justify-center text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
         <Tabs.Trigger className="mr-2" value="tab1">
-          <div className="active inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
+          <div className="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
             Background
           </div>
         </Tabs.Trigger>
         <Tabs.Trigger className="mr-2" value="tab2">
-          <div className="active inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
+          <div className="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
             Clan & Predator
           </div>
         </Tabs.Trigger>
         <Tabs.Trigger className="mr-2" value="tab3">
-          <div className="active inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
+          <div className="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
             {' '}
             Attributes & Skills
           </div>
         </Tabs.Trigger>
         <Tabs.Trigger className="mr-2" value="tab4">
-          <div className="active inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
+          <div className="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
             {' '}
             Disciplines & Powers
           </div>
         </Tabs.Trigger>
         <Tabs.Trigger className="mr-2" value="tab5">
-          <div className="active inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
+          <div className="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
             {' '}
             Advantages & Flaws
           </div>
         </Tabs.Trigger>
         <Tabs.Trigger className="mr-2" value="tab6">
-          <div className="active inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
+          <div className="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg dark:bg-gray-800 dark:text-blue-500">
             Touchstones & Convictions
           </div>
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content value="tab1">Chupala</Tabs.Content>
-      <Tabs.Content value="tab2">World</Tabs.Content>
+      <TabContent value="tab1">
+        <KindredDetails
+          {...kindred}
+          updateKindred={(updatedKindred: Kindred) => {
+            trpcContextState.kindred.findById.setData(
+              {kindredId: updatedKindred.id},
+              oldKindred => ({
+                ...oldKindred,
+                ...updatedKindred
+              })
+            );
+            trpcContextState.kindred.findById.invalidate({
+              kindredId: +kindredId
+            });
+          }}
+        />
+      </TabContent>
+      <TabContent value="tab2">
+        <select
+          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          defaultValue={kindred.clan.name}
+          name="clans"
+          onChange={e =>
+            clanMutation.mutate(
+              {
+                chosenClanName: e.target.value as ClanName,
+                kindredId: kindred.id
+              },
+              {onSuccess: updatedData => updateKindred(updatedData)}
+            )
+          }>
+          {clans.map(clan => (
+            <option key={clan} value={clan}>
+              {removeUnderscoreAndCapitalize(clan)}
+            </option>
+          ))}
+        </select>
+      </TabContent>
+      <TabContent value="tab3">
+        <AttributesAndSkills {...kindred} refetch={refetch} />
+      </TabContent>
     </Tabs.Root>
   );
 }
+
+const TabContent = ({
+  value,
+  children
+}: {
+  value: string;
+  children: JSX.Element[] | JSX.Element;
+}) => {
+  return (
+    <Tabs.Content
+      className="grid grid-cols-1 justify-items-center mt-4"
+      value={value}>
+      {children}
+    </Tabs.Content>
+  );
+};
+
+export default withSessionGuard(BuilderPage);

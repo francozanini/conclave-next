@@ -19,8 +19,6 @@ const KindredDetails = ({
 }: Kindred & {clan: Clan; updateKindred: Function}) => {
   const {register, getValues, setValue} = useForm();
   const detailsMutation = trpc.kindred.updateDetails.useMutation();
-  const clanMutation = trpc.kindred.pickClan.useMutation();
-  const clans = Object.values(ClanName);
   const handleChange = debounce(
     () => detailsMutation.mutate({...getValues(), kindredId: id} as any),
     200
@@ -66,25 +64,16 @@ const KindredDetails = ({
         input={{...register('sire'), onChange: handleChange}}
         label="sire"
       />
-      <select
-        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-        defaultValue={clan.name}
-        name="clans"
-        onChange={e =>
-          clanMutation.mutate(
-            {
-              chosenClanName: e.target.value as ClanName,
-              kindredId: id
-            },
-            {onSuccess: updatedData => updateKindred(updatedData)}
-          )
-        }>
-        {clans.map(clan => (
-          <option key={clan} value={clan}>
-            {removeUnderscoreAndCapitalize(clan)}
-          </option>
-        ))}
-      </select>
+      <TextInput
+        defaultValue={sire}
+        input={{...register('sire'), onChange: handleChange}}
+        label="sect"
+      />
+      <TextInput
+        defaultValue={sire}
+        input={{...register('sire'), onChange: handleChange}}
+        label="Age"
+      />
     </Card>
   );
 };
