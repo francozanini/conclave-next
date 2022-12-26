@@ -45,7 +45,6 @@ export const Skills = ({
 
   return (
     <Card className={'lg:max-w-fit'}>
-      <h1 className="text-center text-4xl">Skills</h1>
       <div className={'flex flex-col lg:flex-row'}>
         {skillsByType.map((skills, i) => (
           <div

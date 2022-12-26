@@ -68,53 +68,67 @@ const Attributes = ({
   );
 
   return (
-    <>
-      <Card className="max-w-4xl">
-        <div className="flex md:flex-row gap-12 flex-col justify-around">
-          {attributes.map((attrs, i) => (
-            <div key={attrs[i].type}>
-              <h2 className="mb-2 text-center text-4xl capitalize">
-                {attrs[i].type}
-              </h2>
-              {attrs.map(attr => (
-                <div
-                  key={attr.name}
-                  className="justify-between flex flex-row gap-2">
-                  <span className="text-xl capitalize">{attr.name}</span>
-                  <div className="flex flex-row gap-2">
-                    <button
-                      className="rounded-full w-6 h-6  bg-red-800"
-                      onClick={() =>
-                        changeAttribute.mutate({
-                          newAmountOfPoints: Math.max(attr.amount - 1, 0),
-                          attributeToChange: attr.name,
-                          kindredId: id
-                        })
-                      }>
-                      -
-                    </button>
-                    <span>{attr.amount}/5</span>
-                    <button
-                      className="rounded-full w-6 h-6  bg-red-800"
-                      onClick={() =>
-                        changeAttribute.mutate({
-                          newAmountOfPoints: Math.min(attr.amount + 1, 5),
-                          attributeToChange: attr.name,
-                          kindredId: id
-                        })
-                      }>
-                      +
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </Card>
-    </>
+    <Card maxWidth="4xl">
+      <div className="flex md:flex-row gap-12 flex-col justify-around">
+        {attributes.map((attrs, i) => (
+          <div key={attrs[i].type}>
+            <h2 className="mb-2 text-center text-4xl capitalize">
+              {attrs[i].type}
+            </h2>
+            {attrs.map(attr => (
+              <PointBuyer
+                key={attr.name}
+                label={attr.name}
+                points={attr.amount}
+                onBuy={() =>
+                  changeAttribute.mutate({
+                    newAmountOfPoints: Math.min(attr.amount + 1, 5),
+                    attributeToChange: attr.name,
+                    kindredId: id
+                  })
+                }
+                onSell={() =>
+                  changeAttribute.mutate({
+                    newAmountOfPoints: Math.max(attr.amount - 1, 0),
+                    attributeToChange: attr.name,
+                    kindredId: id
+                  })
+                }
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </Card>
   );
 };
+
+function PointBuyer({
+  onBuy,
+  onSell,
+  label,
+  points
+}: {
+  label: string;
+  points: number;
+  onBuy: () => void;
+  onSell: () => void;
+}) {
+  return (
+    <div className="justify-between flex flex-row gap-2">
+      <span className="text-xl capitalize">{label}</span>
+      <div className="flex flex-row gap-2">
+        <button className="rounded-full w-6 h-6  bg-red-800" onClick={onBuy}>
+          -
+        </button>
+        <span>{points}/5</span>
+        <button className="rounded-full w-6 h-6  bg-red-800" onClick={onSell}>
+          +
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export const Skills = ({
   id,
@@ -138,44 +152,33 @@ export const Skills = ({
   ];
 
   return (
-    <Card className="max-w-4xl">
+    <Card maxWidth="4xl">
       <div className="flex md:flex-row gap-12 flex-col justify-around">
         {skillsByType.map((skills, i) => (
           <div key={skills[i].type}>
             <h2 className="mb-2 text-center text-4xl capitalize">
-              {skills[i].type}
+              {capitalize(skills[i].type)}
             </h2>
             {skills.map(skill => (
-              <div
+              <PointBuyer
                 key={skill.name}
-                className="justify-between flex flex-row gap-2">
-                <span className="text-xl capitalize">{skill.name}</span>
-                <div className="flex flex-row gap-2">
-                  <button
-                    className="rounded-full w-6 h-6  bg-red-800"
-                    onClick={() =>
-                      changeSkill.mutate({
-                        newAmountOfPoints: Math.max(skill.points - 1, 0),
-                        skillToChange: skill.name,
-                        kindredId: id
-                      })
-                    }>
-                    -
-                  </button>
-                  <span>{skill.points}/5</span>
-                  <button
-                    className="rounded-full w-6 h-6  bg-red-800"
-                    onClick={() =>
-                      changeSkill.mutate({
-                        newAmountOfPoints: Math.min(skill.points + 1, 5),
-                        skillToChange: skill.name,
-                        kindredId: id
-                      })
-                    }>
-                    +
-                  </button>
-                </div>
-              </div>
+                label={removeUnderscoreAndCapitalize(skill.name)}
+                points={skill.points}
+                onBuy={() =>
+                  changeSkill.mutate({
+                    newAmountOfPoints: Math.max(skill.points - 1, 0),
+                    skillToChange: skill.name,
+                    kindredId: id
+                  })
+                }
+                onSell={() =>
+                  changeSkill.mutate({
+                    newAmountOfPoints: Math.min(skill.points + 1, 5),
+                    skillToChange: skill.name,
+                    kindredId: id
+                  })
+                }
+              />
             ))}
           </div>
         ))}
