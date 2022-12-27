@@ -70,38 +70,41 @@ const Attributes = ({
   );
 
   return (
-    <Card maxWidth="4xl">
-      <div className="flex md:flex-row gap-12 flex-col justify-around">
-        {attributes.map((attrs, i) => (
-          <div key={attrs[i].type}>
-            <h2 className="mb-2 text-center text-4xl capitalize">
-              {attrs[i].type}
-            </h2>
-            {attrs.map(attr => (
-              <PointBuyer
-                key={attr.name}
-                label={attr.name}
-                points={attr.amount}
-                onBuy={() =>
-                  changeAttribute.mutate({
-                    newAmountOfPoints: Math.min(attr.amount + 1, 5),
-                    attributeToChange: attr.name,
-                    kindredId: id
-                  })
-                }
-                onSell={() =>
-                  changeAttribute.mutate({
-                    newAmountOfPoints: Math.max(attr.amount - 1, 0),
-                    attributeToChange: attr.name,
-                    kindredId: id
-                  })
-                }
-              />
-            ))}
-          </div>
-        ))}
-      </div>
-    </Card>
+    <>
+      <h2 className="text-center text-6xl mb-1">Attributes</h2>
+      <Card maxWidth="4xl">
+        <div className="flex md:flex-row gap-12 flex-col justify-around">
+          {attributes.map((attrs, i) => (
+            <div key={attrs[i].type}>
+              <h2 className="mb-2 text-center text-2xl capitalize">
+                {attrs[i].type}
+              </h2>
+              {attrs.map(attr => (
+                <PointBuyer
+                  key={attr.name}
+                  label={attr.name}
+                  points={attr.amount}
+                  onBuy={() =>
+                    changeAttribute.mutate({
+                      newAmountOfPoints: Math.min(attr.amount + 1, 5),
+                      attributeToChange: attr.name,
+                      kindredId: id
+                    })
+                  }
+                  onSell={() =>
+                    changeAttribute.mutate({
+                      newAmountOfPoints: Math.max(attr.amount - 1, 0),
+                      attributeToChange: attr.name,
+                      kindredId: id
+                    })
+                  }
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </Card>
+    </>
   );
 };
 
@@ -154,38 +157,41 @@ export const Skills = ({
   ];
 
   return (
-    <Card maxWidth="4xl">
-      <div className="flex md:flex-row gap-12 flex-col justify-around">
-        {skillsByType.map((skills, i) => (
-          <div key={skills[i].type}>
-            <h2 className="mb-2 text-center text-4xl capitalize">
-              {capitalize(skills[i].type)}
-            </h2>
-            {skills.map(skill => (
-              <PointBuyer
-                key={skill.name}
-                label={removeUnderscoreAndCapitalize(skill.name)}
-                points={skill.points}
-                onBuy={() =>
-                  changeSkill.mutate({
-                    newAmountOfPoints: Math.max(skill.points - 1, 0),
-                    skillToChange: skill.name,
-                    kindredId: id
-                  })
-                }
-                onSell={() =>
-                  changeSkill.mutate({
-                    newAmountOfPoints: Math.min(skill.points + 1, 5),
-                    skillToChange: skill.name,
-                    kindredId: id
-                  })
-                }
-              />
-            ))}
-          </div>
-        ))}
-      </div>
-    </Card>
+    <>
+      <h2 className="text-center text-6xl mb-1">Skills</h2>
+      <Card maxWidth="4xl">
+        <div className="flex md:flex-row gap-12 flex-col justify-around">
+          {skillsByType.map((skills, i) => (
+            <div key={skills[i].type}>
+              <h2 className="mb-2 text-center text-4xl capitalize">
+                {capitalize(skills[i].type)}
+              </h2>
+              {skills.map(skill => (
+                <PointBuyer
+                  key={skill.name}
+                  label={removeUnderscoreAndCapitalize(skill.name)}
+                  points={skill.points}
+                  onBuy={() =>
+                    changeSkill.mutate({
+                      newAmountOfPoints: Math.max(skill.points - 1, 0),
+                      skillToChange: skill.name,
+                      kindredId: id
+                    })
+                  }
+                  onSell={() =>
+                    changeSkill.mutate({
+                      newAmountOfPoints: Math.min(skill.points + 1, 5),
+                      skillToChange: skill.name,
+                      kindredId: id
+                    })
+                  }
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </Card>
+    </>
   );
 };
 interface DisciplinesProps {
@@ -210,9 +216,9 @@ const Disciplines = ({
   );
 
   return (
-    <Card className="w-fit flex flex-col gap-2">
-      <>
-        <h1 className="text-6xl text-center mb-1">Disciplines</h1>
+    <>
+      <h1 className="text-6xl text-center mb-1">Disciplines</h1>
+      <Card className="w-fit flex flex-col gap-4" maxWidth="8xl">
         {disciplines.map(discipline => (
           <PointBuyer
             key={discipline.baseDiscipline.name}
@@ -236,8 +242,8 @@ const Disciplines = ({
             }
           />
         ))}
-      </>
-    </Card>
+      </Card>
+    </>
   );
 };
 
