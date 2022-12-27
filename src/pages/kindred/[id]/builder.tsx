@@ -11,6 +11,8 @@ import removeUnderscoreAndCapitalize from '../../../utils/formating/removeUnders
 import Card from '../../../modules/core/Card';
 import {AttributeName} from '../../../types/AttributeName';
 import capitalize from '../../../utils/formating/capitalize';
+import {FullDiscipline} from '../../../types/FullDiscipline';
+import {PowerWithDiscipline} from '../../../types/PowerWithDiscipline';
 
 const Attributes = ({
   strength,
@@ -116,13 +118,13 @@ function PointBuyer({
 }) {
   return (
     <div className="justify-between flex flex-row gap-2">
-      <span className="w-32 text-xl capitalize">{label}</span>
+      <span className="w-36 text-xl capitalize">{label}</span>
       <div className="flex flex-row gap-2">
-        <button className="rounded-full w-6 h-6  bg-red-800" onClick={onBuy}>
+        <button className="rounded-full w-6 h-6  bg-red-800" onClick={onSell}>
           -
         </button>
         <span>{points}/5</span>
-        <button className="rounded-full w-6 h-6  bg-red-800" onClick={onSell}>
+        <button className="rounded-full w-6 h-6  bg-red-800" onClick={onBuy}>
           +
         </button>
       </div>
@@ -183,6 +185,58 @@ export const Skills = ({
           </div>
         ))}
       </div>
+    </Card>
+  );
+};
+interface DisciplinesProps {
+  kindredId: number;
+  disciplines: FullDiscipline[];
+  powers: PowerWithDiscipline[];
+  refetch: Function;
+}
+
+const Disciplines = ({
+  disciplines,
+  refetch,
+  powers,
+  kindredId
+}: DisciplinesProps) => {
+  const changePoints = trpc.kindred.changeDisciplines.useMutation({
+    onSuccess: () => refetch()
+  });
+
+  disciplines.sort((a, b) =>
+    a.baseDiscipline.name.localeCompare(b.baseDiscipline.name)
+  );
+
+  return (
+    <Card className="w-fit flex flex-col gap-2">
+      <>
+        <h1 className="text-6xl text-center mb-1">Disciplines</h1>
+        {disciplines.map(discipline => (
+          <PointBuyer
+            key={discipline.baseDiscipline.name}
+            label={removeUnderscoreAndCapitalize(
+              discipline.baseDiscipline.name
+            )}
+            points={discipline.points}
+            onBuy={() =>
+              changePoints.mutate({
+                newAmountOfPoints: Math.min(5, discipline.points + 1),
+                kindredId,
+                knownDisciplineId: discipline.id
+              })
+            }
+            onSell={() =>
+              changePoints.mutate({
+                newAmountOfPoints: Math.max(0, discipline.points - 1),
+                kindredId,
+                knownDisciplineId: discipline.id
+              })
+            }
+          />
+        ))}
+      </>
     </Card>
   );
 };
@@ -295,6 +349,16 @@ export function BuilderPage() {
         <div className="flex flex-col gap-4">
           <Attributes {...kindred} refetch={refetch} />
           <Skills {...kindred} refetch={refetch} />
+        </div>
+      </TabContent>
+      <TabContent value="tab4">
+        <div className="flex flex-col gap-4">
+          <Disciplines
+            disciplines={kindred.disciplines}
+            kindredId={kindred.id}
+            powers={kindred.powers.map(learnedPower => learnedPower.basePower)}
+            refetch={refetch}
+          />
         </div>
       </TabContent>
     </Tabs.Root>
