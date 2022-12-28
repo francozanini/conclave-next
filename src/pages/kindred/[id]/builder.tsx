@@ -13,6 +13,9 @@ import {AttributeName} from '../../../types/AttributeName';
 import capitalize from '../../../utils/formating/capitalize';
 import {FullDiscipline} from '../../../types/FullDiscipline';
 import {PowerWithDiscipline} from '../../../types/PowerWithDiscipline';
+import {PowerCard} from '../../../modules/sheet/PowerCard';
+import {includesBy} from '../../../utils/arrays/includesBy';
+import classNames from '../../../utils/classNames';
 
 const Attributes = ({
   strength,
@@ -197,15 +200,15 @@ export const Skills = ({
 interface DisciplinesProps {
   kindredId: number;
   disciplines: FullDiscipline[];
-  powers: PowerWithDiscipline[];
   refetch: Function;
+  className?: string;
 }
 
 const Disciplines = ({
   disciplines,
   refetch,
-  powers,
-  kindredId
+  kindredId,
+  className = ''
 }: DisciplinesProps) => {
   const changePoints = trpc.kindred.changeDisciplines.useMutation({
     onSuccess: () => refetch()
@@ -216,7 +219,7 @@ const Disciplines = ({
   );
 
   return (
-    <>
+    <div className={className}>
       <h1 className="text-6xl text-center mb-1">Disciplines</h1>
       <Card className="w-fit flex flex-col gap-4" maxWidth="8xl">
         {disciplines.map(discipline => (
@@ -243,9 +246,57 @@ const Disciplines = ({
           />
         ))}
       </Card>
-    </>
+    </div>
   );
 };
+
+function Powers({
+  kindredId,
+  disciplines,
+  powers,
+  className = ''
+}: {
+  kindredId: number;
+  powers: PowerWithDiscipline[];
+  disciplines: FullDiscipline[];
+  className?: string;
+}) {
+  const {data: learnablePowers, isLoading} =
+    trpc.powers.learnablePowers.useQuery({
+      disciplines: disciplines.map(discipline => ({
+        disciplineName: discipline.baseDiscipline.name,
+        lvl: discipline.points
+      }))
+    });
+
+  if (isLoading || !learnablePowers) {
+    return <div>sad</div>;
+  }
+  return (
+    <div className={className}>
+      <h1 className="text-6xl text-center mb-1">Powers</h1>
+      <div className="space-y-6 p-6">
+        <div className="space-y-3">
+          {learnablePowers.length ? (
+            learnablePowers.map(lp => (
+              <PowerCard
+                key={lp.id}
+                kindredId={kindredId}
+                {...lp}
+                alreadyLearnt={includesBy(
+                  power => power.name === lp.name,
+                  powers
+                )}
+              />
+            ))
+          ) : (
+            <p className="text-center">No powers to learn yet.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function BuilderPage() {
   const trpcContextState = trpc.useContext();
@@ -357,30 +408,41 @@ export function BuilderPage() {
           <Skills {...kindred} refetch={refetch} />
         </div>
       </TabContent>
-      <TabContent value="tab4">
-        <div className="flex flex-col gap-4">
-          <Disciplines
-            disciplines={kindred.disciplines}
-            kindredId={kindred.id}
-            powers={kindred.powers.map(learnedPower => learnedPower.basePower)}
-            refetch={refetch}
-          />
-        </div>
-      </TabContent>
+      <Tabs.Content
+        className=" grid grid-cols-6 grid-rows-2 gap-8 justify-items-center mt-4"
+        value="tab4">
+        <Disciplines
+          className={'row-start-1 col-start-2 col-end-6'}
+          disciplines={kindred.disciplines}
+          kindredId={kindred.id}
+          refetch={refetch}
+        />
+        <Powers
+          className={'container row-start-2 col-start-2 col-span-4'}
+          disciplines={kindred.disciplines}
+          kindredId={kindred.id}
+          powers={kindred.powers.map(learnedPower => learnedPower.basePower)}
+        />
+      </Tabs.Content>
     </Tabs.Root>
   );
 }
 
 const TabContent = ({
   value,
-  children
+  children,
+  className = ''
 }: {
   value: string;
   children: JSX.Element[] | JSX.Element;
+  className?: string;
 }) => {
   return (
     <Tabs.Content
-      className="grid grid-cols-1 justify-items-center mt-4"
+      className={classNames(
+        'grid grid-cols-1 justify-items-center mt-4',
+        className ?? ''
+      )}
       value={value}>
       {children}
     </Tabs.Content>
