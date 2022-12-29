@@ -305,7 +305,7 @@ function ClanSelection() {
   return (
     <div className="flex gap-4 flex-row flex-wrap justify-center">
       {clans.map(clan => (
-        <Card key={clan} className="max-w-fit">
+        <Card key={clan} className="cursor-pointer" maxWidth="fit">
           <Image
             alt={`Clan ${removeUnderscoreAndCapitalize(clan)}`}
             height={200}

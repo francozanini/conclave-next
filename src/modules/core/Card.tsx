@@ -1,6 +1,6 @@
 interface CardProps {
   children: JSX.Element[] | JSX.Element;
-  maxWidth?: 'md' | 'lg' | 'xl' | '2xl' | '4xl' | '8xl';
+  maxWidth?: 'md' | 'lg' | 'xl' | '2xl' | '4xl' | '8xl' | 'fit';
   className?: string;
 }
 
