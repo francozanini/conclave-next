@@ -2,6 +2,7 @@ import * as Tabs from '@radix-ui/react-tabs';
 import {useRouter} from 'next/router';
 import {ClanName, Skill, SkillType} from '@prisma/client';
 import {useMemo} from 'react';
+import Image from 'next/image';
 
 import KindredDetails from '../../../modules/sheet/KindredDetails';
 import {Kindred} from '../../../types/Kindred';
@@ -298,6 +299,25 @@ function Powers({
   );
 }
 
+function ClanSelection() {
+  const clanMutation = trpc.kindred.pickClan.useMutation();
+  const clans = Object.values(ClanName);
+  return (
+    <div className="flex gap-4 flex-row flex-wrap justify-center">
+      {clans.map(clan => (
+        <Card key={clan} className="max-w-fit">
+          <Image
+            alt={`Clan ${removeUnderscoreAndCapitalize(clan)}`}
+            height={200}
+            src={`/clans/clan-${clan.toLowerCase().replace('_', '')}-logo.webp`}
+            width={200}
+          />
+        </Card>
+      ))}
+    </div>
+  );
+}
+
 export function BuilderPage() {
   const trpcContextState = trpc.useContext();
   const kindredId = useRouter().query.id as string;
@@ -314,8 +334,6 @@ export function BuilderPage() {
       trpc: {}
     }
   );
-  const clanMutation = trpc.kindred.pickClan.useMutation();
-  const clans = Object.values(ClanName);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -382,25 +400,7 @@ export function BuilderPage() {
         />
       </TabContent>
       <TabContent value="tab2">
-        <select
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-          defaultValue={kindred.clan.name}
-          name="clans"
-          onChange={e =>
-            clanMutation.mutate(
-              {
-                chosenClanName: e.target.value as ClanName,
-                kindredId: kindred.id
-              },
-              {onSuccess: updatedData => updateKindred(updatedData)}
-            )
-          }>
-          {clans.map(clan => (
-            <option key={clan} value={clan}>
-              {removeUnderscoreAndCapitalize(clan)}
-            </option>
-          ))}
-        </select>
+        <ClanSelection />
       </TabContent>
       <TabContent value="tab3">
         <div className="flex flex-col gap-4">
