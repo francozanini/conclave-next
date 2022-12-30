@@ -299,7 +299,7 @@ function Powers({
   );
 }
 
-function ClanSelection() {
+function ClanSelection({kindredId}: {kindredId: number}) {
   const clanMutation = trpc.kindred.pickClan.useMutation();
   const clans = Object.values(ClanName);
   return (
@@ -311,6 +311,9 @@ function ClanSelection() {
             height={200}
             src={`/clans/clan-${clan.toLowerCase().replace('_', '')}-logo.webp`}
             width={200}
+            onClick={() =>
+              clanMutation.mutate({kindredId, chosenClanName: clan})
+            }
           />
         </Card>
       ))}
@@ -400,7 +403,7 @@ export function BuilderPage() {
         />
       </TabContent>
       <TabContent value="tab2">
-        <ClanSelection />
+        <ClanSelection kindredId={kindred.id} />
       </TabContent>
       <TabContent value="tab3">
         <div className="flex flex-col gap-4">
@@ -409,7 +412,7 @@ export function BuilderPage() {
         </div>
       </TabContent>
       <Tabs.Content
-        className=" grid grid-cols-6 grid-rows-2 gap-8 justify-items-center mt-4"
+        className=" grid grid-cols-6 auto-rows-min gap-8 justify-items-center mt-4"
         value="tab4">
         <Disciplines
           className={'row-start-1 col-start-2 col-end-6'}
