@@ -1,7 +1,7 @@
 import * as Tabs from '@radix-ui/react-tabs';
 import {useRouter} from 'next/router';
 import {ClanName, Skill, SkillType} from '@prisma/client';
-import {useMemo} from 'react';
+import {useMemo, useState} from 'react';
 import Image from 'next/image';
 
 import KindredDetails from '../../../modules/sheet/KindredDetails';
@@ -299,21 +299,34 @@ function Powers({
   );
 }
 
-function ClanSelection({kindredId}: {kindredId: number}) {
+function ClanSelection({
+  kindredId,
+  selectedClan
+}: {
+  kindredId: number;
+  selectedClan: ClanName;
+}) {
+  const [_selectedClan, optimisticallySelectClan] = useState(selectedClan);
   const clanMutation = trpc.kindred.pickClan.useMutation();
   const clans = Object.values(ClanName);
   return (
     <div className="flex gap-4 flex-row flex-wrap justify-center">
       {clans.map(clan => (
-        <Card key={clan} className="cursor-pointer" maxWidth="fit">
+        <Card
+          key={clan}
+          className={`cursor-pointer ${
+            _selectedClan === clan ? 'border-red-800 border-solid border-2' : ''
+          }`}
+          maxWidth="fit">
           <Image
             alt={`Clan ${removeUnderscoreAndCapitalize(clan)}`}
             height={200}
             src={`/clans/clan-${clan.toLowerCase().replace('_', '')}-logo.webp`}
             width={200}
-            onClick={() =>
-              clanMutation.mutate({kindredId, chosenClanName: clan})
-            }
+            onClick={() => {
+              optimisticallySelectClan(clan);
+              clanMutation.mutate({kindredId, chosenClanName: clan});
+            }}
           />
         </Card>
       ))}
@@ -322,7 +335,6 @@ function ClanSelection({kindredId}: {kindredId: number}) {
 }
 
 export function BuilderPage() {
-  const trpcContextState = trpc.useContext();
   const kindredId = useRouter().query.id as string;
   const {
     isLoading,
@@ -386,24 +398,13 @@ export function BuilderPage() {
         </Tabs.Trigger>
       </Tabs.List>
       <TabContent value="tab1">
-        <KindredDetails
-          {...kindred}
-          updateKindred={(updatedKindred: Kindred) => {
-            trpcContextState.kindred.findById.setData(
-              {kindredId: updatedKindred.id},
-              oldKindred => ({
-                ...oldKindred,
-                ...updatedKindred
-              })
-            );
-            trpcContextState.kindred.findById.invalidate({
-              kindredId: +kindredId
-            });
-          }}
-        />
+        <KindredDetails {...kindred} />
       </TabContent>
       <TabContent value="tab2">
-        <ClanSelection kindredId={kindred.id} />
+        <ClanSelection
+          kindredId={kindred.id}
+          selectedClan={kindred.clan.name}
+        />
       </TabContent>
       <TabContent value="tab3">
         <div className="flex flex-col gap-4">

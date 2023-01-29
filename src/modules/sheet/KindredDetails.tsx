@@ -1,22 +1,12 @@
-import {Clan, ClanName} from '@prisma/client';
 import {useForm} from 'react-hook-form';
 
 import {debounce} from '../../utils/debounce';
 import {trpc} from '../../utils/trpcClient';
-import removeUnderscoreAndCapitalize from '../../utils/formating/removeUnderscoreAndCapitalize';
 import Card from '../core/Card';
 import TextInput from '../core/TextInput';
 import {Kindred} from '../../types/Kindred';
 
-const KindredDetails = ({
-  id,
-  name,
-  ambition,
-  desire,
-  sire,
-  clan,
-  updateKindred
-}: Kindred & {clan: Clan; updateKindred: Function}) => {
+const KindredDetails = ({id, name, ambition, desire, sire}: Kindred) => {
   const {register, getValues, setValue} = useForm();
   const detailsMutation = trpc.kindred.updateDetails.useMutation();
   const handleChange = debounce(
