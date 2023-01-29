@@ -180,7 +180,7 @@ model KnownDiscipline {
   baseDiscipline   Discipline @relation(fields: [baseDisciplineId], references: [id])
   baseDisciplineId Int
 
-  Kindred   Kindred @relation(fields: [kindredId], references: [id])
+  Kindred   Kindred @relation(fields: [kindredId], references: [id], onDelete: Cascade)
   kindredId Int
 
   @@unique([baseDisciplineId, kindredId])
