@@ -32,7 +32,7 @@ function CharactersPage() {
       </div>
       <div
         ref={parent}
-        className="flex flex-col lg:flex-row flex-wrap items-center justify-between mt-4 gap-4">
+        className="justify-start flex flex-col lg:flex-row flex-wrap items-center mt-4 gap-4">
         {data?.length === 0 ? (
           <h2 className="text-center">You have no characters</h2>
         ) : (
